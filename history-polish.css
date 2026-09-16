@@ -1,9 +1,12 @@
-/* History UI polish: compact mobile controls and readable tables. */
+/* History UI polish: compact controls and information-dense OTP tables. */
 .history-filters label{min-width:0}
 .history-filters input,.history-filters select{min-width:0;max-width:100%}
-.airline-table{min-width:620px!important;font-size:10.5px!important}
-.airline-table th,.airline-table td{padding:8px 9px!important}
-.otp-direction-card{padding:11px!important}
+.airline-table{min-width:520px!important;font-size:10px!important}
+.airline-table th,.airline-table td{padding:6px 7px!important}
+.airline-table th:nth-child(6),.airline-table td:nth-child(6){display:none!important}
+.otp-direction-card{padding:10px!important}
+.otp-direction-head{margin-bottom:7px!important}
+.otp-summary b{font-size:20px!important}
 
 @media(max-width:560px){
   .history-shell{padding:8px 10px 26px!important}
@@ -26,8 +29,8 @@
   .history-metrics article{padding:11px 12px!important}
   .history-metrics strong{font-size:22px!important}
   .history-airline-block{padding:12px!important}
-  .otp-direction-grid{gap:10px!important}
-  .otp-direction-card{padding:10px!important}
-  .airline-table{min-width:580px!important;font-size:10px!important}
-  .airline-table th,.airline-table td{padding:7px 8px!important}
+  .otp-direction-grid{gap:9px!important}
+  .otp-direction-card{padding:9px!important}
+  .airline-table{min-width:500px!important;font-size:9.5px!important}
+  .airline-table th,.airline-table td{padding:5px 6px!important}
 }
