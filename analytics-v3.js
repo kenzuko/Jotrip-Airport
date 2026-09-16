@@ -18,4 +18,5 @@ function renderTable(rows,bodyId,rateId,sampleId){const body=$('#'+bodyId);if(!b
 function render(records){ensureLayout();renderTable(score(records,'arrival'),'airlineArrivalBody','arrivalOtpRate','arrivalOtpSample');renderTable(score(records,'departure'),'airlineDepartureBody','departureOtpRate','departureOtpSample')}
 async function load(){try{const base=liveUrl();if(!base)return;const u=new URL(base);if(window.JOTRIP_BOARD_DATE)u.searchParams.set('date',window.JOTRIP_BOARD_DATE);u.searchParams.set('t',Date.now());const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const p=await r.json();render(p?.latest?.records||[])}catch(e){console.warn('Không tải được thống kê hãng bay',e)}}
 window.addEventListener('jotrip:board-date',load);load();setInterval(load,60000);
+const statusScript=document.createElement('script');statusScript.src='./status-summary.js?v=20260916a';document.head.appendChild(statusScript);
 })();
