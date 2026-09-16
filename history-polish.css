@@ -1,0 +1,10 @@
+/* History UI polish: keep native date controls readable on narrow screens. */
+.history-filters label{min-width:0}
+.history-filters input,.history-filters select{min-width:0;max-width:100%}
+@media(max-width:560px){
+  .history-filters{grid-template-columns:1fr 1fr!important}
+  .history-filters label:nth-child(1),
+  .history-filters label:nth-child(2){grid-column:1/-1}
+  .history-filters input[type="date"]{width:100%!important;max-width:100%!important;font-size:16px!important;padding-left:12px!important;padding-right:10px!important}
+  .history-search{grid-column:1/-1!important}
+}
