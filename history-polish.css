@@ -1,10 +1,33 @@
-/* History UI polish: keep native date controls readable on narrow screens. */
+/* History UI polish: compact mobile controls and readable tables. */
 .history-filters label{min-width:0}
 .history-filters input,.history-filters select{min-width:0;max-width:100%}
+.airline-table{min-width:620px!important;font-size:10.5px!important}
+.airline-table th,.airline-table td{padding:8px 9px!important}
+.otp-direction-card{padding:11px!important}
+
 @media(max-width:560px){
-  .history-filters{grid-template-columns:1fr 1fr!important}
+  .history-shell{padding:8px 10px 26px!important}
+  .history-hero{min-height:154px!important;padding:16px 18px!important;border-radius:20px!important}
+  .history-hero h2{font-size:25px!important;line-height:1.08!important;margin-top:7px!important}
+  .history-hero p{font-size:11.5px!important;line-height:1.45!important}
+  .archive-pill{margin-top:13px!important;padding:8px 11px!important}
+  .history-card{margin-top:12px!important}
+  .filters-card{padding:12px!important}
+  .history-filters{grid-template-columns:1fr 1fr!important;gap:8px!important}
+  .history-filters label{gap:4px!important}
+  .history-filters label>span{font-size:10px!important}
   .history-filters label:nth-child(1),
   .history-filters label:nth-child(2){grid-column:1/-1}
-  .history-filters input[type="date"]{width:100%!important;max-width:100%!important;font-size:16px!important;padding-left:12px!important;padding-right:10px!important}
+  .history-filters input,.history-filters select{height:42px!important;border-radius:10px!important;padding-left:10px!important;padding-right:10px!important;font-size:13px!important}
+  .history-filters input[type="date"]{width:100%!important;max-width:100%!important;font-size:16px!important}
   .history-search{grid-column:1/-1!important}
+  .history-range-note{margin:6px 0 0!important;font-size:10px!important;line-height:1.4!important}
+  .history-metrics{gap:8px!important;margin-top:10px!important}
+  .history-metrics article{padding:11px 12px!important}
+  .history-metrics strong{font-size:22px!important}
+  .history-airline-block{padding:12px!important}
+  .otp-direction-grid{gap:10px!important}
+  .otp-direction-card{padding:10px!important}
+  .airline-table{min-width:580px!important;font-size:10px!important}
+  .airline-table th,.airline-table td{padding:7px 8px!important}
 }
