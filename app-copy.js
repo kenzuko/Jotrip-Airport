@@ -3,7 +3,7 @@ const $=s=>document.querySelector(s);
 const setText=(el,text)=>{if(el&&el.textContent!==text)el.textContent=text};
 const replaceText=(el,replacements)=>{if(!el||!el.textContent)return;let next=el.textContent;for(const [a,b] of replacements)next=next.replace(a,b);if(next!==el.textContent)el.textContent=next};
 const replaceHtml=(el,replacements)=>{if(!el||!el.textContent)return;let next=el.innerHTML;for(const [a,b] of replacements)next=next.replace(a,b);if(next!==el.innerHTML)el.innerHTML=next};
-const cleanPublicCopy=()=>{
+const cleanPublicCopy=()=>{if(window.JT_I18N_ACTIVE)return;
   setText($('.source-label'),'JoTrip Live · Auto refresh');
   replaceText($('#updatedAt'),[[/JoTrip Live API/g,'JoTrip Live']]);
   replaceText($('#errorBox'),[
