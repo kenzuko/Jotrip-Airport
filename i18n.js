@@ -196,7 +196,8 @@
     const chips=qa('#filterChips button');[t('all'),t('next3'),t('international'),t('domestic'),t('changed')].forEach((v,i)=>{if(chips[i])chips[i].textContent=v;});
     set('#showMore',t('showMore'));
     if(!state?.latest)set('#updatedAt',t('fidsSync'));
-    set('#fidsBoardStatus',t('fidsSync'));const fidsEmpty=q('#fidsGrid .empty-state');if(fidsEmpty&&/Đang đồng bộ FIDS|Syncing FIDS|FIDS 동기화|Синхронизация FIDS|正在同步FIDS/.test(fidsEmpty.textContent))fidsEmpty.textContent=t('fidsSyncData');
+    const fidsState=q('#fidsBoardStatus');if(fidsState&&(!state?.latest||/Đang đồng bộ|Syncing|동기화|Синхронизация|同步/.test(fidsState.textContent)))fidsState.textContent=t('fidsSync');
+    const fidsEmpty=q('#fidsGrid .empty-state');if(fidsEmpty&&/Đang đồng bộ FIDS|Syncing FIDS|FIDS 동기화|Синхронизация FIDS|正在同步FIDS/.test(fidsEmpty.textContent))fidsEmpty.textContent=t('fidsSyncData');
 
     qa('.operation-watch-title').forEach(el=>el.textContent=t('opsWatch'));qa('.operation-watch-subtitle').forEach(el=>el.textContent=t('quickSubtitle'));set('#dataHealthCard .side-head h3',t('dataHealth'));
     const modes=qa('.mode-switch button');if(modes[0])modes[0].textContent=t('live');if(modes[1])modes[1].textContent=t('history');if(modes[2])modes[2].textContent=t('analytics');
