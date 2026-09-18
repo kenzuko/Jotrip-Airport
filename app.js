@@ -2,7 +2,7 @@ const DATA_BASE='https://raw.githubusercontent.com/kenzuko/Jotrip-Lab/data-sunai
 const LIVE_API_URL=(window.JOTRIP_LIVE_API_URL||'').replace(/\/$/,'');
 const AUTO_REFRESH_MS=60*1000;
 const state={latest:null,health:null,direction:'arrival',filter:'all',query:'',limit:8,mode:'live',lastFetchAt:0,loading:false,dataSource:'snapshot',liveError:null,fidsEvents:[],fidsHistoryLoaded:false,fidsHistoryLoading:false};
-const $=s=>document.querySelector(s), $=s=>[...document.querySelectorAll(s)];
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 function uiT(key,fallback,vars){try{return typeof window.JT_T==='function'?window.JT_T(key,vars):fallback}catch(_){return fallback}}
 function uiStatus(value){try{return typeof window.JT_STATUS==='function'?window.JT_STATUS(value):value}catch(_){return value}}
 const typographyLink=document.createElement('link');typographyLink.rel='stylesheet';typographyLink.href='./typography.css?v=20260916a';document.head.appendChild(typographyLink);
