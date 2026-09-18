@@ -237,7 +237,7 @@
           '<div class="fids-cell fids-route" data-label="HÀNH TRÌNH"><strong>'+esc(route)+'</strong><span>'+esc(r.market==='international'?'QUỐC TẾ':'NỘI ĐỊA')+'</span></div>'+
           '<div class="fids-cell fids-status" data-label="TRẠNG THÁI"><span class="fids-status-pill '+esc(tone)+'">'+esc(stat||'CHƯA RÕ')+'</span></div>'+
           '<div class="fids-cell fids-gate '+(ev.gate?'changed':'')+'" data-label="CỬA"><strong>'+esc(gate)+'</strong>'+(ev.gate?'<span>← '+esc(ev.gate.from)+'</span>':'')+'</div>'+
-          '<div class="fids-cell fids-service '+((r.direction==='departure'&&ev.checkin_row)||(r.direction==='arrival'&&ev.belt)?'changed':'')+'" data-label="'+esc(serviceLabel(r))+'"><strong>'+esc(service)+'</strong><span>'+esc(serviceLabel(r))+(((r.direction==='departure'&&ev.checkin_row)||(r.direction==='arrival'&&ev.belt))?' · ĐÃ ĐỔI':'')+'</span></div>'+
+          '<div class="fids-cell fids-service '+((r.direction==='departure'&&ev.checkin_row)||(r.direction==='arrival'&&ev.belt)?'changed':'')+'" data-label="'+esc(serviceLabel(r))+'"><strong>'+esc(service)+'</strong><span>'+(((r.direction==='departure'&&ev.checkin_row)||(r.direction==='arrival'&&ev.belt))?'ĐÃ ĐỔI':'')+'</span></div>'+
           '<div class="fids-cell fids-change" data-label="THAY ĐỔI">'+(change?'<span class="fids-change-badge">'+esc(change)+'</span>':'<span class="fids-no-change">—</span>')+'</div>'+
         '</div>';
       }).join('');
