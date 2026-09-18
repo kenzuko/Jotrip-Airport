@@ -12,6 +12,8 @@
       flightBoard:'Chuyến bay hôm nay',search:'Tìm chuyến',arrival:'Chuyến đến',departure:'Chuyến đi',all:'Tất cả',next3:'3 giờ tới',international:'Quốc tế',domestic:'Nội địa',changed:'Có thay đổi',showMore:'Xem thêm',
       searchPh:'Tìm số chuyến, hãng hoặc nơi đi/đến: VJ339, Hà Nội, Da Nang...',opsWatch:'Operations Watch',nextArrivals:'Next Arrivals',dataHealth:'Data Health',
       live:'LIVE',history:'HISTORY',analytics:'ANALYTICS',flights:'Flights',refresh:'Refresh',
+      yesterday:'HÔM QUA',todayShort:'HÔM NAY',tomorrow:'NGÀY MAI',yesterdayAt:'Hôm qua tại Phú Quốc',tomorrowAt:'Ngày mai tại Phú Quốc',flightsYesterday:'Chuyến bay hôm qua',flightsTomorrow:'Chuyến bay ngày mai',board:'BẢNG',boardYesterday:'BẢNG HÔM QUA',boardTomorrow:'BẢNG NGÀY MAI',
+      healthPillGood:'GOOD · dữ liệu đang mới',healthPillWatch:'WATCH · dữ liệu chậm',healthPillStale:'STALE · dữ liệu cũ',sourceLive:'JoTrip Live · Tự động làm mới',
       fidsTitle:'Bảng thông tin chuyến bay',fidsDesc:'Giờ bay, dự kiến - thực tế, trạng thái, cửa, quầy và băng chuyền.',
       sched:'LỊCH',estActual:'DỰ KIẾN / THỰC TẾ',flight:'CHUYẾN',route:'HÀNH TRÌNH',status:'TRẠNG THÁI',gate:'CỬA',counterBelt:'QUẦY / BĂNG',change:'THAY ĐỔI',
       counter:'QUẦY',belt:'BĂNG',arr:'ĐẾN',dep:'ĐI',intl:'QUỐC TẾ',dom:'NỘI ĐỊA',actual:'THỰC TẾ',est:'DỰ KIẾN',schedShort:'LỊCH',changedNow:'ĐÃ ĐỔI',
@@ -35,6 +37,8 @@
       flightBoard:'Today’s flights',search:'Find flight',arrival:'Arrivals',departure:'Departures',all:'All',next3:'Next 3 hours',international:'International',domestic:'Domestic',changed:'Changed',showMore:'Show more',
       searchPh:'Search flight, airline or city: VJ339, Hanoi, Da Nang...',opsWatch:'Daily Flight Watch',nextArrivals:'Next Arrivals',dataHealth:'Data Health',
       live:'LIVE',history:'HISTORY',analytics:'ANALYTICS',flights:'Flights',refresh:'Refresh',
+      yesterday:'YESTERDAY',todayShort:'TODAY',tomorrow:'TOMORROW',yesterdayAt:'Yesterday at Phu Quoc',tomorrowAt:'Tomorrow at Phu Quoc',flightsYesterday:'Yesterday’s flights',flightsTomorrow:'Tomorrow’s flights',board:'BOARD',boardYesterday:'YESTERDAY BOARD',boardTomorrow:'TOMORROW BOARD',
+      healthPillGood:'GOOD · data fresh',healthPillWatch:'WATCH · data delayed',healthPillStale:'STALE · data old',sourceLive:'JoTrip Live · Auto refresh',
       fidsTitle:'Flight information display',fidsDesc:'Schedule, estimate/actual, status, gate, check-in and baggage belt.',
       sched:'SCHED',estActual:'EST / ACTUAL',flight:'FLIGHT',route:'ROUTE',status:'STATUS',gate:'GATE',counterBelt:'CHECK-IN / BELT',change:'CHANGE',
       counter:'CHECK-IN',belt:'BELT',arr:'ARR',dep:'DEP',intl:'INTL',dom:'DOM',actual:'ACTUAL',est:'EST',schedShort:'SCHED',changedNow:'CHANGED',
@@ -58,6 +62,8 @@
       flightBoard:'오늘의 항공편',search:'항공편 찾기',arrival:'도착',departure:'출발',all:'전체',next3:'향후 3시간',international:'국제선',domestic:'국내선',changed:'변경 있음',showMore:'더 보기',
       searchPh:'편명, 항공사 또는 도시 검색: VJ339, Hanoi, Da Nang...',opsWatch:'오늘의 운항 주의',nextArrivals:'다음 도착편',dataHealth:'데이터 상태',
       live:'실시간',history:'이력',analytics:'분석',flights:'항공편',refresh:'새로고침',
+      yesterday:'어제',todayShort:'오늘',tomorrow:'내일',yesterdayAt:'어제 푸꾸옥 공항',tomorrowAt:'내일 푸꾸옥 공항',flightsYesterday:'어제 항공편',flightsTomorrow:'내일 항공편',board:'운항표',boardYesterday:'어제 운항표',boardTomorrow:'내일 운항표',
+      healthPillGood:'정상 · 최신 데이터',healthPillWatch:'주의 · 데이터 지연',healthPillStale:'오래된 데이터',sourceLive:'JoTrip Live · 자동 새로고침',
       fidsTitle:'항공편 정보 안내',fidsDesc:'예정·예상/실제 시간, 상태, 게이트, 체크인 카운터 및 수하물 벨트.',
       sched:'예정',estActual:'예상 / 실제',flight:'편명',route:'노선',status:'상태',gate:'게이트',counterBelt:'체크인 / 벨트',change:'변경',
       counter:'체크인',belt:'벨트',arr:'도착',dep:'출발',intl:'국제선',dom:'국내선',actual:'실제',est:'예상',schedShort:'예정',changedNow:'변경됨',
@@ -81,6 +87,8 @@
       flightBoard:'Рейсы сегодня',search:'Найти рейс',arrival:'Прибытия',departure:'Вылеты',all:'Все',next3:'Ближайшие 3 часа',international:'Международные',domestic:'Внутренние',changed:'Есть изменения',showMore:'Показать ещё',
       searchPh:'Поиск по рейсу, авиакомпании или городу: VJ339, Hanoi, Da Nang...',opsWatch:'Сводка рейсов за день',nextArrivals:'Ближайшие прибытия',dataHealth:'Состояние данных',
       live:'LIVE',history:'ИСТОРИЯ',analytics:'АНАЛИТИКА',flights:'Рейсы',refresh:'Обновить',
+      yesterday:'ВЧЕРА',todayShort:'СЕГОДНЯ',tomorrow:'ЗАВТРА',yesterdayAt:'Вчера в аэропорту Фукуока',tomorrowAt:'Завтра в аэропорту Фукуока',flightsYesterday:'Рейсы вчера',flightsTomorrow:'Рейсы завтра',board:'ТАБЛО',boardYesterday:'ТАБЛО ВЧЕРА',boardTomorrow:'ТАБЛО ЗАВТРА',
+      healthPillGood:'GOOD · ДАННЫЕ СВЕЖИЕ',healthPillWatch:'WATCH · ЗАДЕРЖКА ДАННЫХ',healthPillStale:'STALE · ДАННЫЕ УСТАРЕЛИ',sourceLive:'JoTrip Live · Автообновление',
       fidsTitle:'Табло рейсов',fidsDesc:'Расписание, расчётное/фактическое время, статус, выход, стойка и багажная лента.',
       sched:'РАСП.',estActual:'РАСЧ. / ФАКТ.',flight:'РЕЙС',route:'МАРШРУТ',status:'СТАТУС',gate:'ВЫХОД',counterBelt:'СТОЙКА / ЛЕНТА',change:'ИЗМЕНЕНИЕ',
       counter:'СТОЙКА',belt:'ЛЕНТА',arr:'ПРИБ.',dep:'ВЫЛ.',intl:'МЕЖД.',dom:'ВНУТР.',actual:'ФАКТ',est:'РАСЧ',schedShort:'РАСП',changedNow:'ИЗМЕНЕНО',
@@ -104,6 +112,8 @@
       flightBoard:'今日航班',search:'查找航班',arrival:'到达',departure:'出发',all:'全部',next3:'未来3小时',international:'国际',domestic:'国内',changed:'有变更',showMore:'查看更多',
       searchPh:'搜索航班、航空公司或城市：VJ339、Hanoi、Da Nang...',opsWatch:'今日航班运行摘要',nextArrivals:'即将到达',dataHealth:'数据状态',
       live:'实时',history:'历史',analytics:'分析',flights:'航班',refresh:'刷新',
+      yesterday:'昨天',todayShort:'今天',tomorrow:'明天',yesterdayAt:'昨天的富国岛机场',tomorrowAt:'明天的富国岛机场',flightsYesterday:'昨天的航班',flightsTomorrow:'明天的航班',board:'航班表',boardYesterday:'昨天航班表',boardTomorrow:'明天航班表',
+      healthPillGood:'正常 · 数据最新',healthPillWatch:'注意 · 数据延迟',healthPillStale:'数据已过期',sourceLive:'JoTrip Live · 自动刷新',
       fidsTitle:'航班信息显示',fidsDesc:'计划、预计/实际时间、状态、登机口、值机柜台和行李转盘。',
       sched:'计划',estActual:'预计 / 实际',flight:'航班',route:'航线',status:'状态',gate:'登机口',counterBelt:'值机 / 行李',change:'变更',
       counter:'值机',belt:'行李',arr:'到达',dep:'出发',intl:'国际',dom:'国内',actual:'实际',est:'预计',schedShort:'计划',changedNow:'已变更',
@@ -163,10 +173,12 @@
     document.documentElement.lang=lang==='zh'?'zh-CN':lang;
     const sel=q('#languageSelect');if(sel&&sel.value!==lang)sel.value=lang;
 
-    set('.hero h2',t('today'));set('.hero p',t('heroSub'));
+    const offset=(typeof state!=='undefined'&&Number.isFinite(Number(state.boardOffset)))?Number(state.boardOffset):0;
+    set('.hero h2',offset<0?t('yesterdayAt'):offset>0?t('tomorrowAt'):t('today'));set('.hero p',t('heroSub'));
     const hs=qa('.hero-stats article span');[t('total'),t('arrivals'),t('departures'),t('intlArrivals')].forEach((v,i)=>{if(hs[i])hs[i].textContent=v;});
+    const dayBtns=qa('.board-day-switch button');dayBtns.forEach(btn=>{const o=Number(btn.dataset.offset);btn.textContent=o<0?t('yesterday'):o>0?t('tomorrow'):t('todayShort');});
 
-    set('#flightBoard .card-head h3',t('flightBoard'));set('#searchToggle',t('search'));const inp=q('#flightSearch');if(inp)inp.placeholder=t('searchPh');
+    set('#flightBoard .card-head h3',offset<0?t('flightsYesterday'):offset>0?t('flightsTomorrow'):t('flightBoard'));set('#searchToggle',t('search'));const inp=q('#flightSearch');if(inp)inp.placeholder=t('searchPh');
     const dirs=qa('#directionTabs button');[t('arrival'),t('departure'),t('all')].forEach((v,i)=>{if(dirs[i])dirs[i].textContent=v;});
     const chips=qa('#filterChips button');[t('all'),t('next3'),t('international'),t('domestic'),t('changed')].forEach((v,i)=>{if(chips[i])chips[i].textContent=v;});
     set('#showMore',t('showMore'));
@@ -205,7 +217,12 @@
     if(typeof state==='undefined'||!state.latest)return;
     const l=state.latest,h=state.health,age=ageInfo(l.collected_at_vn);
     const pass=!!(h?.collector_completed&&h?.parser_passed&&h?.normalization_passed&&h?.qa_passed&&l?.quality?.usable);
-    if(!pass)return;
+    const hp=q('#healthPill'),sl=q('.source-label');
+    if(sl)sl.textContent=t('sourceLive');
+    if(!pass){if(hp)hp.textContent='QA FAIL';return;}
+    if(age.level==='good'){if(hp)hp.textContent=t('healthPillGood');}
+    else if(age.level==='watch'){if(hp)hp.textContent=t('healthPillWatch');}
+    else{if(hp)hp.textContent=t('healthPillStale');}
     if(state.dataSource==='fallback'){set('#healthTitle',t('healthFallbackTitle'));set('#healthDescription',t('healthFallbackDesc'));}
     else if(age.level==='good'){set('#healthTitle',t('healthGoodTitle'));set('#healthDescription',t('healthGoodDesc'));}
     else if(age.level==='watch'){set('#healthTitle',t('healthWatchTitle'));set('#healthDescription',t('healthWatchDesc'));}
