@@ -22,7 +22,7 @@
 <link rel="icon" href="./jotrip-logo-master.png">
 <link rel="apple-touch-icon" href="./jotrip-logo-master.png">
 <link rel="stylesheet" href="./style.css?v=20260918f">
-<link rel="stylesheet" href="./fids-board.css?v=20260918h">
+<link rel="stylesheet" href="./fids-board.css?v=20260918j">\n<link rel="stylesheet" href="./i18n.css?v=20260918a">
 <link rel="stylesheet" href="./ui-fixes.css?v=20260916n">
 <link rel="stylesheet" href="./board-days.css?v=20260916h">
 <link rel="stylesheet" href="./mobile-logo-fix.css?v=20260916n">
@@ -37,6 +37,7 @@
   </div>
   <div class="top-actions">
     <div class="mode-switch"><button class="active" data-mode="live">LIVE</button><button onclick="location.href='./history.html'">HISTORY</button><button data-mode="analytics">ANALYTICS</button></div>
+    <label class="lang-switch" title="Language"><select id="languageSelect" aria-label="Language"><option value="vi">VI</option><option value="en">EN</option><option value="ko">한국</option><option value="ru">RU</option><option value="zh">中文</option></select></label>
     <button class="icon-button" id="refreshBtn" title="Refresh">↻</button>
   </div>
 </header>
@@ -101,7 +102,7 @@
 <script src="./flight-status-policy.js?v=20260918g"></script>
 <script src="./board-days.js?v=20260916h"></script>
 <script src="./app-copy.js?v=20260916h"></script>
-<script src="./analytics-v3.js?v=20260916j"></script>
+<script src="./analytics-v3.js?v=20260916j"></script>\n<script src="./i18n.js?v=20260918a"></script>
 <script src="./fids-board.js?v=20260918i"></script>
 <script>window.addEventListener('load',()=>{if(location.hash==='#analytics'){document.querySelector('[data-mode="analytics"]')?.click();setTimeout(()=>document.getElementById('analytics')?.scrollIntoView({block:'start'}),50)}else if(location.hash==='#flightBoard'){setTimeout(()=>document.getElementById('flightBoard')?.scrollIntoView({block:'start'}),50)}});</script>
 </body>
