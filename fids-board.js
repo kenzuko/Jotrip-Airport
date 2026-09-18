@@ -43,7 +43,7 @@
         '<div id="fidsTicker" class="fids-ticker" aria-live="polite"></div>'+
         '<div class="fids-table-wrap">'+
           '<div class="fids-columns" aria-hidden="true">'+
-            '<span>'+esc(tr('sched','LỊCH'))+'</span><span>'+esc(tr('estActual','DỰ KIẾN / THỰC TẾ'))+'</span><span>'+esc(tr('flight','CHUYẾN'))+'</span><span>'+esc(tr('route','HÀNH TRÌNH'))+'</span><span>'+esc(tr('status','TRẠNG THÁI'))+'</span><span>'+esc(tr('gate','CỬA'))+'</span><span>'+esc(tr('counterBelt','QUẦY CHECK-IN / BĂNG HÀNH LÝ'))+'</span><span>'+esc(tr('change','THAY ĐỔI'))+'</span>'+
+            '<span>'+esc(tr('sched','LỊCH'))+'</span><span>'+esc(tr('estActual','DỰ KIẾN / THỰC TẾ'))+'</span><span>'+esc(tr('flight','CHUYẾN'))+'</span><span>'+esc(tr('route','HÀNH TRÌNH'))+'</span><span>'+esc(tr('status','TRẠNG THÁI'))+'</span><span>'+esc(tr('gate','CỬA'))+'</span><span>'+esc(tr('counter','QUẦY CHECK-IN'))+'</span><span>'+esc(tr('belt','BĂNG HÀNH LÝ'))+'</span><span>'+esc(tr('change','THAY ĐỔI'))+'</span>'+
           '</div>'+
           '<div id="fidsGrid" class="fids-grid"></div>'+
         '</div>'+
@@ -71,7 +71,7 @@
         if(grid){
           var wrap=document.createElement('div');
           wrap.className='fids-table-wrap';
-          wrap.innerHTML='<div class="fids-columns" aria-hidden="true"><span>'+esc(tr('sched','LỊCH'))+'</span><span>'+esc(tr('estActual','DỰ KIẾN / THỰC TẾ'))+'</span><span>'+esc(tr('flight','CHUYẾN'))+'</span><span>'+esc(tr('route','HÀNH TRÌNH'))+'</span><span>'+esc(tr('status','TRẠNG THÁI'))+'</span><span>'+esc(tr('gate','CỬA'))+'</span><span>'+esc(tr('counterBelt','QUẦY CHECK-IN / BĂNG HÀNH LÝ'))+'</span><span>'+esc(tr('change','THAY ĐỔI'))+'</span></div>';
+          wrap.innerHTML='<div class="fids-columns" aria-hidden="true"><span>'+esc(tr('sched','LỊCH'))+'</span><span>'+esc(tr('estActual','DỰ KIẾN / THỰC TẾ'))+'</span><span>'+esc(tr('flight','CHUYẾN'))+'</span><span>'+esc(tr('route','HÀNH TRÌNH'))+'</span><span>'+esc(tr('status','TRẠNG THÁI'))+'</span><span>'+esc(tr('gate','CỬA'))+'</span><span>'+esc(tr('counter','QUẦY CHECK-IN'))+'</span><span>'+esc(tr('belt','BĂNG HÀNH LÝ'))+'</span><span>'+esc(tr('change','THAY ĐỔI'))+'</span></div>';
           grid.parentNode.insertBefore(wrap,grid);
           wrap.appendChild(grid);
         }
@@ -171,15 +171,6 @@
     return parts.join(' · ');
   }
 
-  function serviceValue(r){
-    if(r.direction==='departure') return clean(r.checkin_row) || '—';
-    return clean(r.belt) || '—';
-  }
-
-  function serviceLabel(r){
-    return r.direction==='departure' ? tr('counter','QUẦY CHECK-IN') : tr('belt','BĂNG HÀNH LÝ');
-  }
-
   function statusText(events){
     if(events.length) return tr('changesActive',events.length+' thay đổi đang hiệu lực',{n:events.length});
     return tr('stable','FIDS đang ổn định');
@@ -250,8 +241,8 @@
         try{stat=typeof displayStatusLabel==='function' ? displayStatusLabel(r) : (r.status||'');}catch(_){stat=r.status||'';} stat=trStatus(stat);
         var tone=statusTone(stat);
         var gate=clean(r.gate)||'—';
-        var service=serviceValue(r);
-        var serviceEvent=r.direction==='departure'?ev.checkin_row:ev.belt;
+        var counter=clean(r.checkin_row)||'—';
+        var belt=clean(r.belt)||'—';
         var change=changeSummary(ev);
         var changed=!!change;
         var changedHot=false;
@@ -266,8 +257,9 @@
           '<div class="fids-cell fids-flight" data-label="'+esc(tr('flight','CHUYẾN'))+'"><strong>'+esc(r.operating_flight_number)+'</strong><span>'+esc(air)+'</span></div>'+
           '<div class="fids-cell fids-route" data-label="'+esc(tr('route','HÀNH TRÌNH'))+'"><strong>'+esc(route)+'</strong><span>'+esc(r.market==='international'?tr('intl','QUỐC TẾ'):tr('dom','NỘI ĐỊA'))+'</span></div>'+
           '<div class="fids-cell fids-status" data-label="'+esc(tr('status','TRẠNG THÁI'))+'"><span class="fids-status-pill '+esc(tone)+'">'+esc(stat||tr('unknown','CHƯA RÕ'))+'</span></div>'+
-          '<div class="fids-cell fids-gate '+(ev.gate?'changed':'')+'" data-label="'+esc(tr('gate','CỬA'))+'"><strong>'+esc(gate)+'</strong>'+(ev.gate?'<span>'+esc(tr('changedFrom','Đổi từ {from}',{from:ev.gate.from}))+'</span>':'')+'</div>'+
-          '<div class="fids-cell fids-service '+(serviceEvent?'changed':'')+'" data-label="'+esc(serviceLabel(r))+'"><span class="fids-service-kind">'+esc(serviceLabel(r))+'</span><strong>'+esc(service)+'</strong>'+(serviceEvent?'<span class="fids-service-prev">'+esc(tr('previousFrom','Trước: {from}',{from:serviceEvent.from}))+'</span>':'')+'</div>'+
+          '<div class="fids-cell fids-gate '+(ev.gate?'changed':'')+'" data-label="'+esc(tr('gate','CỬA'))+'"><strong>'+esc(gate)+'</strong>'+(ev.gate?'<span>'+esc(tr('previousFrom','Trước: {from}',{from:ev.gate.from}))+'</span>':'')+'</div>'+
+          '<div class="fids-cell fids-counter '+(ev.checkin_row?'changed':'')+'" data-label="'+esc(tr('counter','QUẦY CHECK-IN'))+'"><strong>'+esc(counter)+'</strong>'+(ev.checkin_row?'<span>'+esc(tr('previousFrom','Trước: {from}',{from:ev.checkin_row.from}))+'</span>':'')+'</div>'+
+          '<div class="fids-cell fids-belt '+(ev.belt?'changed':'')+'" data-label="'+esc(tr('belt','BĂNG HÀNH LÝ'))+'"><strong>'+esc(belt)+'</strong>'+(ev.belt?'<span>'+esc(tr('previousFrom','Trước: {from}',{from:ev.belt.from}))+'</span>':'')+'</div>'+
           '<div class="fids-cell fids-change" data-label="'+esc(tr('change','THAY ĐỔI'))+'">'+(change?'<span class="fids-change-badge">'+esc(change)+'</span>':'<span class="fids-no-change">—</span>')+'</div>'+
         '</div>';
       }).join('');
