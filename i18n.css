@@ -15,3 +15,9 @@
 .watch-summary span{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:7px 8px;border:1px solid #e6edf2;border-radius:10px;background:#f8fbfd;color:#68798b;font-size:9.5px;font-weight:800}
 .watch-summary b{font-size:12px;color:var(--navy)}
 @media(max-width:680px){.watch-summary span{font-size:9px;padding:6px 7px}.watch-summary b{font-size:11px}}
+
+.operations-watch-card{transition:none}
+@media(max-width:680px){
+  .operations-watch-card{margin-top:11px!important;margin-bottom:0!important;width:100%!important;border-radius:20px!important;box-shadow:none!important}
+  .operations-watch-card .side-head{margin-bottom:8px}
+}
