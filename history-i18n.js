@@ -170,7 +170,6 @@
       const meta=row.querySelector('.h-route small');if(meta){
         const m=meta.textContent.match(/\s·\s(\d+)\s+lần thay đổi/);if(m)meta.textContent=meta.textContent.replace(/\s·\s\d+\s+lần thay đổi/, ' · '+t('changes',{n:m[1]}));
       }
-      qa.call(null,'.none');
       row.querySelectorAll('.event-type').forEach(el=>{const s=el.textContent.trim();if(s==='GHI NHẬN')el.textContent=t('firstSeen');if(s==='THAY ĐỔI')el.textContent=t('changed');});
       row.querySelectorAll('.event-detail').forEach(el=>{if(el.textContent.trim()==='Chưa ghi nhận thay đổi trong lịch sử sự kiện.')el.textContent=t('noEvent');});
     });
@@ -190,7 +189,7 @@
 
   window.JT_HISTORY_SET_LANG=function(next){
     if(!LANGS.includes(next))return;lang=next;try{localStorage.setItem('jotrip_airport_lang',lang)}catch(_){}
-    apply();
+    if(typeof render==='function')render();else apply();
   };
   const sel=q('#languageSelect');if(sel){sel.value=lang;sel.addEventListener('change',()=>window.JT_HISTORY_SET_LANG(sel.value));}
   apply();
