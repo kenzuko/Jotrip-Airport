@@ -314,5 +314,6 @@
   };
 
   const select=q('#languageSelect');if(select){select.value=lang;select.addEventListener('change',()=>window.JT_SET_LANG(select.value));}
+  if(typeof state!=='undefined'&&state?.latest&&typeof window.renderAll==='function')window.renderAll();
   apply();
 })();
