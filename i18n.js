@@ -14,7 +14,7 @@
       live:'LIVE',history:'HISTORY',analytics:'ANALYTICS',flights:'Flights',refresh:'Refresh',
       yesterday:'HÔM QUA',todayShort:'HÔM NAY',tomorrow:'NGÀY MAI',yesterdayAt:'Hôm qua tại Phú Quốc',tomorrowAt:'Ngày mai tại Phú Quốc',flightsYesterday:'Chuyến bay hôm qua',flightsTomorrow:'Chuyến bay ngày mai',board:'BẢNG',boardYesterday:'BẢNG HÔM QUA',boardTomorrow:'BẢNG NGÀY MAI',boardUpdated:'Bảng {date} · lấy lúc {time}',
       healthPillGood:'GOOD · dữ liệu đang mới',healthPillWatch:'WATCH · dữ liệu chậm',healthPillStale:'STALE · dữ liệu cũ',sourceLive:'JoTrip Live · Tự động làm mới',dataSync:'Đang đồng bộ dữ liệu...',healthCheckingDesc:'Đang kiểm tra luồng JoTrip Live và độ mới của dữ liệu.',
-      fidsTitle:'Bảng thông tin chuyến bay',fidsDesc:'Giờ bay, dự kiến - thực tế, trạng thái, cửa, quầy và băng chuyền.',
+      fidsTitle:'Bảng thông tin chuyến bay',fidsDesc:'Giờ bay, dự kiến - thực tế, trạng thái, cửa ra máy bay, quầy check-in và băng hành lý.',
       sched:'LỊCH',estActual:'DỰ KIẾN / THỰC TẾ',flight:'CHUYẾN',route:'HÀNH TRÌNH',status:'TRẠNG THÁI',gate:'CỬA',counterBelt:'QUẦY CHECK-IN / BĂNG HÀNH LÝ',change:'THAY ĐỔI',
       counter:'QUẦY CHECK-IN',belt:'BĂNG HÀNH LÝ',arr:'ĐẾN',dep:'ĐI',intl:'QUỐC TẾ',dom:'NỘI ĐỊA',actual:'THỰC TẾ',est:'DỰ KIẾN',schedShort:'LỊCH',changedNow:'ĐÃ ĐỔI',
       stable:'FIDS đang ổn định',changesActive:'{n} thay đổi đang hiệu lực',noFidsChanges:'Chưa ghi nhận đổi cửa, đổi quầy hoặc đổi băng chuyền đang hiệu lực.',noFidsFlights:'Chưa có chuyến sắp tới trong dữ liệu FIDS.',
@@ -40,7 +40,7 @@
       live:'LIVE',history:'HISTORY',analytics:'ANALYTICS',flights:'Flights',refresh:'Refresh',
       yesterday:'YESTERDAY',todayShort:'TODAY',tomorrow:'TOMORROW',yesterdayAt:'Yesterday at Phu Quoc',tomorrowAt:'Tomorrow at Phu Quoc',flightsYesterday:'Yesterday’s flights',flightsTomorrow:'Tomorrow’s flights',board:'BOARD',boardYesterday:'YESTERDAY BOARD',boardTomorrow:'TOMORROW BOARD',boardUpdated:'Board {date} · fetched at {time}',
       healthPillGood:'GOOD · data fresh',healthPillWatch:'WATCH · data delayed',healthPillStale:'STALE · data old',sourceLive:'JoTrip Live · Auto refresh',dataSync:'Syncing data...',healthCheckingDesc:'Checking the JoTrip Live feed and data freshness.',
-      fidsTitle:'Flight information display',fidsDesc:'Schedule, estimate/actual, status, gate, check-in and baggage belt.',
+      fidsTitle:'Flight information display',fidsDesc:'Schedule, estimate/actual, status, boarding gate, check-in counter and baggage belt.',
       sched:'SCHED',estActual:'EST / ACTUAL',flight:'FLIGHT',route:'ROUTE',status:'STATUS',gate:'GATE',counterBelt:'CHECK-IN / BAGGAGE',change:'CHANGE',
       counter:'CHECK-IN COUNTER',belt:'BAGGAGE BELT',arr:'ARR',dep:'DEP',intl:'INTL',dom:'DOM',actual:'ACTUAL',est:'EST',schedShort:'SCHED',changedNow:'CHANGED',
       stable:'FIDS stable',changesActive:'{n} active changes',noFidsChanges:'No active gate, check-in counter or baggage belt changes.',noFidsFlights:'No upcoming flights in FIDS data.',
@@ -66,7 +66,7 @@
       live:'실시간',history:'이력',analytics:'분석',flights:'항공편',refresh:'새로고침',
       yesterday:'어제',todayShort:'오늘',tomorrow:'내일',yesterdayAt:'어제 푸꾸옥 공항',tomorrowAt:'내일 푸꾸옥 공항',flightsYesterday:'어제 항공편',flightsTomorrow:'내일 항공편',board:'운항표',boardYesterday:'어제 운항표',boardTomorrow:'내일 운항표',boardUpdated:'운항표 {date} · {time} 기준',
       healthPillGood:'정상 · 최신 데이터',healthPillWatch:'주의 · 데이터 지연',healthPillStale:'오래된 데이터',sourceLive:'JoTrip Live · 자동 새로고침',dataSync:'데이터 동기화 중...',healthCheckingDesc:'JoTrip Live 데이터와 최신 상태를 확인하고 있습니다.',
-      fidsTitle:'항공편 정보 안내',fidsDesc:'예정·예상/실제 시간, 상태, 게이트, 체크인 카운터 및 수하물 벨트.',
+      fidsTitle:'항공편 정보 안내',fidsDesc:'예정·예상/실제 시간, 상태, 탑승구, 체크인 카운터 및 수하물 벨트.',
       sched:'예정',estActual:'예상 / 실제',flight:'편명',route:'노선',status:'상태',gate:'게이트',counterBelt:'체크인 / 수하물 벨트',change:'변경',
       counter:'체크인 카운터',belt:'수하물 벨트',arr:'도착',dep:'출발',intl:'국제선',dom:'국내선',actual:'실제',est:'예상',schedShort:'예정',changedNow:'변경됨',
       stable:'FIDS 정상',changesActive:'변경 {n}건 적용 중',noFidsChanges:'현재 게이트, 체크인 카운터 또는 수하물 벨트 변경이 없습니다.',noFidsFlights:'FIDS에 예정 항공편이 없습니다.',
@@ -92,7 +92,7 @@
       live:'LIVE',history:'ИСТОРИЯ',analytics:'АНАЛИТИКА',flights:'Рейсы',refresh:'Обновить',
       yesterday:'ВЧЕРА',todayShort:'СЕГОДНЯ',tomorrow:'ЗАВТРА',yesterdayAt:'Вчера в аэропорту Фукуока',tomorrowAt:'Завтра в аэропорту Фукуока',flightsYesterday:'Рейсы вчера',flightsTomorrow:'Рейсы завтра',board:'ТАБЛО',boardYesterday:'ТАБЛО ВЧЕРА',boardTomorrow:'ТАБЛО ЗАВТРА',boardUpdated:'Табло {date} · данные на {time}',
       healthPillGood:'GOOD · ДАННЫЕ СВЕЖИЕ',healthPillWatch:'WATCH · ЗАДЕРЖКА ДАННЫХ',healthPillStale:'STALE · ДАННЫЕ УСТАРЕЛИ',sourceLive:'JoTrip Live · Автообновление',dataSync:'Синхронизация данных...',healthCheckingDesc:'Проверяется поток JoTrip Live и актуальность данных.',
-      fidsTitle:'Табло рейсов',fidsDesc:'Расписание, расчётное/фактическое время, статус, выход, стойка и багажная лента.',
+      fidsTitle:'Табло рейсов',fidsDesc:'Расписание, расчётное/фактическое время, статус, выход на посадку, стойка регистрации и багажная лента.',
       sched:'РАСП.',estActual:'РАСЧ. / ФАКТ.',flight:'РЕЙС',route:'МАРШРУТ',status:'СТАТУС',gate:'ВЫХОД',counterBelt:'РЕГИСТРАЦИЯ / БАГАЖ',change:'ИЗМЕНЕНИЕ',
       counter:'СТОЙКА РЕГИСТРАЦИИ',belt:'БАГАЖНАЯ ЛЕНТА',arr:'ПРИБ.',dep:'ВЫЛ.',intl:'МЕЖД.',dom:'ВНУТР.',actual:'ФАКТ',est:'РАСЧ',schedShort:'РАСП',changedNow:'ИЗМЕНЕНО',
       stable:'FIDS без изменений',changesActive:'Активных изменений: {n}',noFidsChanges:'Нет активных изменений выхода, стойки регистрации или багажной ленты.',noFidsFlights:'Нет ближайших рейсов в данных FIDS.',
@@ -210,7 +210,7 @@
     set('.source-label',t('sourceLive'));if(!state?.latest){set('#updatedAt',t('dataSync'));set('#healthDescription',t('healthCheckingDesc'));}
     set('#fidsBoard .fids-head h3',t('fidsTitle'));set('#fidsBoard .fids-head p',t('fidsDesc'));
     const fidsTabs=qa('#fidsDirectionTabs button');[t('departure'),t('arrival'),t('all')].forEach((v,i)=>{if(fidsTabs[i])fidsTabs[i].textContent=v;});
-    const fidsCols=qa('#fidsBoard .fids-columns span');[t('sched'),t('estActual'),t('flight'),t('route'),t('status'),t('gate'),t('counterBelt'),t('change')].forEach((v,i)=>{if(fidsCols[i])fidsCols[i].textContent=v;});
+    const fidsCols=qa('#fidsBoard .fids-columns span');[t('sched'),t('estActual'),t('flight'),t('route'),t('status'),t('gate'),t('counter'),t('belt'),t('change')].forEach((v,i)=>{if(fidsCols[i])fidsCols[i].textContent=v;});
     const fidsFoot=qa('#fidsBoard .fids-foot span');if(fidsFoot[0])fidsFoot[0].textContent=t('sourceAirport');
     const fidsState=q('#fidsBoardStatus');if(fidsState&&(!state?.latest||/Đang đồng bộ|Syncing|동기화|Синхронизация|同步/.test(fidsState.textContent)))fidsState.textContent=t('fidsSync');
     const fidsEmpty=q('#fidsGrid .empty-state');if(fidsEmpty&&/Đang đồng bộ FIDS|Syncing FIDS|FIDS 동기화|Синхронизация FIDS|正在同步FIDS/.test(fidsEmpty.textContent))fidsEmpty.textContent=t('fidsSyncData');
