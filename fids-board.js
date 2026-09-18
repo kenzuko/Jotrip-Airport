@@ -33,7 +33,7 @@
       card.innerHTML=
         '<div class="card-head fids-head">'+
           '<div><span class="section-kicker">FIDS · LIVE TERMINAL INFO</span><h3>'+esc(tr('fidsTitle','Bảng thông tin chuyến bay'))+'</h3><p>'+esc(tr('fidsDesc','Giờ bay, dự kiến - thực tế, trạng thái, cửa, quầy và băng chuyền.'))+'</p></div>'+
-          '<div class="fids-head-state"><i></i><span id="fidsBoardStatus">Đang đồng bộ</span></div>'+
+          '<div class="fids-head-state"><i></i><span id="fidsBoardStatus">'+esc(tr('fidsSync','Đang đồng bộ'))+'</span></div>'+
         '</div>'+
         '<div class="segmented fids-direction-tabs" id="fidsDirectionTabs">'+
           '<button class="active" type="button" data-fids-direction="departure">'+esc(tr('departure','Chuyến đi'))+'</button>'+
@@ -76,10 +76,6 @@
           wrap.appendChild(grid);
         }
       }
-    }
-
-    if(card.nextElementSibling !== flightBoard){
-      flightBoard.parentNode.insertBefore(card,flightBoard);
     }
 
     var mobileFlights=document.getElementById('mobileFlights');
@@ -225,7 +221,7 @@
 
     if(updated){
       try{
-        updated.textContent=tr('sourceAt','Nguồn {time}',{time:new Date(state.latest.collected_at_vn).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Ho_Chi_Minh'})});
+        updated.textContent=tr('sourceAt','Nguồn {time}',{time:new Date(state.latest.collected_at_vn).toLocaleTimeString(typeof window.JT_LOCALE==='function'?window.JT_LOCALE():'vi-VN',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Ho_Chi_Minh'})});
       }catch(_){
         updated.textContent='';
       }
@@ -268,9 +264,9 @@
           '<div class="fids-cell fids-live-time '+esc(live.cls)+'" data-label="'+esc(tr('estActual','DỰ KIẾN / THỰC TẾ'))+'"><strong>'+esc(live.value)+'</strong><span>'+esc(live.kind)+(live.delta?' · '+esc(live.delta):'')+'</span></div>'+
           '<div class="fids-cell fids-flight" data-label="'+esc(tr('flight','CHUYẾN'))+'"><strong>'+esc(r.operating_flight_number)+'</strong><span>'+esc(air)+'</span></div>'+
           '<div class="fids-cell fids-route" data-label="'+esc(tr('route','HÀNH TRÌNH'))+'"><strong>'+esc(route)+'</strong><span>'+esc(r.market==='international'?tr('intl','QUỐC TẾ'):tr('dom','NỘI ĐỊA'))+'</span></div>'+
-          '<div class="fids-cell fids-status" data-label="'+esc(tr('status','TRẠNG THÁI'))+'"><span class="fids-status-pill '+esc(tone)+'">'+esc(stat||(tr('status','CHƯA RÕ')))+'</span></div>'+
+          '<div class="fids-cell fids-status" data-label="'+esc(tr('status','TRẠNG THÁI'))+'"><span class="fids-status-pill '+esc(tone)+'">'+esc(stat||tr('unknown','CHƯA RÕ'))+'</span></div>'+
           '<div class="fids-cell fids-gate '+(ev.gate?'changed':'')+'" data-label="'+esc(tr('gate','CỬA'))+'"><strong>'+esc(gate)+'</strong>'+(ev.gate?'<span>'+esc(tr('changedFrom','Đổi từ {from}',{from:ev.gate.from}))+'</span>':'')+'</div>'+
-          '<div class="fids-cell fids-service '+((r.direction==='departure'&&ev.checkin_row)||(r.direction==='arrival'&&ev.belt)?'changed':'')+'" data-label="'+esc(serviceLabel(r))+'"><strong>'+esc(service)+'</strong><span>'+(((r.direction==='departure'&&ev.checkin_row)||(r.direction==='arrival'&&ev.belt))?'ĐÃ ĐỔI':'')+'</span></div>'+
+          '<div class="fids-cell fids-service '+((r.direction==='departure'&&ev.checkin_row)||(r.direction==='arrival'&&ev.belt)?'changed':'')+'" data-label="'+esc(serviceLabel(r))+'"><strong>'+esc(service)+'</strong><span>'+(((r.direction==='departure'&&ev.checkin_row)||(r.direction==='arrival'&&ev.belt))?esc(tr('changedNow','ĐÃ ĐỔI')):'')+'</span></div>'+
           '<div class="fids-cell fids-change" data-label="'+esc(tr('change','THAY ĐỔI'))+'">'+(change?'<span class="fids-change-badge">'+esc(change)+'</span>':'<span class="fids-no-change">—</span>')+'</div>'+
         '</div>';
       }).join('');
