@@ -35,6 +35,8 @@
   }
 
   function polishRow(row) {
+    let lang='vi';try{lang=localStorage.getItem('jotrip_airport_lang')||'vi'}catch(_){}
+    if(lang!=='vi') return;
     if (row.dataset.historyPolished === '1') return;
     row.dataset.historyPolished = '1';
 
