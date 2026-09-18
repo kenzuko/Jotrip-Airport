@@ -110,3 +110,26 @@
     flex:0 0 auto!important;
   }
 }
+
+
+/* History small alignment polish */
+.history-source-strip .history-mode-pill,
+.history-source-strip #archiveHealth.archive-pill{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:32px!important;
+  line-height:1!important;
+}
+@media(max-width:680px){
+  .history-source-strip .history-mode-pill,
+  .history-source-strip #archiveHealth.archive-pill{
+    min-height:32px!important;
+    align-self:center!important;
+  }
+  .history-filters label:nth-child(1)>span,
+  .history-filters label:nth-child(2)>span{
+    text-align:center!important;
+    width:100%!important;
+  }
+}
