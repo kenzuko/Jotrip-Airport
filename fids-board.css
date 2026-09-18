@@ -1,0 +1,44 @@
+
+/* JoTrip Airport Live - FIDS board */
+.fids-card{position:relative;overflow:hidden}
+.fids-card:before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--yellow),var(--green))}
+.fids-head{align-items:flex-start}
+.fids-head-state{margin-left:auto;display:flex;align-items:center;gap:7px;color:#557086;font-size:10.5px;font-weight:900;white-space:nowrap}
+.fids-head-state i{width:8px;height:8px;border-radius:50%;background:#23b75f;box-shadow:0 0 0 4px rgba(35,183,95,.12)}
+.fids-ticker{display:flex;gap:8px;overflow-x:auto;padding:1px 0 12px;scrollbar-width:none}
+.fids-ticker::-webkit-scrollbar{display:none}
+.fids-steady{width:100%;padding:10px 12px;border-radius:13px;background:#f5faf7;color:#567067;font-size:11px}
+.fids-steady span{color:var(--green);margin-right:5px}
+.fids-tape{flex:0 0 auto;display:flex;align-items:center;gap:7px;min-height:36px;padding:8px 11px;border:1px solid #dfe9f0;border-radius:12px;background:#f9fcfd;color:#52677a;font-size:10.5px;cursor:pointer}
+.fids-tape strong{color:var(--navy);font-size:11.5px}
+.fids-tape-dot{width:7px;height:7px;border-radius:50%;background:var(--blue)}
+.fids-tape.gate{background:#fff8df;border-color:#f2dda0}.fids-tape.gate .fids-tape-dot{background:var(--yellow)}
+.fids-tape.checkin_row{background:#edf8fd;border-color:#c9e3ef}.fids-tape.checkin_row .fids-tape-dot{background:var(--blue)}
+.fids-tape.belt{background:#eef7e8;border-color:#d6e6c8}.fids-tape.belt .fids-tape-dot{background:var(--green)}
+.fids-tape.hot{animation:fidsFlash 1.05s ease-in-out 5}
+@keyframes fidsFlash{0%,100%{transform:translateY(0);box-shadow:none}50%{transform:translateY(-1px);box-shadow:0 0 0 4px rgba(252,188,18,.14),0 7px 18px rgba(14,60,91,.09)}}
+.fids-grid{border:1px solid #e6eef3;border-radius:16px;overflow:hidden}
+.fids-row{display:grid;grid-template-columns:72px minmax(150px,1fr) minmax(180px,auto) 18px;align-items:center;gap:12px;padding:11px 12px;border-top:1px solid #edf2f5;background:#fff;cursor:pointer;transition:.15s}
+.fids-row:first-child{border-top:0}.fids-row:hover{background:#f9fcfd}
+.fids-time strong{display:block;font-size:17px}.fids-time span{display:block;margin-top:2px;color:#8090a1;font-size:8.5px;font-weight:900;letter-spacing:.08em}
+.fids-flight{min-width:0}.fids-flight strong{display:block;font-size:12.5px}.fids-flight span{display:block;margin-top:3px;color:#708095;font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fids-values{display:flex;justify-content:flex-end;gap:7px;min-width:0}
+.fids-chip{display:grid;grid-template-columns:auto auto;column-gap:6px;align-items:center;min-width:72px;padding:7px 9px;border-radius:11px;background:#f3f7f9;border:1px solid #e4ebf0}
+.fids-chip em{font-style:normal;color:#728295;font-size:8.5px;font-weight:900}.fids-chip b{font-size:12px;color:var(--navy)}
+.fids-chip small{grid-column:1/-1;margin-top:2px;color:#8b6b08;font-size:8.5px;font-weight:850}
+.fids-chip.gate.changed{background:#fff8df;border-color:#f0d886}.fids-chip.checkin.changed{background:#edf8fd;border-color:#c0dfed}.fids-chip.belt.changed{background:#eef7e8;border-color:#cee2bf}
+.fids-chip.hot{animation:fidsCellFlash 1.05s ease-in-out 5}
+@keyframes fidsCellFlash{0%,100%{filter:none}50%{filter:saturate(1.2);box-shadow:0 0 0 4px rgba(20,120,180,.1)}}
+.fids-pending{color:#8896a6;font-size:10.5px}.fids-open{color:#9aa8b5;font-size:18px}
+.fids-foot{display:flex;justify-content:space-between;gap:10px;margin-top:9px;color:#8592a1;font-size:9.5px}
+#nextWindowText,#nextArrivals,#nextDepartures,#nextInternational,#nextWatch{display:none!important}
+@media(max-width:680px){
+  .fids-card{padding:14px!important}
+  .fids-head{gap:8px}.fids-head-state{font-size:9px;max-width:120px;text-align:right;white-space:normal}
+  .fids-ticker{margin-left:-2px;margin-right:-2px}.fids-tape{font-size:9.5px;min-height:34px;padding:7px 9px}
+  .fids-row{grid-template-columns:54px minmax(0,1fr) auto;gap:8px;padding:11px 8px}.fids-open{display:none}
+  .fids-time strong{font-size:15px}.fids-flight strong{font-size:11.5px}.fids-flight span{font-size:9.5px}
+  .fids-values{grid-column:2/-1;justify-content:flex-start;flex-wrap:wrap;margin-top:-2px}
+  .fids-chip{min-width:64px;padding:6px 8px}.fids-chip b{font-size:11px}.fids-chip em{font-size:8px}
+  .fids-foot{font-size:9px}
+}
