@@ -133,3 +133,31 @@
     width:100%!important;
   }
 }
+
+
+/* History micro alignment - exact mobile pill/date label centering */
+@media(max-width:680px){
+  .history-source-strip{
+    align-items:center!important;
+  }
+  .history-source-strip .history-mode-pill,
+  .history-source-strip #archiveHealth.archive-pill{
+    box-sizing:border-box!important;
+    height:32px!important;
+    min-height:32px!important;
+    margin:0!important;
+    padding:0 12px!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    line-height:32px!important;
+    vertical-align:middle!important;
+  }
+  .history-filters label:nth-child(1)>span,
+  .history-filters label:nth-child(2)>span{
+    display:block!important;
+    width:100%!important;
+    text-align:center!important;
+    margin:0 auto!important;
+  }
+}
