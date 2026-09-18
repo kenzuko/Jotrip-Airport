@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7fbfd">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>JoTrip Airport Analytics - Phú Quốc (PQC)</title>
+<link rel="icon" href="./jotrip-logo-master.png">
+<link rel="apple-touch-icon" href="./jotrip-logo-master.png">
+<link rel="stylesheet" href="./style.css?v=20260918f">
+<link rel="stylesheet" href="./i18n.css?v=20260918ab">
+<link rel="stylesheet" href="./analytics-explorer.css?v=20260918af">
+<link rel="stylesheet" href="./mobile-logo-fix.css?v=20260918n">
+<link rel="stylesheet" href="./analytics-auth.css?v=20260918a">
+</head>
+<body>
+<div id="app" class="app mode-analytics analytics-secure-app">
+<header class="topbar">
+  <div class="brand">
+    <a class="brand-home" href="./index.html" aria-label="JoTrip Airport Live"><div class="brand-logo"><img src="./jotrip-logo-master.png?v=20260916n" alt="JoTrip" decoding="async"></div></a>
+    <span class="brand-divider"></span>
+    <div><h1>Airport Analytics</h1><p>PQC airport intelligence</p></div>
+  </div>
+  <div class="top-actions">
+    <div class="mode-switch"><button onclick="location.href='./index.html'">LIVE</button><button onclick="location.href='./history.html'">HISTORY</button><button class="active">ANALYTICS</button></div>
+    <label class="lang-switch" title="Language"><select id="languageSelect" aria-label="Language"><option value="vi">VI</option><option value="en">EN</option><option value="ko">한국</option><option value="ru">RU</option><option value="zh">中文</option></select></label>
+    <button class="icon-button" id="analyticsLogout" type="button">Đăng xuất</button>
+  </div>
+</header>
+
+<main class="layout">
+  <section class="content">
+    <section class="analytics-gate" id="analyticsGate">
+      <span class="analytics-gate-badge">PRIVATE ANALYTICS</span>
+      <h2 id="analyticsLockTitle">Khu vực phân tích</h2>
+      <p id="analyticsLockDesc">Nhập khóa truy cập để mở Analytics.</p>
+      <div class="analytics-gate-form">
+        <label id="analyticsLockLabel" for="analyticsKey">Khóa truy cập</label>
+        <div class="analytics-key-row">
+          <input id="analyticsKey" type="password" autocomplete="current-password" inputmode="text" placeholder="Nhập access key">
+          <button id="analyticsUnlock" type="button">Mở Analytics</button>
+        </div>
+      </div>
+      <p id="analyticsAuthError" class="analytics-auth-error hidden"></p>
+      <p id="analyticsSecureNote" class="analytics-secure-note">Khu vực riêng · JoTrip Airport Intelligence</p>
+    </section>
+
+    <div id="analyticsProtected" class="analytics-protected hidden">
+<section class="card" id="analytics">
+      <div class="card-head analytics-head"><div><span class="section-kicker">ANALYTICS</span><h3>Phân tích chuyến bay</h3><p>Chọn khoảng thời gian và góc phân tích.</p></div><span class="muted" id="analyticsDataNote">-</span></div>
+      <div class="analytics-toolbar">
+        <div class="analytics-periods" id="analyticsPeriods">
+          <button type="button" data-period="yesterday">Hôm qua</button>
+          <button type="button" class="active" data-period="today">Hôm nay</button>
+          <button type="button" data-period="tomorrow">Ngày mai</button>
+          <button type="button" data-period="last7">7 ngày</button>
+          <button type="button" data-period="last30">30 ngày</button>
+          <button type="button" data-period="custom">Tùy chọn</button>
+        </div>
+        <div class="analytics-custom-range hidden" id="analyticsCustomRange">
+          <label><span>Từ ngày</span><input id="analyticsFrom" type="date"></label>
+          <label><span>Đến ngày</span><input id="analyticsTo" type="date"></label>
+          <button type="button" id="analyticsApplyRange">Áp dụng</button>
+        </div>
+        <div class="analytics-filter-grid">
+          <label><span>Phân tích</span><select id="analyticsView">
+            <option value="overview">Tổng quan</option><option value="delay">Độ trễ</option><option value="routes">Tuyến bay</option><option value="time">Khung giờ</option><option value="market">Thị trường</option><option value="airlines">Hãng bay</option><option value="changes">Thay đổi vận hành</option><option value="estimate">Dự kiến vs thực tế</option><option value="otp">Đúng giờ OTP15</option>
+          </select></label>
+          <label><span>Chiều bay</span><select id="analyticsDirection"><option value="all">Tất cả</option><option value="arrival">Chuyến đến</option><option value="departure">Chuyến đi</option></select></label>
+          <label><span>Thị trường</span><select id="analyticsMarket"><option value="all">Tất cả</option><option value="domestic">Nội địa</option><option value="international">Quốc tế</option></select></label>
+          <label><span>Hãng bay</span><select id="analyticsAirline"><option value="all">Tất cả hãng</option></select></label>
+        </div>
+      </div>
+      <div id="analyticsContent" class="analytics-content"><div class="empty-state">Đang tải dữ liệu phân tích...</div></div>
+    </section>
+    </div>
+  </section>
+</main>
+
+<nav class="mobile-nav">
+  <button onclick="location.href='./index.html'"><span>⌂</span>Live</button>
+  <button onclick="location.href='./index.html#flightBoard'"><span>✈</span>Flights</button>
+  <button onclick="location.href='./history.html'"><span>◷</span>History</button>
+  <button class="active"><span>▥</span>Analytics</button>
+  <button onclick="location.reload()"><span>↻</span>Refresh</button>
+</nav>
+</div>
+
+<script>var state={latest:null,dataSource:'secure'};</script>
+<script src="./live-config.js?v=20260918ab"></script>
+<script src="./i18n.js?v=20260918af"></script>
+<script src="./analytics-auth.js?v=20260918a"></script>
+</body>
+</html>
