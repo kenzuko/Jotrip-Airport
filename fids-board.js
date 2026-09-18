@@ -1,7 +1,7 @@
 
 (function(){
   var lastSignature = '';
-  var fidsDirection = 'arrival';
+  var fidsDirection = 'departure';
 
   function tr(key,fallback,vars){
     try{return typeof window.JT_T==='function'?window.JT_T(key,vars):fallback}catch(_){return fallback}
@@ -36,8 +36,8 @@
           '<div class="fids-head-state"><i></i><span id="fidsBoardStatus">Đang đồng bộ</span></div>'+
         '</div>'+
         '<div class="segmented fids-direction-tabs" id="fidsDirectionTabs">'+
-          '<button class="active" type="button" data-fids-direction="arrival">'+esc(tr('arrival','Chuyến đến'))+'</button>'+
-          '<button type="button" data-fids-direction="departure">'+esc(tr('departure','Chuyến đi'))+'</button>'+
+          '<button class="active" type="button" data-fids-direction="departure">'+esc(tr('departure','Chuyến đi'))+'</button>'+
+          '<button type="button" data-fids-direction="arrival">'+esc(tr('arrival','Chuyến đến'))+'</button>'+
           '<button type="button" data-fids-direction="all">'+esc(tr('all','Tất cả'))+'</button>'+
         '</div>'+
         '<div id="fidsTicker" class="fids-ticker" aria-live="polite"></div>'+
@@ -63,7 +63,7 @@
       if(!card.querySelector('#fidsDirectionTabs')){
         var tickerHost=card.querySelector('#fidsTicker');
         if(tickerHost){
-          tickerHost.insertAdjacentHTML('beforebegin','<div class="segmented fids-direction-tabs" id="fidsDirectionTabs"><button class="active" type="button" data-fids-direction="arrival">'+esc(tr('arrival','Chuyến đến'))+'</button><button type="button" data-fids-direction="departure">'+esc(tr('departure','Chuyến đi'))+'</button><button type="button" data-fids-direction="all">'+esc(tr('all','Tất cả'))+'</button></div>');
+          tickerHost.insertAdjacentHTML('beforebegin','<div class="segmented fids-direction-tabs" id="fidsDirectionTabs"><button class="active" type="button" data-fids-direction="departure">'+esc(tr('departure','Chuyến đi'))+'</button><button type="button" data-fids-direction="arrival">'+esc(tr('arrival','Chuyến đến'))+'</button><button type="button" data-fids-direction="all">'+esc(tr('all','Tất cả'))+'</button></div>');
         }
       }
       if(!card.querySelector('.fids-columns')){
