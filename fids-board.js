@@ -269,7 +269,7 @@
           '<div class="fids-cell fids-flight" data-label="'+esc(tr('flight','CHUYẾN'))+'"><strong>'+esc(r.operating_flight_number)+'</strong><span>'+esc(air)+'</span></div>'+
           '<div class="fids-cell fids-route" data-label="'+esc(tr('route','HÀNH TRÌNH'))+'"><strong>'+esc(route)+'</strong><span>'+esc(r.market==='international'?tr('intl','QUỐC TẾ'):tr('dom','NỘI ĐỊA'))+'</span></div>'+
           '<div class="fids-cell fids-status" data-label="'+esc(tr('status','TRẠNG THÁI'))+'"><span class="fids-status-pill '+esc(tone)+'">'+esc(stat||(tr('status','CHƯA RÕ')))+'</span></div>'+
-          '<div class="fids-cell fids-gate '+(ev.gate?'changed':'')+'" data-label="'+esc(tr('gate','CỬA'))+'"><strong>'+esc(gate)+'</strong>'+(ev.gate?'<span>← '+esc(ev.gate.from)+'</span>':'')+'</div>'+
+          '<div class="fids-cell fids-gate '+(ev.gate?'changed':'')+'" data-label="'+esc(tr('gate','CỬA'))+'"><strong>'+esc(gate)+'</strong>'+(ev.gate?'<span>'+esc(tr('changedFrom','Đổi từ {from}',{from:ev.gate.from}))+'</span>':'')+'</div>'+
           '<div class="fids-cell fids-service '+((r.direction==='departure'&&ev.checkin_row)||(r.direction==='arrival'&&ev.belt)?'changed':'')+'" data-label="'+esc(serviceLabel(r))+'"><strong>'+esc(service)+'</strong><span>'+(((r.direction==='departure'&&ev.checkin_row)||(r.direction==='arrival'&&ev.belt))?'ĐÃ ĐỔI':'')+'</span></div>'+
           '<div class="fids-cell fids-change" data-label="'+esc(tr('change','THAY ĐỔI'))+'">'+(change?'<span class="fids-change-badge">'+esc(change)+'</span>':'<span class="fids-no-change">—</span>')+'</div>'+
         '</div>';
