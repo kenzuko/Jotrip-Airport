@@ -36,3 +36,7 @@
   .operation-watch-mobile .watch-item{padding:8px 0}
   .operation-watch-mobile .watch-item:nth-child(n+4){display:none}
 }
+
+.operation-watch-card .operation-watch-title{margin:0!important;font-size:15px!important}
+.operation-watch-card .operation-watch-subtitle{margin:3px 0 0;color:#708095;font-size:10px;font-weight:700;line-height:1.25}
+@media(max-width:680px){.operation-watch-card .operation-watch-subtitle{font-size:9.5px}}
