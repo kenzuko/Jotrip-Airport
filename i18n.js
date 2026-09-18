@@ -260,46 +260,7 @@
     ids.forEach(([sel,key])=>{const el=q(sel);if(!el)return;const m=el.textContent.match(/^([\d.,]+%)/);if(m)el.textContent=t(key,{pct:m[1]});});
     if(typeof window.JT_RENDER_STATUS_SUMMARY==='function')window.JT_RENDER_STATUS_SUMMARY();
   }
-  function applyDrawer(){
-    const d=q('#drawerContent');if(!d)return;
-    const title=d.querySelector('.drawer-title');if(title)title.textContent=title.textContent.includes('ĐẾN')?t('arrival').toUpperCase():t('departure').toUpperCase();
-    const jc=qa('#drawerContent .journey-copy');
-    if(jc[0]){
-      const st=jc[0].querySelector('strong'),m=st&&st.textContent.match(/·\s*(\d{1,2}:\d{2})/);if(st&&m)st.textContent=t('scheduledAt',{time:m[1]});
-    }
-    if(jc[1]){
-      const st=jc[1].querySelector('strong');if(st)st.textContent=status(st.textContent.trim());
-      const p=jc[1].querySelector('p');if(p){
-        if(p.textContent.startsWith('Nguồn sân bay:'))p.textContent=t('rawStatus')+' '+status(p.textContent.replace(/^Nguồn sân bay:\s*/,''));else p.textContent=t('statusSource');
-      }
-    }
-    if(jc[2]){
-      const st=jc[2].querySelector('strong'),p=jc[2].querySelector('p');if(st){
-        let m=st.textContent.match(/^Thực tế\s*·\s*(.+)$/);if(m)st.textContent=t('actualAt',{time:m[1]});
-        m=st.textContent.match(/^Dự kiến\s*·\s*(.+)$/);if(m){let v=m[1];if(v==='Sân bay chưa công bố')v=t('airportNotPublished');else if(v==='Không áp dụng')v=t('notApplicable');st.textContent=t('estimatedAt',{time:v});}
-      }
-      if(p){
-        if(p.textContent.includes('Actual time')||p.textContent.includes('Giờ thực tế'))p.textContent=t('actualDesc');
-        else if(p.textContent.includes('chỉ báo trễ'))p.textContent=t('noEstimateDesc');
-        else p.textContent=t('estimateDesc');
-      }
-    }
-    const labels=qa('#drawerContent .drawer-meta span');
-    const map={'So với lịch':'scheduleCompare','Thị trường':'market','Quầy làm thủ tục':'checkinCounter','Giờ mở check-in':'checkinTime','Cửa ra máy bay':'boardingGate','Băng chuyền hành lý':'baggageBelt','Vị trí đỗ':'parking','Nguồn':'source'};
-    labels.forEach(el=>{const k=map[el.textContent.trim()];if(k)el.textContent=t(k);});
-    qa('#drawerContent .drawer-meta b').forEach(el=>{
-      let s=el.textContent.trim(),m;
-      if(s==='Quốc tế')el.textContent=t('international');else if(s==='Nội địa')el.textContent=t('domestic');
-      else if((m=s.match(/^Sớm\s+(\d+)\s+phút$/)))el.textContent=t('earlyBy',{n:m[1]});
-      else if((m=s.match(/^Trễ\s+(\d+)\s+phút$/)))el.textContent=t('lateBy',{n:m[1]});
-      else if((m=s.match(/^Trễ ít nhất\s+(\d+)\s+phút tại thời điểm cập nhật$/)))el.textContent=t('delayMinimum',{n:m[1]});
-      else if(s==='Đã báo trễ, chưa xác định số phút')el.textContent=t('delayReported');
-      else if(s==='Đúng giờ / chưa ghi nhận lệch lịch')el.textContent=t('noDelay');
-      else if(s==='Sân bay chưa công bố')el.textContent=t('airportNotPublished');
-      else if(s==='Không áp dụng')el.textContent=t('notApplicable');
-    });
-  }
-
+  function applyDrawer(){}
   function applyError(){
     const box=q('#errorBox');if(!box||box.classList.contains('hidden'))return;
     if(state?.dataSource==='fallback')box.textContent=t('fallbackError');else if(state?.liveError)box.textContent=t('loadError');
