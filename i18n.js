@@ -18,7 +18,7 @@
       sched:'LỊCH',estActual:'DỰ KIẾN / THỰC TẾ',flight:'CHUYẾN',route:'HÀNH TRÌNH',status:'TRẠNG THÁI',gate:'CỬA',counterBelt:'QUẦY / BĂNG',change:'THAY ĐỔI',
       counter:'QUẦY',belt:'BĂNG',arr:'ĐẾN',dep:'ĐI',intl:'QUỐC TẾ',dom:'NỘI ĐỊA',actual:'THỰC TẾ',est:'DỰ KIẾN',schedShort:'LỊCH',changedNow:'ĐÃ ĐỔI',
       stable:'FIDS đang ổn định',changesActive:'{n} thay đổi đang hiệu lực',noFidsChanges:'Chưa ghi nhận đổi cửa, đổi quầy hoặc đổi băng chuyền đang hiệu lực.',noFidsFlights:'Chưa có chuyến sắp tới trong dữ liệu FIDS.',
-      sourceAirport:'Cập nhật theo dữ liệu sân bay',sourceAt:'Nguồn {time}',onTime:'Đúng giờ',checkinOpen:'Đang check-in',checkinClosed:'Check-in đã đóng',checkinSoon:'Sắp mở check-in',
+      sourceAirport:'Cập nhật theo dữ liệu sân bay',sourceAt:'Nguồn {time}',onTime:'Đúng giờ',checkinOpen:'Đang check-in',checkinClosed:'Check-in đã đóng',checkinSoon:'Sắp mở check-in',checkinFrom:'Check-in từ {time}',gateClosed:'Cửa ra máy bay đã đóng',ferryFlight:'Chuyến bay ferry',
       boarding:'Đang lên máy bay',arrived:'Đã hạ cánh',departed:'Đã cất cánh',cancelled:'Hủy',flyingToPqc:'Đang bay đến Phú Quốc',waitArrival:'Chờ giờ hạ cánh',waitDeparture:'Chờ giờ cất cánh',
       early:'Dự kiến sớm {n} phút',late:'Trễ {n} phút',lateMin:'Trễ ≥ {n} phút',earlyBy:'Sớm {n} phút',lateBy:'Trễ {n} phút',
       changeGate:'ĐỔI CỬA {from} → {to}',changedFrom:'Đổi từ {from}',changeCounter:'ĐỔI QUẦY {from} → {to}',changeBelt:'ĐỔI BĂNG {from} → {to}',
@@ -44,7 +44,7 @@
       sched:'SCHED',estActual:'EST / ACTUAL',flight:'FLIGHT',route:'ROUTE',status:'STATUS',gate:'GATE',counterBelt:'CHECK-IN / BELT',change:'CHANGE',
       counter:'CHECK-IN',belt:'BELT',arr:'ARR',dep:'DEP',intl:'INTL',dom:'DOM',actual:'ACTUAL',est:'EST',schedShort:'SCHED',changedNow:'CHANGED',
       stable:'FIDS stable',changesActive:'{n} active changes',noFidsChanges:'No active gate, check-in counter or baggage belt changes.',noFidsFlights:'No upcoming flights in FIDS data.',
-      sourceAirport:'Updated from airport data',sourceAt:'Source {time}',onTime:'On time',checkinOpen:'Check-in open',checkinClosed:'Check-in closed',checkinSoon:'Check-in opening soon',
+      sourceAirport:'Updated from airport data',sourceAt:'Source {time}',onTime:'On time',checkinOpen:'Check-in open',checkinClosed:'Check-in closed',checkinSoon:'Check-in opening soon',checkinFrom:'Check-in from {time}',gateClosed:'Boarding gate closed',ferryFlight:'Ferry flight',
       boarding:'Boarding',arrived:'Arrived',departed:'Departed',cancelled:'Cancelled',flyingToPqc:'En route to Phu Quoc',waitArrival:'Awaiting arrival time',waitDeparture:'Awaiting departure time',
       early:'Estimated {n} min early',late:'Delayed {n} min',lateMin:'Delayed ≥ {n} min',earlyBy:'{n} min early',lateBy:'{n} min late',
       changeGate:'GATE {from} → {to}',changedFrom:'Changed from {from}',changeCounter:'CHECK-IN {from} → {to}',changeBelt:'BELT {from} → {to}',
@@ -70,7 +70,7 @@
       sched:'예정',estActual:'예상 / 실제',flight:'편명',route:'노선',status:'상태',gate:'게이트',counterBelt:'체크인 / 벨트',change:'변경',
       counter:'체크인',belt:'벨트',arr:'도착',dep:'출발',intl:'국제선',dom:'국내선',actual:'실제',est:'예상',schedShort:'예정',changedNow:'변경됨',
       stable:'FIDS 정상',changesActive:'변경 {n}건 적용 중',noFidsChanges:'현재 게이트, 체크인 카운터 또는 수하물 벨트 변경이 없습니다.',noFidsFlights:'FIDS에 예정 항공편이 없습니다.',
-      sourceAirport:'공항 데이터 기준',sourceAt:'데이터 {time}',onTime:'정시',checkinOpen:'체크인 중',checkinClosed:'체크인 마감',checkinSoon:'체크인 곧 시작',
+      sourceAirport:'공항 데이터 기준',sourceAt:'데이터 {time}',onTime:'정시',checkinOpen:'체크인 중',checkinClosed:'체크인 마감',checkinSoon:'체크인 곧 시작',checkinFrom:'{time}부터 체크인',gateClosed:'탑승구 마감',ferryFlight:'페리 비행',
       boarding:'탑승 중',arrived:'도착 완료',departed:'출발 완료',cancelled:'취소',flyingToPqc:'푸꾸옥으로 운항 중',waitArrival:'도착 시간 대기',waitDeparture:'출발 시간 대기',
       early:'예상 {n}분 조기',late:'{n}분 지연',lateMin:'최소 {n}분 지연',earlyBy:'{n}분 조기',lateBy:'{n}분 지연',
       changeGate:'게이트 {from} → {to}',changedFrom:'이전 {from}',changeCounter:'체크인 {from} → {to}',changeBelt:'벨트 {from} → {to}',
@@ -96,7 +96,7 @@
       sched:'РАСП.',estActual:'РАСЧ. / ФАКТ.',flight:'РЕЙС',route:'МАРШРУТ',status:'СТАТУС',gate:'ВЫХОД',counterBelt:'СТОЙКА / ЛЕНТА',change:'ИЗМЕНЕНИЕ',
       counter:'СТОЙКА',belt:'ЛЕНТА',arr:'ПРИБ.',dep:'ВЫЛ.',intl:'МЕЖД.',dom:'ВНУТР.',actual:'ФАКТ',est:'РАСЧ',schedShort:'РАСП',changedNow:'ИЗМЕНЕНО',
       stable:'FIDS без изменений',changesActive:'Активных изменений: {n}',noFidsChanges:'Нет активных изменений выхода, стойки регистрации или багажной ленты.',noFidsFlights:'Нет ближайших рейсов в данных FIDS.',
-      sourceAirport:'По данным аэропорта',sourceAt:'Источник {time}',onTime:'По расписанию',checkinOpen:'Регистрация открыта',checkinClosed:'Регистрация закрыта',checkinSoon:'Регистрация скоро откроется',
+      sourceAirport:'По данным аэропорта',sourceAt:'Источник {time}',onTime:'По расписанию',checkinOpen:'Регистрация открыта',checkinClosed:'Регистрация закрыта',checkinSoon:'Регистрация скоро откроется',checkinFrom:'Регистрация с {time}',gateClosed:'Выход на посадку закрыт',ferryFlight:'Перегонный рейс',
       boarding:'Посадка',arrived:'Прибыл',departed:'Вылетел',cancelled:'Отменён',flyingToPqc:'В пути на Фукуок',waitArrival:'Ожидается время прибытия',waitDeparture:'Ожидается время вылета',
       early:'Ожидается на {n} мин раньше',late:'Задержка {n} мин',lateMin:'Задержка ≥ {n} мин',earlyBy:'На {n} мин раньше',lateBy:'На {n} мин позже',
       changeGate:'ВЫХОД {from} → {to}',changedFrom:'Было {from}',changeCounter:'СТОЙКА {from} → {to}',changeBelt:'ЛЕНТА {from} → {to}',
@@ -122,7 +122,7 @@
       sched:'计划',estActual:'预计 / 实际',flight:'航班',route:'航线',status:'状态',gate:'登机口',counterBelt:'值机 / 行李',change:'变更',
       counter:'值机',belt:'行李',arr:'到达',dep:'出发',intl:'国际',dom:'国内',actual:'实际',est:'预计',schedShort:'计划',changedNow:'已变更',
       stable:'FIDS 正常',changesActive:'当前 {n} 项变更',noFidsChanges:'目前没有登机口、值机柜台或行李转盘变更。',noFidsFlights:'FIDS 暂无即将起飞或到达的航班。',
-      sourceAirport:'依据机场数据更新',sourceAt:'数据 {time}',onTime:'准点',checkinOpen:'正在值机',checkinClosed:'值机已关闭',checkinSoon:'即将开始值机',
+      sourceAirport:'依据机场数据更新',sourceAt:'数据 {time}',onTime:'准点',checkinOpen:'正在值机',checkinClosed:'值机已关闭',checkinSoon:'即将开始值机',checkinFrom:'{time}起办理值机',gateClosed:'登机口已关闭',ferryFlight:'调机航班',
       boarding:'正在登机',arrived:'已到达',departed:'已起飞',cancelled:'取消',flyingToPqc:'飞往富国岛途中',waitArrival:'等待到达时间',waitDeparture:'等待起飞时间',
       early:'预计提前 {n} 分钟',late:'延误 {n} 分钟',lateMin:'延误至少 {n} 分钟',earlyBy:'提前 {n} 分钟',lateBy:'延后 {n} 分钟',
       changeGate:'登机口 {from} → {to}',changedFrom:'原为 {from}',changeCounter:'值机 {from} → {to}',changeBelt:'行李 {from} → {to}',
@@ -148,25 +148,37 @@
   window.JT_LANG=()=>lang;
 
   function status(input){
-    const s=String(input||'');
+    const s=String(input||'').trim();
+    const folded=s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[đĐ]/g,'d').toUpperCase();
     let m;
     if((m=s.match(/^Dự kiến sớm (\d+) phút$/i)))return t('early',{n:m[1]});
     if((m=s.match(/^Trễ ≥ (\d+) phút$/i)))return t('lateMin',{n:m[1]});
     if((m=s.match(/^Trễ (\d+) phút$/i)))return t('late',{n:m[1]});
-    if((m=s.match(/^Đã hạ cánh\s*(?:·\s*)?(\d{1,2}:\d{2})(?:\s*·\s*trễ\s*(\d+)\s*phút)?$/i))){
-      return t('arrived')+' '+m[1]+(m[2]?' · '+t('late',{n:m[2]}):'');
+    if((m=s.match(/^Đã hạ cánh\s*(?:·\s*)?(\d{1,2}:\d{2})(?:\s*·\s*(trễ|sớm)\s*(\d+)\s*phút)?$/i))){
+      return t('arrived')+' '+m[1]+(m[2]?.toLowerCase()==='trễ'?' · '+t('late',{n:m[3]}):m[2]?.toLowerCase()==='sớm'?' · '+t('earlyBy',{n:m[3]}):'');
     }
     if((m=s.match(/^Đã cất cánh\s*(?:·\s*)?(\d{1,2}:\d{2})(?:\s*·\s*(trễ|sớm)\s*(\d+)\s*phút)?$/i))){
-      return t('departed')+' '+m[1]+(m[2]==='trễ'?' · '+t('late',{n:m[3]}):m[2]==='sớm'?' · '+t('earlyBy',{n:m[3]}):'');
+      return t('departed')+' '+m[1]+(m[2]?.toLowerCase()==='trễ'?' · '+t('late',{n:m[3]}):m[2]?.toLowerCase()==='sớm'?' · '+t('earlyBy',{n:m[3]}):'');
     }
-    if((m=s.match(/^Check-in từ\s+(\d{1,2}:\d{2})$/i)))return t('checkinOpen')+' · '+m[1];
+    if((m=s.match(/^Check-in từ\s+(\d{1,2}:\d{2})$/i)))return t('checkinFrom',{time:m[1]});
+    if((m=s.match(/^LÀM THỦ TỤC LÚC\s+(\d{1,2}:\d{2})$/i)))return t('checkinFrom',{time:m[1]});
     const exact={
       'Đúng giờ':'onTime','Đang check-in':'checkinOpen','Check-in đã đóng':'checkinClosed','Sắp mở check-in':'checkinSoon',
       'Đang lên máy bay':'boarding','Đã hạ cánh':'arrived','Đã cất cánh':'departed','Hủy':'cancelled',
       'Đang bay đến Phú Quốc':'flyingToPqc','Chờ giờ hạ cánh':'waitArrival','Chờ giờ cất cánh':'waitDeparture',
-      'Chưa có giờ hạ cánh':'waitArrival','Chưa có giờ cất cánh':'waitDeparture'
+      'Chưa có giờ hạ cánh':'waitArrival','Chưa có giờ cất cánh':'waitDeparture',
+      'Cửa khởi hành đã đóng':'gateClosed','Cửa ra máy bay đã đóng':'gateClosed','Chuyến bay ferry':'ferryFlight'
     };
-    return exact[s]?t(exact[s]):s;
+    if(exact[s])return t(exact[s]);
+    if(folded==='QUAY THU TUC DA DONG')return t('checkinClosed');
+    if(folded==='CUA KHOI HANH DA DONG'||folded==='CUA RA MAY BAY DA DONG')return t('gateClosed');
+    if(folded==='HANH KHACH DANG LEN TAU BAY'||folded==='DANG LEN MAY BAY')return t('boarding');
+    if(folded==='DANG LAM THU TUC')return t('checkinOpen');
+    if(folded==='CHUYEN BAY FERRY')return t('ferryFlight');
+    if(folded==='DA HA CANH')return t('arrived');
+    if(folded==='DA CAT CANH')return t('departed');
+    if(folded==='DUNG GIO')return t('onTime');
+    return s;
   }
   window.JT_STATUS=status;
 
@@ -196,6 +208,10 @@
     const chips=qa('#filterChips button');[t('all'),t('next3'),t('international'),t('domestic'),t('changed')].forEach((v,i)=>{if(chips[i])chips[i].textContent=v;});
     set('#showMore',t('showMore'));
     set('.source-label',t('sourceLive'));if(!state?.latest){set('#updatedAt',t('dataSync'));set('#healthDescription',t('healthCheckingDesc'));}
+    set('#fidsBoard .fids-head h3',t('fidsTitle'));set('#fidsBoard .fids-head p',t('fidsDesc'));
+    const fidsTabs=qa('#fidsDirectionTabs button');[t('departure'),t('arrival'),t('all')].forEach((v,i)=>{if(fidsTabs[i])fidsTabs[i].textContent=v;});
+    const fidsCols=qa('#fidsBoard .fids-columns span');[t('sched'),t('estActual'),t('flight'),t('route'),t('status'),t('gate'),t('counterBelt'),t('change')].forEach((v,i)=>{if(fidsCols[i])fidsCols[i].textContent=v;});
+    const fidsFoot=qa('#fidsBoard .fids-foot span');if(fidsFoot[0])fidsFoot[0].textContent=t('sourceAirport');
     const fidsState=q('#fidsBoardStatus');if(fidsState&&(!state?.latest||/Đang đồng bộ|Syncing|동기화|Синхронизация|同步/.test(fidsState.textContent)))fidsState.textContent=t('fidsSync');
     const fidsEmpty=q('#fidsGrid .empty-state');if(fidsEmpty&&/Đang đồng bộ FIDS|Syncing FIDS|FIDS 동기화|Синхронизация FIDS|正在同步FIDS/.test(fidsEmpty.textContent))fidsEmpty.textContent=t('fidsSyncData');
 
