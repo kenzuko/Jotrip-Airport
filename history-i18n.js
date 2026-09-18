@@ -20,8 +20,8 @@
       arrType:'CHUYẾN ĐẾN',depType:'CHUYẾN ĐI',actual:'Thực tế {time}',estimated:'Dự kiến {time}',toPqc:'Đến PQC',fromPqc:'Rời PQC',
       changes:'{n} lần thay đổi',firstSeen:'GHI NHẬN',changed:'THAY ĐỔI',noEvent:'Chưa ghi nhận thay đổi trong lịch sử sự kiện.',
       noMatch:'Không có chuyến phù hợp với bộ lọc hiện tại.',unknown:'Chưa có trạng thái',
-      checkinFrom:'Check-in từ {time}',checkinOpen:'Đang check-in',checkinClosed:'Check-in đã đóng',gateClosed:'Cửa khởi hành đã đóng',boarding:'Đang lên máy bay',
-      arrived:'Đã hạ cánh',departed:'Đã cất cánh',cancelled:'Đã hủy',delay:'Trễ {n} phút',delayChange:'Trễ / đổi giờ',
+      checkinFrom:'Check-in từ {time}',checkinOpen:'Đang check-in',checkinClosed:'Check-in đã đóng',gateClosed:'Cửa ra máy bay đã đóng',boarding:'Đang lên máy bay',
+      arrived:'Đã hạ cánh',departed:'Đã cất cánh',cancelled:'Đã hủy',delay:'Trễ {n} phút',delayChange:'Trễ / đổi giờ',earlyBy:'Sớm {n} phút',lateBy:'Trễ {n} phút',ferryFlight:'Chuyến bay ferry',
       searchPh:'VJ337, Hà Nội, VietJet, Incheon...',unknownAirline:'Chưa rõ hãng',noDataRange:'Chưa có dữ liệu lưu trong khoảng {from} - {to}.',
       notEnoughActual:'Chưa đủ chuyến có giờ thực tế để tính tỷ lệ đúng giờ.',onTimeSample:'{on}/{total} chuyến đúng giờ',noSample:'0 chuyến',minuteUnit:'phút',
       eventFirstSeenDetail:'Ghi nhận chuyến lần đầu trong JoTrip AutoSync.',eventChangedFallback:'Dữ liệu chuyến có thay đổi.',
@@ -43,8 +43,8 @@
       arrType:'ARRIVAL',depType:'DEPARTURE',actual:'Actual {time}',estimated:'Estimated {time}',toPqc:'Arrive PQC',fromPqc:'Depart PQC',
       changes:'{n} changes',firstSeen:'FIRST SEEN',changed:'CHANGED',noEvent:'No recorded changes in event history.',
       noMatch:'No flights match the current filters.',unknown:'No status yet',
-      checkinFrom:'Check-in from {time}',checkinOpen:'Check-in open',checkinClosed:'Check-in closed',gateClosed:'Departure gate closed',boarding:'Boarding',
-      arrived:'Arrived',departed:'Departed',cancelled:'Cancelled',delay:'Delayed {n} min',delayChange:'Delayed / rescheduled',
+      checkinFrom:'Check-in from {time}',checkinOpen:'Check-in open',checkinClosed:'Check-in closed',gateClosed:'Boarding gate closed',boarding:'Boarding',
+      arrived:'Arrived',departed:'Departed',cancelled:'Cancelled',delay:'Delayed {n} min',delayChange:'Delayed / rescheduled',earlyBy:'{n} min early',lateBy:'{n} min late',ferryFlight:'Ferry flight',
       searchPh:'VJ337, Hanoi, VietJet, Incheon...',unknownAirline:'Unknown airline',noDataRange:'No archived data for {from} - {to}.',
       notEnoughActual:'Not enough flights with actual times to calculate on-time performance.',onTimeSample:'{on}/{total} on time',noSample:'0 flights',minuteUnit:'min',
       eventFirstSeenDetail:'Flight first recorded in JoTrip AutoSync.',eventChangedFallback:'Flight data changed.',
@@ -66,8 +66,8 @@
       arrType:'도착',depType:'출발',actual:'실제 {time}',estimated:'예상 {time}',toPqc:'PQC 도착',fromPqc:'PQC 출발',
       changes:'변경 {n}회',firstSeen:'최초 기록',changed:'변경',noEvent:'이벤트 기록에 변경 사항이 없습니다.',
       noMatch:'현재 조건에 맞는 항공편이 없습니다.',unknown:'상태 없음',
-      checkinFrom:'체크인 {time}부터',checkinOpen:'체크인 중',checkinClosed:'체크인 마감',gateClosed:'출발 게이트 마감',boarding:'탑승 중',
-      arrived:'도착 완료',departed:'출발 완료',cancelled:'취소',delay:'{n}분 지연',delayChange:'지연 / 시간 변경',
+      checkinFrom:'체크인 {time}부터',checkinOpen:'체크인 중',checkinClosed:'체크인 마감',gateClosed:'탑승구 마감',boarding:'탑승 중',
+      arrived:'도착 완료',departed:'출발 완료',cancelled:'취소',delay:'{n}분 지연',delayChange:'지연 / 시간 변경',earlyBy:'{n}분 조기',lateBy:'{n}분 지연',ferryFlight:'페리 비행',
       searchPh:'VJ337, Hanoi, VietJet, Incheon...',unknownAirline:'항공사 미확인',noDataRange:'{from} - {to} 기간의 저장 데이터가 없습니다.',
       notEnoughActual:'정시율을 계산할 실제 시간 데이터가 충분하지 않습니다.',onTimeSample:'{on}/{total} 정시',noSample:'0편',minuteUnit:'분',
       eventFirstSeenDetail:'JoTrip AutoSync에 항공편이 처음 기록되었습니다.',eventChangedFallback:'항공편 데이터가 변경되었습니다.',
@@ -89,8 +89,8 @@
       arrType:'ПРИБЫТИЕ',depType:'ВЫЛЕТ',actual:'Факт {time}',estimated:'Расч. {time}',toPqc:'Прибытие PQC',fromPqc:'Вылет PQC',
       changes:'Изменений: {n}',firstSeen:'ПЕРВАЯ ЗАПИСЬ',changed:'ИЗМЕНЕНО',noEvent:'Изменений в истории событий не зафиксировано.',
       noMatch:'Нет рейсов по выбранным фильтрам.',unknown:'Статус отсутствует',
-      checkinFrom:'Регистрация с {time}',checkinOpen:'Регистрация открыта',checkinClosed:'Регистрация закрыта',gateClosed:'Выход закрыт',boarding:'Посадка',
-      arrived:'Прибыл',departed:'Вылетел',cancelled:'Отменён',delay:'Задержка {n} мин',delayChange:'Задержка / перенос',
+      checkinFrom:'Регистрация с {time}',checkinOpen:'Регистрация открыта',checkinClosed:'Регистрация закрыта',gateClosed:'Выход на посадку закрыт',boarding:'Посадка',
+      arrived:'Прибыл',departed:'Вылетел',cancelled:'Отменён',delay:'Задержка {n} мин',delayChange:'Задержка / перенос',earlyBy:'На {n} мин раньше',lateBy:'На {n} мин позже',ferryFlight:'Перегонный рейс',
       searchPh:'VJ337, Hanoi, VietJet, Incheon...',unknownAirline:'Авиакомпания не указана',noDataRange:'Нет архивных данных за период {from} - {to}.',
       notEnoughActual:'Недостаточно рейсов с фактическим временем для расчёта пунктуальности.',onTimeSample:'{on}/{total} вовремя',noSample:'0 рейсов',minuteUnit:'мин',
       eventFirstSeenDetail:'Рейс впервые зафиксирован в JoTrip AutoSync.',eventChangedFallback:'Данные рейса изменились.',
@@ -113,7 +113,7 @@
       changes:'变更 {n} 次',firstSeen:'首次记录',changed:'变更',noEvent:'事件历史中没有记录到变更。',
       noMatch:'当前筛选条件下没有航班。',unknown:'暂无状态',
       checkinFrom:'{time} 开始值机',checkinOpen:'正在值机',checkinClosed:'值机已关闭',gateClosed:'登机口已关闭',boarding:'正在登机',
-      arrived:'已到达',departed:'已起飞',cancelled:'已取消',delay:'延误 {n} 分钟',delayChange:'延误 / 改时',
+      arrived:'已到达',departed:'已起飞',cancelled:'已取消',delay:'延误 {n} 分钟',delayChange:'延误 / 改时',earlyBy:'提前 {n} 分钟',lateBy:'延后 {n} 分钟',ferryFlight:'调机航班',
       searchPh:'VJ337, Hanoi, VietJet, Incheon...',unknownAirline:'航空公司未知',noDataRange:'{from} - {to} 期间没有归档数据。',
       notEnoughActual:'实际时间数据不足，无法计算准点率。',onTimeSample:'{on}/{total} 准点',noSample:'0班',minuteUnit:'分钟',
       eventFirstSeenDetail:'该航班首次记录于JoTrip AutoSync。',eventChangedFallback:'航班数据已变更。',
@@ -130,10 +130,25 @@
 
   function translateStatus(s){
     s=String(s||'').trim();let m;
-    if((m=s.match(/^Check-in từ\s+(\d{1,2}:\d{2})$/)))return t('checkinFrom',{time:m[1]});
-    if((m=s.match(/^Trễ\s+(\d+)\s+phút$/)))return t('delay',{n:m[1]});
-    const map={'Đang check-in':'checkinOpen','Check-in đã đóng':'checkinClosed','Cửa khởi hành đã đóng':'gateClosed','Đang lên máy bay':'boarding','Đã hạ cánh':'arrived','Đã cất cánh':'departed','Đã hủy':'cancelled','Trễ / đổi giờ':'delayChange','Đúng giờ / chưa ghi nhận trễ':'unknown','Chưa có trạng thái':'unknown'};
-    return map[s]?t(map[s]):s;
+    const folded=s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[đĐ]/g,'d').toUpperCase();
+    if((m=s.match(/^Check-in từ\s+(\d{1,2}:\d{2})$/i)))return t('checkinFrom',{time:m[1]});
+    if((m=s.match(/^LÀM THỦ TỤC LÚC\s+(\d{1,2}:\d{2})$/i)))return t('checkinFrom',{time:m[1]});
+    if((m=s.match(/^Trễ\s+(\d+)\s+phút$/i)))return t('delay',{n:m[1]});
+    if((m=s.match(/^(Đã hạ cánh|Đã cất cánh)\s+(\d{1,2}:\d{2})(?:\s*·\s*(trễ|sớm)\s*(\d+)\s*phút)?$/i))){
+      const base=m[1].toLowerCase().includes('hạ cánh')?t('arrived'):t('departed');
+      const delta=m[3]?.toLowerCase()==='trễ'?' · '+t('lateBy',{n:m[4]}):m[3]?.toLowerCase()==='sớm'?' · '+t('earlyBy',{n:m[4]}):'';
+      return base+' '+m[2]+delta;
+    }
+    const map={'Đang check-in':'checkinOpen','Check-in đã đóng':'checkinClosed','Cửa khởi hành đã đóng':'gateClosed','Cửa ra máy bay đã đóng':'gateClosed','Đang lên máy bay':'boarding','Đã hạ cánh':'arrived','Đã cất cánh':'departed','Đã hủy':'cancelled','Trễ / đổi giờ':'delayChange','Đúng giờ / chưa ghi nhận trễ':'unknown','Chưa có trạng thái':'unknown','Chuyến bay ferry':'ferryFlight'};
+    if(map[s])return t(map[s]);
+    if(folded==='QUAY THU TUC DA DONG')return t('checkinClosed');
+    if(folded==='CUA KHOI HANH DA DONG'||folded==='CUA RA MAY BAY DA DONG')return t('gateClosed');
+    if(folded==='HANH KHACH DANG LEN TAU BAY'||folded==='DANG LEN MAY BAY')return t('boarding');
+    if(folded==='DANG LAM THU TUC')return t('checkinOpen');
+    if(folded==='CHUYEN BAY FERRY')return t('ferryFlight');
+    if(folded==='DA HA CANH')return t('arrived');
+    if(folded==='DA CAT CANH')return t('departed');
+    return s;
   }
   window.JT_HISTORY_STATUS=translateStatus;
 
