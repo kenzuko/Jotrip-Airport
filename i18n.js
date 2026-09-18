@@ -10,7 +10,7 @@
     vi:{
       today:'Hôm nay tại Phú Quốc',heroSub:'3 giây để biết sân bay đang ra sao.',total:'Tổng chuyến',arrivals:'Chuyến đến',departures:'Chuyến đi',intlArrivals:'Quốc tế đến',
       flightBoard:'Chuyến bay hôm nay',search:'Tìm chuyến',arrival:'Chuyến đến',departure:'Chuyến đi',all:'Tất cả',next3:'3 giờ tới',international:'Quốc tế',domestic:'Nội địa',changed:'Có thay đổi',showMore:'Xem thêm',
-      searchPh:'Tìm số chuyến, hãng hoặc nơi đi/đến: VJ339, Hà Nội, Da Nang...',opsWatch:'Thông báo nhanh',nextArrivals:'Next Arrivals',dataHealth:'Data Health',
+      searchPh:'Tìm số chuyến, hãng hoặc nơi đi/đến: VJ339, Hà Nội, Da Nang...',opsWatch:'Thông báo nhanh',quickKicker:'CẢNH BÁO NHANH',nextArrivals:'Next Arrivals',dataHealth:'Data Health',
       live:'LIVE',history:'HISTORY',analytics:'ANALYTICS',flights:'Flights',refresh:'Refresh',
       yesterday:'HÔM QUA',todayShort:'HÔM NAY',tomorrow:'NGÀY MAI',yesterdayAt:'Hôm qua tại Phú Quốc',tomorrowAt:'Ngày mai tại Phú Quốc',flightsYesterday:'Chuyến bay hôm qua',flightsTomorrow:'Chuyến bay ngày mai',board:'BẢNG',boardYesterday:'BẢNG HÔM QUA',boardTomorrow:'BẢNG NGÀY MAI',
       healthPillGood:'GOOD · dữ liệu đang mới',healthPillWatch:'WATCH · dữ liệu chậm',healthPillStale:'STALE · dữ liệu cũ',sourceLive:'JoTrip Live · Tự động làm mới',
@@ -36,7 +36,7 @@
     en:{
       today:'Today at Phu Quoc',heroSub:'Understand the airport in 3 seconds.',total:'Total flights',arrivals:'Arrivals',departures:'Departures',intlArrivals:'International arrivals',
       flightBoard:'Today’s flights',search:'Find flight',arrival:'Arrivals',departure:'Departures',all:'All',next3:'Next 3 hours',international:'International',domestic:'Domestic',changed:'Changed',showMore:'Show more',
-      searchPh:'Search flight, airline or city: VJ339, Hanoi, Da Nang...',opsWatch:'Quick Alerts',nextArrivals:'Next Arrivals',dataHealth:'Data Health',
+      searchPh:'Search flight, airline or city: VJ339, Hanoi, Da Nang...',opsWatch:'Quick Alerts',quickKicker:'QUICK ALERTS',nextArrivals:'Next Arrivals',dataHealth:'Data Health',
       live:'LIVE',history:'HISTORY',analytics:'ANALYTICS',flights:'Flights',refresh:'Refresh',
       yesterday:'YESTERDAY',todayShort:'TODAY',tomorrow:'TOMORROW',yesterdayAt:'Yesterday at Phu Quoc',tomorrowAt:'Tomorrow at Phu Quoc',flightsYesterday:'Yesterday’s flights',flightsTomorrow:'Tomorrow’s flights',board:'BOARD',boardYesterday:'YESTERDAY BOARD',boardTomorrow:'TOMORROW BOARD',
       healthPillGood:'GOOD · data fresh',healthPillWatch:'WATCH · data delayed',healthPillStale:'STALE · data old',sourceLive:'JoTrip Live · Auto refresh',
@@ -62,7 +62,7 @@
     ko:{
       today:'오늘의 푸꾸옥 공항',heroSub:'3초 만에 공항 상황을 확인하세요.',total:'전체 항공편',arrivals:'도착',departures:'출발',intlArrivals:'국제선 도착',
       flightBoard:'오늘의 항공편',search:'항공편 찾기',arrival:'도착',departure:'출발',all:'전체',next3:'향후 3시간',international:'국제선',domestic:'국내선',changed:'변경 있음',showMore:'더 보기',
-      searchPh:'편명, 항공사 또는 도시 검색: VJ339, Hanoi, Da Nang...',opsWatch:'빠른 알림',nextArrivals:'다음 도착편',dataHealth:'데이터 상태',
+      searchPh:'편명, 항공사 또는 도시 검색: VJ339, Hanoi, Da Nang...',opsWatch:'빠른 알림',quickKicker:'빠른 알림',nextArrivals:'다음 도착편',dataHealth:'데이터 상태',
       live:'실시간',history:'이력',analytics:'분석',flights:'항공편',refresh:'새로고침',
       yesterday:'어제',todayShort:'오늘',tomorrow:'내일',yesterdayAt:'어제 푸꾸옥 공항',tomorrowAt:'내일 푸꾸옥 공항',flightsYesterday:'어제 항공편',flightsTomorrow:'내일 항공편',board:'운항표',boardYesterday:'어제 운항표',boardTomorrow:'내일 운항표',
       healthPillGood:'정상 · 최신 데이터',healthPillWatch:'주의 · 데이터 지연',healthPillStale:'오래된 데이터',sourceLive:'JoTrip Live · 자동 새로고침',
@@ -88,7 +88,7 @@
     ru:{
       today:'Сегодня в аэропорту Фукуока',heroSub:'Ситуация в аэропорту за 3 секунды.',total:'Всего рейсов',arrivals:'Прибытия',departures:'Вылеты',intlArrivals:'Международные прибытия',
       flightBoard:'Рейсы сегодня',search:'Найти рейс',arrival:'Прибытия',departure:'Вылеты',all:'Все',next3:'Ближайшие 3 часа',international:'Международные',domestic:'Внутренние',changed:'Есть изменения',showMore:'Показать ещё',
-      searchPh:'Поиск по рейсу, авиакомпании или городу: VJ339, Hanoi, Da Nang...',opsWatch:'Быстрые уведомления',nextArrivals:'Ближайшие прибытия',dataHealth:'Состояние данных',
+      searchPh:'Поиск по рейсу, авиакомпании или городу: VJ339, Hanoi, Da Nang...',opsWatch:'Быстрые уведомления',quickKicker:'БЫСТРЫЕ УВЕДОМЛЕНИЯ',nextArrivals:'Ближайшие прибытия',dataHealth:'Состояние данных',
       live:'LIVE',history:'ИСТОРИЯ',analytics:'АНАЛИТИКА',flights:'Рейсы',refresh:'Обновить',
       yesterday:'ВЧЕРА',todayShort:'СЕГОДНЯ',tomorrow:'ЗАВТРА',yesterdayAt:'Вчера в аэропорту Фукуока',tomorrowAt:'Завтра в аэропорту Фукуока',flightsYesterday:'Рейсы вчера',flightsTomorrow:'Рейсы завтра',board:'ТАБЛО',boardYesterday:'ТАБЛО ВЧЕРА',boardTomorrow:'ТАБЛО ЗАВТРА',
       healthPillGood:'GOOD · ДАННЫЕ СВЕЖИЕ',healthPillWatch:'WATCH · ЗАДЕРЖКА ДАННЫХ',healthPillStale:'STALE · ДАННЫЕ УСТАРЕЛИ',sourceLive:'JoTrip Live · Автообновление',
@@ -114,7 +114,7 @@
     zh:{
       today:'今日富国岛机场',heroSub:'3秒了解机场运行情况。',total:'航班总数',arrivals:'到达',departures:'出发',intlArrivals:'国际到达',
       flightBoard:'今日航班',search:'查找航班',arrival:'到达',departure:'出发',all:'全部',next3:'未来3小时',international:'国际',domestic:'国内',changed:'有变更',showMore:'查看更多',
-      searchPh:'搜索航班、航空公司或城市：VJ339、Hanoi、Da Nang...',opsWatch:'快速提醒',nextArrivals:'即将到达',dataHealth:'数据状态',
+      searchPh:'搜索航班、航空公司或城市：VJ339、Hanoi、Da Nang...',opsWatch:'快速提醒',quickKicker:'快速提醒',nextArrivals:'即将到达',dataHealth:'数据状态',
       live:'实时',history:'历史',analytics:'分析',flights:'航班',refresh:'刷新',
       yesterday:'昨天',todayShort:'今天',tomorrow:'明天',yesterdayAt:'昨天的富国岛机场',tomorrowAt:'明天的富国岛机场',flightsYesterday:'昨天的航班',flightsTomorrow:'明天的航班',board:'航班表',boardYesterday:'昨天航班表',boardTomorrow:'明天航班表',
       healthPillGood:'正常 · 数据最新',healthPillWatch:'注意 · 数据延迟',healthPillStale:'数据已过期',sourceLive:'JoTrip Live · 自动刷新',
@@ -188,7 +188,7 @@
     const chips=qa('#filterChips button');[t('all'),t('next3'),t('international'),t('domestic'),t('changed')].forEach((v,i)=>{if(chips[i])chips[i].textContent=v;});
     set('#showMore',t('showMore'));
 
-    const side=qa('.sidebar .side-head h3');if(side[0])side[0].textContent=t('opsWatch');if(side[1])side[1].textContent=t('nextArrivals');if(side[2])side[2].textContent=t('dataHealth');
+    set('#operationsWatchCard .side-head h3',t('opsWatch'));set('#operationsWatchCard .section-kicker',t('quickKicker'));set('#dataHealthCard .side-head h3',t('dataHealth'));
     const modes=qa('.mode-switch button');if(modes[0])modes[0].textContent=t('live');if(modes[1])modes[1].textContent=t('history');if(modes[2])modes[2].textContent=t('analytics');
     const nav=qa('.mobile-nav button');if(nav[1])nav[1].lastChild.nodeValue=t('flights');if(nav[2])nav[2].lastChild.nodeValue=t('history');if(nav[3])nav[3].lastChild.nodeValue=t('analytics');if(nav[4])nav[4].lastChild.nodeValue=t('refresh');
 
