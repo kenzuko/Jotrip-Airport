@@ -23,9 +23,9 @@
 <link rel="apple-touch-icon" href="./jotrip-logo-master.png">
 <link rel="stylesheet" href="./style.css?v=20260918f">
 <link rel="stylesheet" href="./fids-board.css?v=20260918n">
-<link rel="stylesheet" href="./i18n.css?v=20260918n">
+<link rel="stylesheet" href="./i18n.css?v=20260918p">
 <link rel="stylesheet" href="./ui-fixes.css?v=20260916n">
-<link rel="stylesheet" href="./board-days.css?v=20260916h">
+<link rel="stylesheet" href="./board-days.css?v=20260918p">
 <link rel="stylesheet" href="./mobile-logo-fix.css?v=20260918n">
 </head>
 <body>
@@ -59,6 +59,11 @@
       <div id="opsState" class="ops-state">CHECKING</div><div class="hero-plane">✈</div>
     </section>
 
+    <section class="card live-only operations-watch-card next-relative" id="operationsWatchCard">
+      <div class="side-head"><div><span class="section-kicker">OPERATIONS WATCH</span><h3>Thông báo nhanh</h3></div><span id="watchCount" class="count-pill">0</span></div>
+      <div id="watchList" class="watch-list"></div>
+    </section>
+
     <section class="card live-only" id="flightBoard">
       <div class="card-head"><div><span class="section-kicker">FLIGHT BOARD</span><h3>Chuyến bay hôm nay</h3></div><button id="searchToggle" class="text-button">Tìm chuyến</button></div>
       <div id="searchWrap" class="search-wrap hidden"><input id="flightSearch" placeholder="Tìm số chuyến, hãng hoặc nơi đi/đến: VJ339, Hà Nội, Da Nang..."></div>
@@ -82,7 +87,6 @@
   </section>
 
   <aside class="sidebar">
-    <section class="side-card live-only"><div class="side-head"><h3>Operations Watch</h3><span id="watchCount" class="count-pill">0</span></div><div id="watchList" class="watch-list"></div></section>
     <section class="side-card live-only"><div class="side-head"><h3>Next Arrivals</h3><span class="muted">PQC</span></div><div id="nextArrivalsList" class="arrival-list"></div></section>
     <section class="side-card">
       <div class="side-head"><h3>Data Health</h3><span id="qaBadge" class="qa-badge">...</span></div>
@@ -99,14 +103,13 @@
 <aside id="flightDrawer" class="flight-drawer hidden" aria-hidden="true"><div class="drawer-grab"></div><button id="drawerClose" class="drawer-close">×</button><div id="drawerContent"></div></aside>
 <script src="./live-config.js?v=20260916h"></script>
 <script src="./live-source.js?v=20260916h"></script>
-<script src="./app.js?v=20260918n"></script>
+<script src="./app.js?v=20260918p"></script>
 <script src="./flight-status-policy.js?v=20260918g"></script>
-<script src="./board-days.js?v=20260918n"></script>
+<script src="./board-days.js?v=20260918p"></script>
 <script src="./app-copy.js?v=20260918b"></script>
 <script src="./analytics-v3.js?v=20260918n"></script>
-<script src="./i18n.js?v=20260918n"></script>
+<script src="./i18n.js?v=20260918p"></script>
 <script src="./fids-board.js?v=20260918n"></script>
-<script src="./mobile-layout.js?v=20260918b"></script>
 <script>window.addEventListener('load',()=>{if(location.hash==='#analytics'){document.querySelector('[data-mode="analytics"]')?.click();setTimeout(()=>document.getElementById('analytics')?.scrollIntoView({block:'start'}),50)}else if(location.hash==='#flightBoard'){setTimeout(()=>document.getElementById('flightBoard')?.scrollIntoView({block:'start'}),50)}});</script>
 </body>
 </html>
