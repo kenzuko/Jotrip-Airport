@@ -65,6 +65,7 @@
   function terminalLabel(direction, actual, delay) {
     const verb = direction === 'arrival' ? 'Đã hạ cánh' : 'Đã cất cánh';
     if (delay != null && delay > 15) return `${verb} ${actual} · trễ ${delay} phút`;
+    if (delay != null && delay <= -10) return `${verb} ${actual} · sớm ${Math.abs(delay)} phút`;
     return `${verb} ${actual}`;
   }
 
@@ -84,6 +85,8 @@
       if (code === 'CANCELLED' || /HỦY|CANCEL/.test(fold(raw))) return 'Hủy';
       if (actual) return terminalLabel(r.direction, actual, actualDelay);
 
+      const expectedDelta = expected ? signedDiff(scheduled, expected) : null;
+      if (expectedDelta != null && expectedDelta <= -10) return `Dự kiến sớm ${Math.abs(expectedDelta)} phút`;
       if (isDelayed(r)) return delayStatusLabel(r);
 
       if (r.direction === 'arrival' && code === 'DEPARTED') {
@@ -107,7 +110,7 @@
     statusClass = function(label) {
       const s = fold(label);
       if (/HUY|CANCEL/.test(s)) return 'red';
-      if (/TRE|DELAY|HOAN|RESCHEDULED/.test(s)) return 'amber';
+      if (/TRE|DELAY|HOAN|RESCHEDULED|DU KIEN SOM|SOM [0-9]+ PHUT/.test(s)) return 'amber';
       if (/HA CANH|CAT CANH|BAY DEN PHU QUOC/.test(s)) return 'green';
       if (/DUNG GIO|CHECK.?IN|BOARDING|LEN MAY BAY/.test(s)) return 'blue';
       return 'gray';
