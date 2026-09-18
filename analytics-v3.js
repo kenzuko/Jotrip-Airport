@@ -132,6 +132,7 @@ function renderLabels(){
   const view=$('#analyticsView');if(view){const opts={overview:tr('analyticsOverview','Tổng quan'),routes:tr('analyticsRoutes','Tuyến bay'),time:tr('analyticsTime','Khung giờ'),market:tr('analyticsMarket','Thị trường'),airlines:tr('analyticsAirlines','Hãng bay'),otp:tr('analyticsOtp','Đúng giờ OTP15')};[...view.options].forEach(o=>o.textContent=opts[o.value]||o.textContent);view.value=A.view}
   const dir=$('#analyticsDirection');if(dir){dir.options[0].text=tr('all','Tất cả');dir.options[1].text=tr('arrival','Chuyến đến');dir.options[2].text=tr('departure','Chuyến đi');dir.value=A.direction}
   const marketSel=$('#analyticsMarket');if(marketSel){marketSel.options[0].text=tr('all','Tất cả');marketSel.options[1].text=tr('domestic','Nội địa');marketSel.options[2].text=tr('international','Quốc tế');marketSel.value=A.market}
+  const airlineSel=$('#analyticsAirline');if(airlineSel&&airlineSel.options[0])airlineSel.options[0].text=tr('allAirlines','Tất cả hãng');
   const rangeLabels=$$('#analyticsCustomRange label>span');if(rangeLabels[0])rangeLabels[0].textContent=tr('fromDate','Từ ngày');if(rangeLabels[1])rangeLabels[1].textContent=tr('toDate','Đến ngày');
   const apply=$('#analyticsApplyRange');if(apply)apply.textContent=tr('apply','Áp dụng');
 }
