@@ -187,7 +187,7 @@ function buildOperationWatchItems(){
     const r=e.record;
     // Operational relevance: departures care about check-in, arrivals care about baggage belt.
     if(r.direction==='departure'&&e.field==='belt')continue;
-    if(r.direction==='arrival'&&e.field==='checkin_row')continue;
+    if(r.direction==='arrival'&&(e.field==='checkin_row'||e.field==='gate'))continue;
     if(r.direction==='departure'&&completed(r))continue;
     if(r.direction==='arrival'&&completed(r)){
       if(e.field!=='belt')continue;
