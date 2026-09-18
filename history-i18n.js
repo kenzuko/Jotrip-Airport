@@ -23,7 +23,7 @@
       noMatch:'Không có chuyến phù hợp với bộ lọc hiện tại.',unknown:'Chưa có trạng thái',
       checkinFrom:'Check-in từ {time}',checkinOpen:'Đang check-in',checkinClosed:'Check-in đã đóng',gateClosed:'Cửa khởi hành đã đóng',boarding:'Đang lên máy bay',
       arrived:'Đã hạ cánh',departed:'Đã cất cánh',cancelled:'Đã hủy',delay:'Trễ {n} phút',delayChange:'Trễ / đổi giờ',
-      searchPh:'VJ337, Hà Nội, VietJet, Incheon...'
+      searchPh:'VJ337, Hà Nội, VietJet, Incheon...',unknownAirline:'Chưa rõ hãng',noDataRange:'Chưa có dữ liệu lưu trong khoảng {from} - {to}.',notEnoughActual:'Chưa đủ chuyến có giờ thực tế để tính tỷ lệ đúng giờ.',onTimeSample:'{on}/{total} chuyến đúng giờ',noSample:'0 chuyến',minuteUnit:'phút',eventFirstSeenDetail:'Ghi nhận chuyến lần đầu trong JoTrip AutoSync.',eventChangedFallback:'Dữ liệu chuyến có thay đổi.',fieldEstimated:'Giờ dự kiến',fieldActual:'Giờ thực tế',fieldStatus:'Trạng thái',fieldGate:'Cửa',fieldBelt:'Băng chuyền',fieldParking:'Vị trí đỗ',fieldScheduled:'Giờ lịch',fieldBoardingStart:'Bắt đầu boarding',fieldBoardingFinish:'Kết thúc boarding',arrivalsKicker:'CHUYẾN ĐẾN',departuresKicker:'CHUYẾN ĐI',onTimeShort:"ĐÚNG GIỜ ≤15'"
     },
     en:{
       page:'Airport History',sub:'PQC historical flight intelligence',mode:'HISTORY',source:'JoTrip AutoSync · Daily archive',
@@ -42,7 +42,7 @@
       noMatch:'No flights match the current filters.',unknown:'No status yet',
       checkinFrom:'Check-in from {time}',checkinOpen:'Check-in open',checkinClosed:'Check-in closed',gateClosed:'Departure gate closed',boarding:'Boarding',
       arrived:'Arrived',departed:'Departed',cancelled:'Cancelled',delay:'Delayed {n} min',delayChange:'Delayed / rescheduled',
-      searchPh:'VJ337, Hanoi, VietJet, Incheon...'
+      searchPh:'VJ337, Hanoi, VietJet, Incheon...',unknownAirline:'航空公司未知',noDataRange:'{from} - {to} 期间没有归档数据。',notEnoughActual:'实际时间数据不足，无法计算准点率。',onTimeSample:'{on}/{total} 准点',noSample:'0班',minuteUnit:'分钟',eventFirstSeenDetail:'该航班首次记录于JoTrip AutoSync。',eventChangedFallback:'航班数据已变更。',fieldEstimated:'预计时间',fieldActual:'实际时间',fieldStatus:'状态',fieldGate:'登机口',fieldBelt:'行李转盘',fieldParking:'停机位',fieldScheduled:'计划时间',fieldBoardingStart:'开始登机',fieldBoardingFinish:'结束登机',arrivalsKicker:'到达',departuresKicker:'出发',onTimeShort:'准点 ≤15分钟',unknownAirline:'Авиакомпания не указана',noDataRange:'Нет архивных данных за период {from} - {to}.',notEnoughActual:'Недостаточно рейсов с фактическим временем для расчёта пунктуальности.',onTimeSample:'{on}/{total} вовремя',noSample:'0 рейсов',minuteUnit:'мин',eventFirstSeenDetail:'Рейс впервые зафиксирован в JoTrip AutoSync.',eventChangedFallback:'Данные рейса изменились.',fieldEstimated:'Расчётное время',fieldActual:'Фактическое время',fieldStatus:'Статус',fieldGate:'Выход',fieldBelt:'Багажная лента',fieldParking:'Место стоянки',fieldScheduled:'Время по расписанию',fieldBoardingStart:'Начало посадки',fieldBoardingFinish:'Окончание посадки',arrivalsKicker:'ПРИБЫТИЯ',departuresKicker:'ВЫЛЕТЫ',onTimeShort:'ВОВРЕМЯ ≤15 МИН',unknownAirline:'항공사 미확인',noDataRange:'{from} - {to} 기간의 저장 데이터가 없습니다.',notEnoughActual:'정시율을 계산할 실제 시간 데이터가 충분하지 않습니다.',onTimeSample:'{on}/{total} 정시',noSample:'0편',minuteUnit:'분',eventFirstSeenDetail:'JoTrip AutoSync에 항공편이 처음 기록되었습니다.',eventChangedFallback:'항공편 데이터가 변경되었습니다.',fieldEstimated:'예상 시간',fieldActual:'실제 시간',fieldStatus:'상태',fieldGate:'게이트',fieldBelt:'수하물 벨트',fieldParking:'주기장',fieldScheduled:'예정 시간',fieldBoardingStart:'탑승 시작',fieldBoardingFinish:'탑승 종료',arrivalsKicker:'도착',departuresKicker:'출발',onTimeShort:'정시 ≤15분',unknownAirline:'Unknown airline',noDataRange:'No archived data for {from} - {to}.',notEnoughActual:'Not enough flights with actual times to calculate on-time performance.',onTimeSample:'{on}/{total} on time',noSample:'0 flights',minuteUnit:'min',eventFirstSeenDetail:'Flight first recorded in JoTrip AutoSync.',eventChangedFallback:'Flight data changed.',fieldEstimated:'Estimated time',fieldActual:'Actual time',fieldStatus:'Status',fieldGate:'Gate',fieldBelt:'Baggage belt',fieldParking:'Parking bay',fieldScheduled:'Scheduled time',fieldBoardingStart:'Boarding start',fieldBoardingFinish:'Boarding end',arrivalsKicker:'ARRIVALS',departuresKicker:'DEPARTURES',onTimeShort:"ON TIME ≤15'"
     },
     ko:{
       page:'항공편 기록',sub:'PQC 과거 항공편 데이터',mode:'기록',source:'JoTrip AutoSync · 일별 보관',
@@ -104,6 +104,7 @@
   };
 
   function t(k,v){let s=(D[lang]&&D[lang][k])||D.vi[k]||k;if(v)Object.keys(v).forEach(x=>s=s.replace(new RegExp('\\{'+x+'\\}','g'),v[x]));return s}
+  window.JT_HISTORY_T=t;window.JT_HISTORY_LANG=()=>lang;
   const q=s=>document.querySelector(s), qa=s=>[...document.querySelectorAll(s)];
   function set(sel,val){const el=typeof sel==='string'?q(sel):sel;if(el)el.textContent=val}
 
@@ -136,48 +137,15 @@
     tables.forEach(tr=>{const th=tr.querySelectorAll('th');[t('airline'),t('completed'),t('otp'),t('late15'),'OTP15',t('latePct'),t('avg')].forEach((x,i)=>{if(th[i])th[i].textContent=x})});
     set('.history-card:last-of-type .section-kicker',t('flightArchive'));
 
+    const modes=qa('.mode-switch button');if(modes[0])modes[0].textContent=t('live');if(modes[1])modes[1].textContent=t('history');if(modes[2])modes[2].textContent=t('analytics');
+    const kickers=qa('.otp-direction-head .section-kicker');if(kickers[0])kickers[0].textContent=t('arrivalsKicker');if(kickers[1])kickers[1].textContent=t('departuresKicker');
+    qa('.otp-summary>span').forEach(el=>el.textContent=t('onTimeShort'));
     const nav=qa('.mobile-nav button');if(nav[0])nav[0].lastChild.nodeValue=t('live');if(nav[1])nav[1].lastChild.nodeValue=t('flights');if(nav[2])nav[2].lastChild.nodeValue=t('history');if(nav[3])nav[3].lastChild.nodeValue=t('analytics');if(nav[4])nav[4].lastChild.nodeValue=t('refresh');
   }
 
   function applyDynamic(){
-    const ah=q('#archiveHealth');if(ah){
-      let s=ah.textContent.trim(),m;
-      if(s==='ĐANG TẢI'||s==='LOADING')ah.textContent=t('loading');
-      else if(s==='CHƯA CÓ DỮ LIỆU')ah.textContent=t('noData');
-      else if((m=s.match(/^(\d+)\s+NGÀY\s+·\s+(\d+)\s+CHUYẾN$/)))ah.textContent=m[1]+' '+(Number(m[1])===1?t('day'):t('days'))+' · '+m[2]+' '+t('flightWord');
-    }
-
-    const title=q('#historyTitle');if(title){
-      let s=title.textContent.trim(),m;
-      if((m=s.match(/^Dữ liệu\s+([^\-]+)$/)))title.textContent=t('dataDate',{date:m[1].trim()});
-      else if((m=s.match(/^Dữ liệu\s+(.+?)\s+-\s+(.+)$/)))title.textContent=t('dataRange',{from:m[1],to:m[2]});
-      else if(s==='Dữ liệu theo khoảng ngày')title.textContent=t('archive');
-    }
-    const hc=q('#historyCount');if(hc){
-      const m=hc.textContent.match(/(\d+)\s+chuyến phù hợp\s+·\s+(\d+)\s+chuyến có giờ thực tế/);
-      if(m)hc.textContent=t('suitable',{n:m[1]})+' · '+t('actualCount',{n:m[2]});
-    }
-
-    qa('.history-row').forEach(row=>{
-      const type=row.querySelector('.h-type');if(type)type.textContent=type.textContent.includes('ĐẾN')?t('arrType'):t('depType');
-      const st=row.querySelector('.h-status');if(st)st.textContent=translateStatus(st.textContent);
-      const ts=row.querySelector('.h-time small');if(ts){
-        let s=ts.textContent.trim(),m;
-        if((m=s.match(/^Thực tế\s+(\d{1,2}:\d{2})$/)))ts.textContent=t('actual',{time:m[1]});
-        else if((m=s.match(/^Dự kiến\s+(\d{1,2}:\d{2})$/)))ts.textContent=t('estimated',{time:m[1]});
-        else if(s==='Đến PQC')ts.textContent=t('toPqc');else if(s==='Rời PQC')ts.textContent=t('fromPqc');
-      }
-      const meta=row.querySelector('.h-route small');if(meta){
-        const m=meta.textContent.match(/\s·\s(\d+)\s+lần thay đổi/);if(m)meta.textContent=meta.textContent.replace(/\s·\s\d+\s+lần thay đổi/, ' · '+t('changes',{n:m[1]}));
-      }
-      row.querySelectorAll('.event-type').forEach(el=>{const s=el.textContent.trim();if(s==='GHI NHẬN')el.textContent=t('firstSeen');if(s==='THAY ĐỔI')el.textContent=t('changed');});
-      row.querySelectorAll('.event-detail').forEach(el=>{if(el.textContent.trim()==='Chưa ghi nhận thay đổi trong lịch sử sự kiện.')el.textContent=t('noEvent');});
-    });
-
     const empty=q('#historyList .history-empty');if(empty)empty.textContent=t('noMatch');
-    const err=q('#historyError');if(err&&!err.classList.contains('hidden')&&lang!=='vi')err.textContent=t('noData');
   }
-
   function apply(){applyStatic();applyDynamic()}
 
   if(typeof render==='function'){
