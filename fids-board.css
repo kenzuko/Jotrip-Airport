@@ -17,7 +17,7 @@
 @keyframes fidsFlash{0%,100%{transform:translateY(0);box-shadow:none}50%{transform:translateY(-1px);box-shadow:0 0 0 4px rgba(252,188,18,.14),0 7px 18px rgba(14,60,91,.09)}}
 
 .fids-table-wrap{border:1px solid #cfdde6;border-radius:15px;overflow:hidden;background:#fff}
-.fids-columns,.fids-row{display:grid;grid-template-columns:54px 82px 72px minmax(108px,1.12fr) minmax(96px,.9fr) 42px 72px 76px minmax(132px,1.05fr);align-items:center}
+.fids-columns,.fids-row{display:grid;grid-template-columns:56px 86px 76px minmax(110px,1.15fr) minmax(102px,.9fr) 46px minmax(104px,.86fr) minmax(138px,1.08fr);align-items:center}
 .fids-columns{min-height:35px;background:#123d5a;color:#dceaf2;font-size:8.5px;font-weight:900;letter-spacing:.07em}
 .fids-columns span{padding:0 6px;border-left:1px solid rgba(255,255,255,.09);line-height:1.15;text-align:center;white-space:normal}.fids-columns span:first-child{border-left:0}
 .fids-grid{overflow:hidden}
@@ -33,7 +33,7 @@
 .fids-route strong{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fids-route span{letter-spacing:.05em}
 .fids-status-pill{display:inline-block;max-width:100%;padding:6px 7px;border-radius:999px;font-size:8.5px;font-weight:900;line-height:1.15;text-align:center;white-space:normal}
 .fids-status-pill.green{background:#e8f8ee;color:#117b44}.fids-status-pill.blue{background:#e8f5fb;color:#126da6}.fids-status-pill.amber{background:#fff2cc;color:#8e6200}.fids-status-pill.red{background:#fde8eb;color:#ad3140}.fids-status-pill.gray{background:#edf2f5;color:#65758a}
-.fids-gate,.fids-counter,.fids-belt{text-align:center}.fids-gate strong,.fids-counter strong,.fids-belt strong{font-size:14px}.fids-gate.changed{background:#fff8df}.fids-counter.changed{background:#eef7fb}.fids-belt.changed{background:#eef7e8}.fids-counter>span,.fids-belt>span{font-size:7.6px!important;white-space:nowrap}
+.fids-gate,.fids-service{text-align:center}.fids-gate strong,.fids-service strong{font-size:14px}.fids-gate.changed{background:#fff8df}.fids-service.changed{background:#eef7fb}.fids-service-kind{margin-top:0!important;color:#8291a0!important;font-size:7.2px!important;letter-spacing:.045em;white-space:nowrap}.fids-service-prev{color:#6f7f90!important;font-size:7.8px!important;white-space:nowrap}
 
 .fids-change{padding:8px 9px;text-align:left;overflow:hidden}.fids-change-badge{display:block;width:100%;box-sizing:border-box;padding:6px 7px;border-radius:8px;background:#fff4ce;color:#765600;font-size:8px;font-weight:900;line-height:1.25;white-space:normal;overflow-wrap:anywhere}
 .fids-no-change{color:#a5b0bb!important}
@@ -44,7 +44,7 @@
 #nextWindowText,#nextArrivals,#nextDepartures,#nextInternational,#nextWatch{display:none!important}
 
 @media(max-width:900px) and (min-width:681px){
-  .fids-columns,.fids-row{grid-template-columns:48px 72px 64px minmax(92px,1fr) minmax(88px,.86fr) 38px 62px 66px minmax(112px,.98fr)}
+  .fids-columns,.fids-row{grid-template-columns:52px 78px 70px minmax(100px,1fr) minmax(96px,.9fr) 42px minmax(90px,.82fr) minmax(122px,1fr)}
   .fids-columns{font-size:7.8px}.fids-cell{padding:7px 6px}.fids-status-pill{font-size:8px}
 }
 
@@ -65,9 +65,8 @@
   .fids-route{grid-column:2;grid-row:2}.fids-route strong{font-size:10px}
   .fids-status{grid-column:3;grid-row:2;text-align:right}.fids-status:before{text-align:right}.fids-status-pill{font-size:7.8px;padding:5px 6px;max-width:82px}
   .fids-gate{grid-column:1;grid-row:3;text-align:left;margin-top:6px;background:transparent!important}.fids-gate strong{font-size:12px}
-  .fids-counter{grid-column:2;grid-row:3;text-align:left;margin-top:6px;background:transparent!important}.fids-counter strong{font-size:12px}
-  .fids-belt{grid-column:3;grid-row:3;text-align:right;margin-top:6px;background:transparent!important}.fids-belt:before{text-align:right}.fids-belt strong{font-size:12px}
-  .fids-change{grid-column:1 / span 3;grid-row:4;text-align:left;margin-top:7px;padding:5px 6px;border-top:1px dashed #e3eaf0}.fids-change:before{text-align:left}.fids-change-badge{display:inline-block;width:auto;font-size:7.2px;padding:4px 5px;max-width:100%}
+  .fids-service{grid-column:2;grid-row:3;text-align:left;margin-top:6px;background:transparent!important}.fids-service strong{font-size:12px}.fids-service-kind{display:none!important}.fids-service-prev{font-size:7.3px!important}
+  .fids-change{grid-column:3;grid-row:3;text-align:right;margin-top:6px;padding:3px 6px}.fids-change:before{text-align:right}.fids-change-badge{display:inline-block;width:auto;font-size:7.2px;padding:4px 5px;max-width:82px}
   .fids-foot{font-size:9px}
 }
 
