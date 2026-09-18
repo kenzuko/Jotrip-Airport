@@ -72,3 +72,9 @@
 
 .fids-direction-tabs{margin:0 0 11px}
 @media(max-width:680px){.fids-direction-tabs{margin-bottom:9px}.fids-direction-tabs button{font-size:10.5px;padding:8px 5px}}
+
+/* FIDS alignment refinement */
+@media(min-width:681px){
+  .fids-status{text-align:center}
+  .fids-status-pill{margin-left:auto;margin-right:auto}
+}
