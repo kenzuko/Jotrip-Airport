@@ -10,7 +10,7 @@
     vi:{
       today:'Hôm nay tại Phú Quốc',heroSub:'3 giây để biết sân bay đang ra sao.',total:'Tổng chuyến',arrivals:'Chuyến đến',departures:'Chuyến đi',intlArrivals:'Quốc tế đến',
       flightBoard:'Chuyến bay hôm nay',search:'Tìm chuyến',arrival:'Chuyến đến',departure:'Chuyến đi',all:'Tất cả',next3:'3 giờ tới',international:'Quốc tế',domestic:'Nội địa',changed:'Có thay đổi',showMore:'Xem thêm',
-      searchPh:'Tìm số chuyến, hãng hoặc nơi đi/đến: VJ339, Hà Nội, Da Nang...',opsWatch:'Operations Watch',nextArrivals:'Next Arrivals',dataHealth:'Data Health',
+      searchPh:'Tìm số chuyến, hãng hoặc nơi đi/đến: VJ339, Hà Nội, Da Nang...',opsWatch:'Tình hình chuyến bay',nextArrivals:'Next Arrivals',dataHealth:'Data Health',
       live:'LIVE',history:'HISTORY',analytics:'ANALYTICS',flights:'Flights',refresh:'Refresh',
       yesterday:'HÔM QUA',todayShort:'HÔM NAY',tomorrow:'NGÀY MAI',yesterdayAt:'Hôm qua tại Phú Quốc',tomorrowAt:'Ngày mai tại Phú Quốc',flightsYesterday:'Chuyến bay hôm qua',flightsTomorrow:'Chuyến bay ngày mai',board:'BẢNG',boardYesterday:'BẢNG HÔM QUA',boardTomorrow:'BẢNG NGÀY MAI',
       healthPillGood:'GOOD · dữ liệu đang mới',healthPillWatch:'WATCH · dữ liệu chậm',healthPillStale:'STALE · dữ liệu cũ',sourceLive:'JoTrip Live · Tự động làm mới',
@@ -30,6 +30,7 @@
       healthGoodTitle:'GOOD · dữ liệu đang mới',healthGoodDesc:'JoTrip Live đang cập nhật tự động, có cache ngắn để giữ ổn định.',healthWatchTitle:'WATCH · dữ liệu chậm cập nhật',healthWatchDesc:'Dữ liệu đang có độ trễ cao hơn bình thường. Trang sẽ tự kiểm tra lại mỗi phút.',
       healthStaleTitle:'STALE · không còn là dữ liệu live',healthStaleDesc:'Dữ liệu đã quá 15 phút. Không nên xem đây là trạng thái tức thời của sân bay.',healthFallbackTitle:'FALLBACK · đang dùng AutoSync',healthFallbackDesc:'Luồng live tạm không phản hồi. Giao diện đã chuyển sang bản lưu gần nhất.',
       analyticsTitle:'Cơ cấu chuyến bay',currentData:'Dữ liệu hiện tại',routeDistribution:'Tất cả điểm đi / đến',timeDistribution:'Phân bố theo khung giờ',flightStatus:'Flight Status',dataAge:'Data age',
+      airlinePerfTitle:'Đúng giờ / trễ theo hãng',allAirlinesDay:'Tất cả hãng trong ngày',arrivalsPqc:'Đến Phú Quốc',departuresPqc:'Rời Phú Quốc',airlineCol:'Hãng',totalCol:'Tổng chuyến',completedCol:'Đã thực hiện',onTimeCol:'Đúng giờ',late15Col:'Trễ >15\'',avgDelayCol:'Trễ TB',noFlightsDay:'Chưa có chuyến trong ngày.',noCompleted:'Chưa có chuyến đã thực hiện',onTimeSample:'{on}/{total} chuyến đúng giờ',minuteUnit:'phút',
       noFlights:'Không có chuyến phù hợp bộ lọc hiện tại.',noNextArrivals:'Chưa có chuyến đến tiếp theo trong dữ liệu.'
     },
     en:{
@@ -55,6 +56,7 @@
       healthGoodTitle:'GOOD · DATA FRESH',healthGoodDesc:'JoTrip Live is updating automatically with a short stability cache.',healthWatchTitle:'WATCH · DATA DELAYED',healthWatchDesc:'Data is slower than usual. The page checks again every minute.',
       healthStaleTitle:'STALE · DATA OLD',healthStaleDesc:'Data is over 15 minutes old and should not be treated as real-time.',healthFallbackTitle:'FALLBACK · AUTOSYNC',healthFallbackDesc:'The live feed is temporarily unavailable. The page is using the latest stored snapshot.',
       analyticsTitle:'Flight mix',currentData:'Current data',routeDistribution:'All origins / destinations',timeDistribution:'Distribution by time',flightStatus:'Flight Status',dataAge:'Data age',
+      airlinePerfTitle:'On-time / delay by airline',allAirlinesDay:'All airlines today',arrivalsPqc:'Arrivals to Phu Quoc',departuresPqc:'Departures from Phu Quoc',airlineCol:'Airline',totalCol:'Total',completedCol:'Completed',onTimeCol:'On time',late15Col:'Delayed >15 min',avgDelayCol:'Avg delay',noFlightsDay:'No flights today.',noCompleted:'No completed flights yet',onTimeSample:'{on}/{total} on time',minuteUnit:'min',
       noFlights:'No flights match the current filters.',noNextArrivals:'No upcoming arrivals in the current data.'
     },
     ko:{
@@ -80,6 +82,7 @@
       healthGoodTitle:'정상 · 최신 데이터',healthGoodDesc:'JoTrip Live가 자동 업데이트 중이며 안정성을 위한 짧은 캐시를 사용합니다.',healthWatchTitle:'주의 · 데이터 지연',healthWatchDesc:'데이터가 평소보다 늦습니다. 페이지는 매분 다시 확인합니다.',
       healthStaleTitle:'오래된 데이터',healthStaleDesc:'데이터가 15분 이상 지나 실시간 상태로 보기 어렵습니다.',healthFallbackTitle:'대체 데이터 · AUTOSYNC',healthFallbackDesc:'실시간 피드가 일시적으로 응답하지 않아 최근 저장 데이터를 사용합니다.',
       analyticsTitle:'항공편 구성',currentData:'현재 데이터',routeDistribution:'전체 출발지 / 도착지',timeDistribution:'시간대별 분포',flightStatus:'항공편 상태',dataAge:'데이터 경과',
+      airlinePerfTitle:'항공사별 정시 / 지연',allAirlinesDay:'오늘 전체 항공사',arrivalsPqc:'푸꾸옥 도착',departuresPqc:'푸꾸옥 출발',airlineCol:'항공사',totalCol:'전체',completedCol:'운항 완료',onTimeCol:'정시',late15Col:'15분 초과 지연',avgDelayCol:'평균 지연',noFlightsDay:'오늘 항공편이 없습니다.',noCompleted:'완료된 항공편이 없습니다',onTimeSample:'{on}/{total} 정시',minuteUnit:'분',
       noFlights:'현재 필터에 맞는 항공편이 없습니다.',noNextArrivals:'다음 도착편 정보가 없습니다.'
     },
     ru:{
@@ -105,6 +108,7 @@
       healthGoodTitle:'GOOD · ДАННЫЕ СВЕЖИЕ',healthGoodDesc:'JoTrip Live обновляется автоматически с коротким кэшем для стабильности.',healthWatchTitle:'WATCH · ЗАДЕРЖКА ДАННЫХ',healthWatchDesc:'Данные поступают медленнее обычного. Страница проверяет их каждую минуту.',
       healthStaleTitle:'STALE · ДАННЫЕ УСТАРЕЛИ',healthStaleDesc:'Данным больше 15 минут, их нельзя считать оперативными.',healthFallbackTitle:'FALLBACK · AUTOSYNC',healthFallbackDesc:'Live-поток временно недоступен. Используется последний сохранённый снимок.',
       analyticsTitle:'Структура рейсов',currentData:'Текущие данные',routeDistribution:'Все пункты отправления / назначения',timeDistribution:'Распределение по времени',flightStatus:'Статусы рейсов',dataAge:'Возраст данных',
+      airlinePerfTitle:'Пунктуальность / задержки по авиакомпаниям',allAirlinesDay:'Все авиакомпании сегодня',arrivalsPqc:'Прибытия на Фукуок',departuresPqc:'Вылеты с Фукуока',airlineCol:'Авиакомпания',totalCol:'Всего',completedCol:'Выполнено',onTimeCol:'Вовремя',late15Col:'Задержка >15 мин',avgDelayCol:'Средняя задержка',noFlightsDay:'Сегодня рейсов нет.',noCompleted:'Выполненных рейсов пока нет',onTimeSample:'{on}/{total} вовремя',minuteUnit:'мин',
       noFlights:'Нет рейсов по выбранным фильтрам.',noNextArrivals:'Нет ближайших прибытий в текущих данных.'
     },
     zh:{
@@ -130,6 +134,7 @@
       healthGoodTitle:'正常 · 数据最新',healthGoodDesc:'JoTrip Live 正在自动更新，并使用短缓存保持稳定。',healthWatchTitle:'注意 · 数据延迟',healthWatchDesc:'数据比平时更慢，页面每分钟重新检查。',
       healthStaleTitle:'数据已过期',healthStaleDesc:'数据已超过15分钟，不应视为实时状态。',healthFallbackTitle:'备用 · AUTOSYNC',healthFallbackDesc:'实时数据暂时无响应，页面正在使用最近保存的数据。',
       analyticsTitle:'航班结构',currentData:'当前数据',routeDistribution:'全部出发地 / 目的地',timeDistribution:'按时间分布',flightStatus:'航班状态',dataAge:'数据时效',
+      airlinePerfTitle:'航空公司准点 / 延误',allAirlinesDay:'今日全部航空公司',arrivalsPqc:'到达富国岛',departuresPqc:'从富国岛出发',airlineCol:'航空公司',totalCol:'总数',completedCol:'已执行',onTimeCol:'准点',late15Col:'延误 >15分钟',avgDelayCol:'平均延误',noFlightsDay:'今日暂无航班。',noCompleted:'暂无已执行航班',onTimeSample:'{on}/{total} 准点',minuteUnit:'分钟',
       noFlights:'当前筛选条件下没有航班。',noNextArrivals:'当前数据中没有即将到达的航班。'
     }
   };
