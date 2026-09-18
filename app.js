@@ -162,45 +162,41 @@ function rowHtml(r){const info=timingInfo(r),t=info.scheduled||'--:--',air=airli
 function renderFlights(){const list=recordsFiltered(),visible=list.slice(0,state.limit);$('#flightList').innerHTML=visible.length?visible.map(rowHtml).join(''):'<div class="empty-state">Không có chuyến phù hợp bộ lọc hiện tại.</div>';$('#showMore').classList.toggle('hidden',list.length<=state.limit);$$('.flight-row').forEach(el=>el.onclick=()=>openDrawer(el.dataset.flight,el.dataset.direction))}
 function renderNextWindow(){const all=state.latest?.records||[],next=all.filter(isNext3).filter(r=>!isPastRecord(r));$('#nextArrivals').textContent=next.filter(r=>r.direction==='arrival').length;$('#nextDepartures').textContent=next.filter(r=>r.direction==='departure').length;$('#nextInternational').textContent=next.filter(r=>r.direction==='arrival'&&r.market==='international').length;$('#nextWatch').textContent=next.filter(changed).length;const p=vnNowParts();$('#nextWindowText').textContent=`Từ ${p.hour}:${p.minute}`}
 function renderWatch(){
-  const all=[...(state.latest?.records||[])],now=nowMinutes();
-  const cancelled=r=>/CANCELLED/.test(r?.status_code||'')||/HỦY|CANCELLED/i.test(r?.status||'');
-  const deviation=r=>{
-    const actual=Number(r?.actual_delay_minutes),estimated=Number(r?.estimated_delay_minutes),direct=Number(r?.delay_minutes);
-    if(Number.isFinite(actual)&&r?.actual_time)return actual;
-    if(Number.isFinite(estimated))return estimated;
-    if(Number.isFinite(direct)&&direct!==0)return direct;
-    const t=timingInfo(r);return Number.isFinite(t?.delta)?t.delta:null;
-  };
-  const issueType=r=>{
-    if(cancelled(r))return'cancelled';
-    const d=deviation(r);
-    if(Number.isFinite(d)&&d>=10)return'delayed';
-    if(Number.isFinite(d)&&d<=-10)return'early';
-    if(isDelayed(r))return'delayed';
-    return null;
-  };
-  const issues=all.map(r=>({r,type:issueType(r),d:deviation(r)})).filter(x=>x.type);
-  issues.sort((a,b)=>{
-    const ta=mins(scheduledTime(a.r))??9999,tb=mins(scheduledTime(b.r))??9999;
-    const af=ta>=now-30?0:1,bf=tb>=now-30?0:1;
-    if(af!==bf)return af-bf;
-    return af===0?ta-tb:tb-ta;
-  });
-  const delayedCount=issues.filter(x=>x.type==='delayed').length;
-  const cancelledCount=issues.filter(x=>x.type==='cancelled').length;
-  const earlyCount=issues.filter(x=>x.type==='early').length;
   const tr=(key,fallback,vars)=>{try{return typeof window.JT_T==='function'?window.JT_T(key,vars):fallback}catch(_){return fallback}};
-  const items=issues.slice(0,8).map(x=>{
-    const r=x.r,t=timingInfo(r),route=r.direction==='arrival'?stationLabel(r.station)+' → PQC':'PQC → '+stationLabel(r.station);
-    let detail=displayStatusLabel(r);
-    if(x.type==='delayed'&&Number.isFinite(x.d)&&x.d>=10)detail=tr('late','Trễ {n} phút',{n:Math.round(x.d)});
-    if(x.type==='early'&&Number.isFinite(x.d)&&x.d<=-10)detail=tr('earlyBy','Sớm {n} phút',{n:Math.abs(Math.round(x.d))});
-    return{title:`${r.operating_flight_number} · ${route}`,body:`${t.scheduled||'--:--'} · ${detail}`};
+  const now=nowMinutes(),records=[...(state.latest?.records||[])];
+  const items=[];
+
+  const age=ageInfo(state.latest?.collected_at_vn);
+  if(age.level==='stale'||age.level==='bad'){
+    items.push({priority:0,title:tr('quickDataOld','Dữ liệu đang cũ'),body:tr('quickDataOldBody','Luồng live đang chậm. Hãy kiểm tra thời gian cập nhật trước khi dùng thông tin.'),icon:'!'});
+  }
+
+  const fids=(typeof activeFidsEvents==='function'?activeFidsEvents():[]).filter(ev=>{
+    const ms=Date.now()-new Date(ev.at).getTime();
+    return ms>=0&&ms<=60*60*1000;
   });
-  $('#watchCount').textContent=issues.length;
-  const summary=`<div class="watch-summary"><span>${escapeHtml(tr('watchDelayed','Trễ'))} <b>${delayedCount}</b></span><span>${escapeHtml(tr('watchCancelled','Hủy'))} <b>${cancelledCount}</b></span><span>${escapeHtml(tr('watchEarly','Sớm'))} <b>${earlyCount}</b></span></div>`;
-  const list=items.length?items.map(x=>`<div class="watch-item"><div class="watch-icon">!</div><div><strong>${escapeHtml(x.title)}</strong><p>${escapeHtml(x.body)}</p></div></div>`).join(''):`<div class="empty-state">${escapeHtml(tr('watchClear','Không có chuyến trễ, hủy hoặc sớm đáng kể hôm nay.'))}</div>`;
-  $('#watchList').innerHTML=summary+list;
+  fids.forEach(ev=>{
+    const r=ev.record;if(!r||isPastRecord(r))return;
+    const label=ev.field==='gate'?tr('changeGate','ĐỔI CỬA {from} → {to}',{from:ev.from,to:ev.to}):ev.field==='checkin_row'?tr('changeCounter','ĐỔI QUẦY {from} → {to}',{from:ev.from,to:ev.to}):tr('changeBelt','ĐỔI BĂNG {from} → {to}',{from:ev.from,to:ev.to});
+    items.push({priority:1,title:`${r.operating_flight_number} · ${label}`,body:r.direction==='arrival'?`${stationLabel(r.station)} → PQC`:`PQC → ${stationLabel(r.station)}`,icon:'⇄',at:new Date(ev.at).getTime()});
+  });
+
+  records.forEach(r=>{
+    if(isPastRecord(r))return;
+    const sched=mins(scheduledTime(r));if(sched==null)return;
+    let delta=sched-now;if(delta<-720)delta+=1440;if(delta>720)delta-=1440;
+    if(delta<-45||delta>240)return;
+    const cancelled=/CANCELLED/.test(r?.status_code||'')||/HỦY|CANCELLED/i.test(r?.status||'');
+    const dev=scheduleDeviation(r).delta;
+    if(!cancelled&&!isDelayed(r)&&!(dev!=null&&Math.abs(dev)>=10))return;
+    const status=displayStatusLabel(r),route=r.direction==='arrival'?stationLabel(r.station)+' → PQC':'PQC → '+stationLabel(r.station);
+    items.push({priority:cancelled?0:2,title:`${r.operating_flight_number} · ${status}`,body:`${route} · ${tr('scheduleWord','lịch')} ${scheduledTime(r)||'--:--'}`,icon:cancelled?'×':'!',sort:sched});
+  });
+
+  items.sort((a,b)=>(a.priority??9)-(b.priority??9)||((b.at??0)-(a.at??0))||((a.sort??9999)-(b.sort??9999)));
+  const visible=items.slice(0,4);
+  const count=$('#watchCount');if(count){count.textContent=items.length;count.classList.toggle('hidden',items.length===0);}
+  $('#watchList').innerHTML=visible.length?visible.map(x=>`<div class="watch-item"><div class="watch-icon">${escapeHtml(x.icon||'!')}</div><div><strong>${escapeHtml(x.title)}</strong><p>${escapeHtml(x.body)}</p></div></div>`).join(''):`<div class="quick-clear">${escapeHtml(tr('quickClear','Chưa có thông báo cần chú ý ngay lúc này.'))}</div>`;
 }
 function renderNextArrivals(){const a=(state.latest?.records||[]).filter(r=>r.direction==='arrival'&&!isPastRecord(r)).sort((x,y)=>(mins(scheduledTime(x))??9999)-(mins(scheduledTime(y))??9999)).slice(0,5);$('#nextArrivalsList').innerHTML=a.length?a.map(r=>{const info=timingInfo(r),status=displayStatusLabel(r);return `<div class="arrival-item"><div class="arrival-time">${escapeHtml(info.scheduled||'--:--')}</div><div class="arrival-main"><strong>${escapeHtml(r.operating_flight_number)} · ${escapeHtml(stationLabel(r.station))}</strong><span>${escapeHtml(isDelayed(r)&&info.expected?'Dự kiến '+info.expected:airlineFor(r))}</span></div><span class="status-pill ${statusClass(status)}">${escapeHtml(status)}</span></div>`}).join(''):'<div class="empty-state">Chưa có chuyến đến tiếp theo trong dữ liệu.</div>'}
 function pct(v,total){return total?Math.round(v*1000/total)/10+'%':'0%'}
