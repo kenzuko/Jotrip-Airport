@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="./mobile-logo-fix.css?v=20260918ab">
 <link rel="stylesheet" href="./history-polish.css?v=20260916c">
 <link rel="stylesheet" href="./i18n.css?v=20260918ab">
-<link rel="stylesheet" href="./history-unify.css?v=20260918ab">
+<link rel="stylesheet" href="./history-unify.css?v=20260918ac">
 </head>
 <body>
 <div class="history-app">
@@ -77,15 +77,6 @@
     <article><span>Trễ TB &gt;15'</span><strong id="hAvgDelay">-</strong></article>
   </section>
 
-  <section class="history-card history-airline-block">
-    <span class="section-kicker">AIRLINE PERFORMANCE</span><h3>Đúng giờ theo hãng trong khoảng đã chọn</h3>
-    <p><b>OTP15</b> là On-Time Performance theo ngưỡng 15 phút: chuyến được tính đúng giờ khi giờ thực tế không muộn quá 15 phút so với giờ lịch. Chỉ các chuyến đã thực hiện mới được chấm; chuyến chưa thực hiện hoặc hủy không tính.</p>
-    <div class="otp-direction-grid">
-      <section class="otp-direction-card"><div class="otp-direction-head"><div><span class="section-kicker">ARRIVALS</span><h4>Đến Phú Quốc</h4></div><div class="otp-summary"><b id="historyArrivalRate">-</b><span>ON TIME ≤15'</span><small id="historyArrivalSample">- chuyến</small></div></div><div class="airline-table-wrap"><table class="airline-table"><thead><tr><th>Hãng</th><th>Đã thực hiện</th><th>Đúng giờ</th><th>Trễ &gt;15'</th><th>OTP15</th><th>Trễ %</th><th>Trễ TB</th></tr></thead><tbody id="historyAirlineArrivalBody"></tbody></table></div></section>
-      <section class="otp-direction-card"><div class="otp-direction-head"><div><span class="section-kicker">DEPARTURES</span><h4>Rời Phú Quốc</h4></div><div class="otp-summary"><b id="historyDepartureRate">-</b><span>ON TIME ≤15'</span><small id="historyDepartureSample">- chuyến</small></div></div><div class="airline-table-wrap"><table class="airline-table"><thead><tr><th>Hãng</th><th>Đã thực hiện</th><th>Đúng giờ</th><th>Trễ &gt;15'</th><th>OTP15</th><th>Trễ %</th><th>Trễ TB</th></tr></thead><tbody id="historyAirlineDepartureBody"></tbody></table></div></section>
-    </div>
-  </section>
-
   <section class="history-card">
     <div class="history-card-head"><div><span class="section-kicker">FLIGHT ARCHIVE</span><h3 id="historyTitle">Dữ liệu theo khoảng ngày</h3></div><span id="historyCount" class="history-count"></span></div>
     <div id="historyError" class="history-error hidden"></div>
@@ -94,9 +85,9 @@
 </main>
 </div>
 <nav class="mobile-nav"><button onclick="location.href='./index.html'"><span>⌂</span>Live</button><button onclick="location.href='./index.html#flightBoard'"><span>✈</span>Flights</button><button class="active"><span>◷</span>History</button><button onclick="location.href='./index.html#analytics'"><span>▥</span>Analytics</button><button onclick="location.reload()"><span>↻</span>Refresh</button></nav>
-<script src="./history-v3.js?v=20260918ab"></script>
+<script src="./history-v3.js?v=20260918ac"></script>
 <script src="./flight-status-policy.js?v=20260918ab"></script>
 <script src="./history-polish.js?v=20260918ab"></script>
-<script src="./history-i18n.js?v=20260918ab"></script>
+<script src="./history-i18n.js?v=20260918ac"></script>
 </body>
 </html>
