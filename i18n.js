@@ -32,7 +32,9 @@
       market:'Thị trường',scheduleCompare:'So với lịch',checkinCounter:'Quầy làm thủ tục',checkinTime:'Giờ mở check-in',
       boardingGate:'Cửa ra máy bay',baggageBelt:'Băng chuyền hành lý',parking:'Vị trí đỗ',source:'Nguồn',
       scheduledAt:'Theo lịch · {time}',actualAt:'Thực tế · {time}',estimatedAt:'Dự kiến · {time}',
-      noDelay:'Đúng giờ / chưa ghi nhận lệch lịch',earlyBy:'Sớm {n} phút',lateBy:'Trễ {n} phút'
+      noDelay:'Đúng giờ / chưa ghi nhận lệch lịch',earlyBy:'Sớm {n} phút',lateBy:'Trễ {n} phút',
+      updated:'Cập nhật {time} · {age} phút trước · {source} · tự làm mới 1 phút',unknown:'CHƯA RÕ',
+      noEstimate:'Chưa có giờ dự kiến',scheduleWord:'lịch',dataStale:'Dữ liệu đã stale'
     },
     en:{
       today:'Today at Phu Quoc',heroSub:'Understand the airport in 3 seconds.',
@@ -58,7 +60,9 @@
       market:'Market',scheduleCompare:'Vs schedule',checkinCounter:'Check-in counter',checkinTime:'Check-in opens',
       boardingGate:'Boarding gate',baggageBelt:'Baggage belt',parking:'Parking bay',source:'Source',
       scheduledAt:'Scheduled · {time}',actualAt:'Actual · {time}',estimatedAt:'Estimated · {time}',
-      noDelay:'On time / no schedule deviation',earlyBy:'{n} min early',lateBy:'{n} min late'
+      noDelay:'On time / no schedule deviation',earlyBy:'{n} min early',lateBy:'{n} min late',
+      updated:'Updated {time} · {age} min ago · {source} · refreshes every minute',unknown:'UNKNOWN',
+      noEstimate:'No estimated time yet',scheduleWord:'sched',dataStale:'Data is stale'
     },
     ko:{
       today:'오늘의 푸꾸옥 공항',heroSub:'3초 만에 공항 상황을 확인하세요.',
@@ -84,7 +88,9 @@
       market:'구분',scheduleCompare:'예정 대비',checkinCounter:'체크인 카운터',checkinTime:'체크인 시작',
       boardingGate:'탑승 게이트',baggageBelt:'수하물 벨트',parking:'주기장',source:'출처',
       scheduledAt:'예정 · {time}',actualAt:'실제 · {time}',estimatedAt:'예상 · {time}',
-      noDelay:'정시 / 시간 변동 없음',earlyBy:'{n}분 조기',lateBy:'{n}분 지연'
+      noDelay:'정시 / 시간 변동 없음',earlyBy:'{n}분 조기',lateBy:'{n}분 지연',
+      updated:'업데이트 {time} · {age}분 전 · {source} · 1분마다 갱신',unknown:'미확인',
+      noEstimate:'예상 시간이 아직 없습니다',scheduleWord:'예정',dataStale:'데이터가 오래되었습니다'
     },
     ru:{
       today:'Сегодня в аэропорту Фукуока',heroSub:'Ситуация в аэропорту за 3 секунды.',
@@ -110,7 +116,9 @@
       market:'Рынок',scheduleCompare:'К расписанию',checkinCounter:'Стойка регистрации',checkinTime:'Начало регистрации',
       boardingGate:'Выход на посадку',baggageBelt:'Багажная лента',parking:'Место стоянки',source:'Источник',
       scheduledAt:'По расписанию · {time}',actualAt:'Факт · {time}',estimatedAt:'Расчётное · {time}',
-      noDelay:'По расписанию / отклонений нет',earlyBy:'На {n} мин раньше',lateBy:'На {n} мин позже'
+      noDelay:'По расписанию / отклонений нет',earlyBy:'На {n} мин раньше',lateBy:'На {n} мин позже',
+      updated:'Обновлено {time} · {age} мин назад · {source} · обновление каждую минуту',unknown:'НЕТ ДАННЫХ',
+      noEstimate:'Расчётное время пока не опубликовано',scheduleWord:'расп.',dataStale:'Данные устарели'
     },
     zh:{
       today:'今日富国岛机场',heroSub:'3秒了解机场运行情况。',
@@ -136,7 +144,9 @@
       market:'类型',scheduleCompare:'相对计划',checkinCounter:'值机柜台',checkinTime:'值机开始',
       boardingGate:'登机口',baggageBelt:'行李转盘',parking:'停机位',source:'来源',
       scheduledAt:'计划 · {time}',actualAt:'实际 · {time}',estimatedAt:'预计 · {time}',
-      noDelay:'准点 / 暂无时间偏差',earlyBy:'提前 {n} 分钟',lateBy:'延后 {n} 分钟'
+      noDelay:'准点 / 暂无时间偏差',earlyBy:'提前 {n} 分钟',lateBy:'延后 {n} 分钟',
+      updated:'更新于 {time} · {age} 分钟前 · {source} · 每分钟刷新',unknown:'未知',
+      noEstimate:'暂无预计时间',scheduleWord:'计划',dataStale:'数据已过期'
     }
   };
 
@@ -187,10 +197,13 @@
       var out=trim;
       out=status(out);
       var m;
-      if((m=out.match(/^Dự kiến\s+(\d{1,2}:\d{2})$/)))out=t('estimatedAt',{time:m[1]}).replace(/^.*?·\s*/,'');
+      if((m=out.match(/^Dự kiến\s+(\d{1,2}:\d{2})$/)))out=t('estimatedAt',{time:m[1]});
+      if(out==='Chưa có giờ dự kiến')out=t('noEstimate');
       if(out==='Quốc tế')out=t('international');
       if(out==='Nội địa')out=t('domestic');
-      if(out==='CHƯA RÕ')out=lang==='vi'?'CHƯA RÕ':(lang==='en'?'UNKNOWN':lang==='ko'?'미확인':lang==='ru'?'НЕТ ДАННЫХ':'未知');
+      if(out==='CHƯA RÕ')out=t('unknown');
+      if((m=out.match(/^lịch\s+(\d{1,2}:\d{2})$/i)))out=t('scheduleWord')+' '+m[1];
+      if(out==='Dữ liệu đã stale')out=t('dataStale');
       if(out!==trim)n.nodeValue=raw.replace(trim,out);
     }
   }
@@ -219,6 +232,12 @@
     if(nav[2])nav[2].lastChild.nodeValue=t('history');
     if(nav[3])nav[3].lastChild.nodeValue=t('analytics');
     if(nav[4])nav[4].lastChild.nodeValue=t('refresh');
+
+    var updated=document.getElementById('updatedAt');
+    if(updated){
+      var um=updated.textContent.match(/Cập nhật\s+(\d{1,2}:\d{2})\s*·\s*(\d+)\s*phút trước\s*·\s*([^·]+)\s*·\s*tự làm mới 1 phút/i);
+      if(um)updated.textContent=t('updated',{time:um[1],age:um[2],source:um[3].trim()});
+    }
 
     var f=document.getElementById('fidsBoard');
     if(f){
@@ -268,6 +287,24 @@
     var baseDelay=window.delayStatusLabel;
     window.delayStatusLabel=function(r){return status(baseDelay(r));};
   }
+  if(typeof window.statusClass==='function'){
+    var baseClass=window.statusClass;
+    window.statusClass=function(value){
+      var cls=baseClass(value);
+      if(cls && cls!=='gray')return cls;
+      var s=String(value||'');
+      var normalized=s.toLowerCase();
+      var cancelWords=[D.en.cancelled,D.ko.cancelled,D.ru.cancelled,D.zh.cancelled];
+      var okWords=[D.en.onTime,D.ko.onTime,D.ru.onTime,D.zh.onTime,D.en.checkinOpen,D.ko.checkinOpen,D.ru.checkinOpen,D.zh.checkinOpen,D.en.boarding,D.ko.boarding,D.ru.boarding,D.zh.boarding];
+      var greenWords=[D.en.arrived,D.ko.arrived,D.ru.arrived,D.zh.arrived,D.en.departed,D.ko.departed,D.ru.departed,D.zh.departed,D.en.flyingToPqc,D.ko.flyingToPqc,D.ru.flyingToPqc,D.zh.flyingToPqc];
+      if(cancelWords.some(function(x){return s.indexOf(x)>=0}))return'red';
+      if(/delay|late|early|지연|조기|задерж|раньше|延误|提前/i.test(normalized))return'amber';
+      if(greenWords.some(function(x){return s.indexOf(x)>=0}))return'green';
+      if(okWords.some(function(x){return s.indexOf(x)>=0}))return'blue';
+      return cls||'gray';
+    };
+  }
+
 
   window.JT_SET_LANG=function(next){
     if(!LANGS.includes(next))return;
