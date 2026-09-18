@@ -210,7 +210,7 @@
     set('.source-label',t('sourceLive'));if(!state?.latest){set('#updatedAt',t('dataSync'));set('#healthDescription',t('healthCheckingDesc'));}
     set('#fidsBoard .fids-head h3',t('fidsTitle'));set('#fidsBoard .fids-head p',t('fidsDesc'));
     const fidsTabs=qa('#fidsDirectionTabs button');[t('departure'),t('arrival'),t('all')].forEach((v,i)=>{if(fidsTabs[i])fidsTabs[i].textContent=v;});
-    const fidsCols=qa('#fidsBoard .fids-columns span');[t('sched'),t('estActual'),t('flight'),t('route'),t('status'),t('gate'),t('counter'),t('belt'),t('change')].forEach((v,i)=>{if(fidsCols[i])fidsCols[i].textContent=v;});
+    const fidsCols=qa('#fidsBoard .fids-columns span');[t('sched'),t('estActual'),t('flight'),t('route'),t('status'),t('gate'),t('counterBelt'),t('change')].forEach((v,i)=>{if(fidsCols[i])fidsCols[i].textContent=v;});
     const fidsFoot=qa('#fidsBoard .fids-foot span');if(fidsFoot[0])fidsFoot[0].textContent=t('sourceAirport');
     const fidsState=q('#fidsBoardStatus');if(fidsState&&(!state?.latest||/Đang đồng bộ|Syncing|동기화|Синхронизация|同步/.test(fidsState.textContent)))fidsState.textContent=t('fidsSync');
     const fidsEmpty=q('#fidsGrid .empty-state');if(fidsEmpty&&/Đang đồng bộ FIDS|Syncing FIDS|FIDS 동기화|Синхронизация FIDS|正在同步FIDS/.test(fidsEmpty.textContent))fidsEmpty.textContent=t('fidsSyncData');
