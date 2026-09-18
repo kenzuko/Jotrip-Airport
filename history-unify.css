@@ -1,0 +1,25 @@
+
+/* Unify History with JoTrip Airport Live visual system */
+.history-source-strip{margin-bottom:12px}
+.history-mode-pill{background:#e8f5fb;color:#126da6}
+.history-source-strip #archiveHealth.archive-pill{align-self:auto;margin:0;border:0;padding:7px 10px;background:#edf2f5;color:#65758a}
+.history-source-strip #archiveHealth.archive-pill.good{background:#e9f8ed;color:#147c45}
+.history-source-strip #archiveHealth.archive-pill.bad{background:#fde8eb;color:#ad3140}
+.history-hero{min-height:150px;align-items:center;padding:24px 26px}
+.history-hero h2{font-size:31px}
+.history-card,.history-metrics article{box-shadow:0 6px 22px rgba(17,53,84,.045)}
+.history-filters input,.history-filters select{background:#f9fcfd}
+.history-app .lang-switch{display:flex}
+@media(max-width:680px){
+  .history-shell{padding:11px 11px calc(90px + env(safe-area-inset-bottom))!important}
+  .history-source-strip{margin-bottom:11px}
+  .history-source-strip .source-label{display:none!important}
+  .history-source-strip #archiveHealth.archive-pill{font-size:9px;padding:6px 8px}
+  .history-hero{min-height:136px!important;padding:18px 19px!important;border-radius:21px!important}
+  .history-hero h2{font-size:27px!important;line-height:1.08!important;margin:7px 0 5px!important}
+  .history-hero p{font-size:11px!important;line-height:1.42!important;max-width:96%}
+  .history-card{border-radius:20px!important;box-shadow:none!important}
+  .history-metrics article{box-shadow:none!important}
+  .history-app .top-actions{display:flex!important;margin-left:auto!important;min-width:48px!important}
+  .history-app .top-actions .mode-switch{display:none!important}
+}
