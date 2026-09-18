@@ -214,9 +214,12 @@
     var evs=currentEvents().filter(function(e){
       if(fidsDirection!=='all'&&e.direction!==fidsDirection)return false;
       if(e.direction==='departure'&&e.field==='belt')return false;
-      if(e.direction==='arrival'&&e.field==='checkin_row')return false;
+      if(e.direction==='arrival'&&(e.field==='checkin_row'||e.field==='gate'))return false;
       return true;
     });
+    card.classList.toggle('fids-mode-arrival',fidsDirection==='arrival');
+    card.classList.toggle('fids-mode-departure',fidsDirection==='departure');
+    card.classList.toggle('fids-mode-all',fidsDirection==='all');
     var headers=card.querySelectorAll('.fids-columns span');
     if(headers[6])headers[6].textContent=serviceHeader();
 
