@@ -69,3 +69,6 @@
   .fids-change{grid-column:3;grid-row:3;text-align:right;margin-top:6px;padding-right:6px}.fids-change:before{text-align:right}.fids-change-badge{font-size:7.2px;padding:4px 5px;max-width:82px}
   .fids-foot{font-size:9px}
 }
+
+.fids-direction-tabs{margin:0 0 11px}
+@media(max-width:680px){.fids-direction-tabs{margin-bottom:9px}.fids-direction-tabs button{font-size:10.5px;padding:8px 5px}}
