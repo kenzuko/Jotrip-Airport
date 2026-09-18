@@ -2,6 +2,13 @@
 (function(){
   var lastSignature = '';
 
+  function tr(key,fallback,vars){
+    try{return typeof window.JT_T==='function'?window.JT_T(key,vars):fallback}catch(_){return fallback}
+  }
+  function trStatus(value){
+    try{return typeof window.JT_STATUS==='function'?window.JT_STATUS(value):value}catch(_){return value}
+  }
+
   function esc(v){
     return String(v == null ? '' : v).replace(/[&<>'"]/g,function(c){
       return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c];
@@ -24,34 +31,35 @@
       card.classList.add('fids-card');
       card.innerHTML=
         '<div class="card-head fids-head">'+
-          '<div><span class="section-kicker">FIDS · LIVE TERMINAL INFO</span><h3>Bảng thông tin chuyến bay</h3><p>Giờ bay, dự kiến - thực tế, trạng thái, cửa, quầy và băng chuyền.</p></div>'+
+          '<div><span class="section-kicker">FIDS · LIVE TERMINAL INFO</span><h3>'+esc(tr('fidsTitle','Bảng thông tin chuyến bay'))+'</h3><p>'+esc(tr('fidsDesc','Giờ bay, dự kiến - thực tế, trạng thái, cửa, quầy và băng chuyền.'))+'</p></div>'+
           '<div class="fids-head-state"><i></i><span id="fidsBoardStatus">Đang đồng bộ</span></div>'+
         '</div>'+
         '<div id="fidsTicker" class="fids-ticker" aria-live="polite"></div>'+
         '<div class="fids-table-wrap">'+
           '<div class="fids-columns" aria-hidden="true">'+
-            '<span>LỊCH</span><span>DỰ KIẾN / THỰC TẾ</span><span>CHUYẾN</span><span>HÀNH TRÌNH</span><span>TRẠNG THÁI</span><span>CỬA</span><span>QUẦY / BĂNG</span><span>THAY ĐỔI</span>'+
+            '<span>'+esc(tr('sched','LỊCH'))+'</span><span>'+esc(tr('estActual','DỰ KIẾN / THỰC TẾ'))+'</span><span>'+esc(tr('flight','CHUYẾN'))+'</span><span>'+esc(tr('route','HÀNH TRÌNH'))+'</span><span>'+esc(tr('status','TRẠNG THÁI'))+'</span><span>'+esc(tr('gate','CỬA'))+'</span><span>'+esc(tr('counterBelt','QUẦY / BĂNG'))+'</span><span>'+esc(tr('change','THAY ĐỔI'))+'</span>'+
           '</div>'+
           '<div id="fidsGrid" class="fids-grid"></div>'+
         '</div>'+
-        '<div class="fids-foot"><span>Cập nhật theo dữ liệu sân bay</span><span id="fidsUpdated"></span></div>'+
+        '<div class="fids-foot"><span>'+esc(tr('sourceAirport','Cập nhật theo dữ liệu sân bay'))+'</span><span id="fidsUpdated"></span></div>'+
         '<div class="hidden" aria-hidden="true">'+
           '<span id="nextWindowText"></span><span id="nextArrivals"></span><span id="nextDepartures"></span><span id="nextInternational"></span><span id="nextWatch"></span>'+
         '</div>';
     }else{
       var title=card.querySelector('.fids-head h3');
       var desc=card.querySelector('.fids-head p');
-      if(title) title.textContent='Bảng thông tin chuyến bay';
+      if(title) title.textContent=tr('fidsTitle','Bảng thông tin chuyến bay');
+      if(desc) desc.textContent=tr('fidsDesc','Giờ bay, dự kiến - thực tế, trạng thái, cửa, quầy và băng chuyền.');
       if(!desc){
         var holder=card.querySelector('.fids-head>div:first-child');
-        if(holder) holder.insertAdjacentHTML('beforeend','<p>Giờ bay, dự kiến - thực tế, trạng thái, cửa, quầy và băng chuyền.</p>');
+        if(holder) holder.insertAdjacentHTML('beforeend','<p>'+esc(tr('fidsDesc','Giờ bay, dự kiến - thực tế, trạng thái, cửa, quầy và băng chuyền.'))+'</p>');
       }
       if(!card.querySelector('.fids-columns')){
         var grid=card.querySelector('#fidsGrid');
         if(grid){
           var wrap=document.createElement('div');
           wrap.className='fids-table-wrap';
-          wrap.innerHTML='<div class="fids-columns" aria-hidden="true"><span>LỊCH</span><span>DỰ KIẾN / THỰC TẾ</span><span>CHUYẾN</span><span>HÀNH TRÌNH</span><span>TRẠNG THÁI</span><span>CỬA</span><span>QUẦY / BĂNG</span><span>THAY ĐỔI</span></div>';
+          wrap.innerHTML='<div class="fids-columns" aria-hidden="true"><span>'+esc(tr('sched','LỊCH'))+'</span><span>'+esc(tr('estActual','DỰ KIẾN / THỰC TẾ'))+'</span><span>'+esc(tr('flight','CHUYẾN'))+'</span><span>'+esc(tr('route','HÀNH TRÌNH'))+'</span><span>'+esc(tr('status','TRẠNG THÁI'))+'</span><span>'+esc(tr('gate','CỬA'))+'</span><span>'+esc(tr('counterBelt','QUẦY / BĂNG'))+'</span><span>'+esc(tr('change','THAY ĐỔI'))+'</span></div>';
           grid.parentNode.insertBefore(wrap,grid);
           wrap.appendChild(grid);
         }
@@ -134,7 +142,7 @@
     }
     var scheduled=clean(typeof scheduledTime==='function' ? scheduledTime(r) : r.scheduled_time);
     var value=actual || expected || scheduled || '--:--';
-    var kind=actual ? 'ACTUAL' : (expected ? 'EST' : 'SCHED');
+    var kind=actual ? tr('actual','ACTUAL') : (expected ? tr('est','EST') : tr('schedShort','SCHED'));
     var cls=actual ? 'actual' : 'estimated';
     var delta=null;
     try{
@@ -148,9 +156,9 @@
 
   function changeSummary(ev){
     var parts=[];
-    if(ev.gate) parts.push('CỬA '+ev.gate.from+'→'+ev.gate.to);
-    if(ev.checkin_row) parts.push('QUẦY '+ev.checkin_row.from+'→'+ev.checkin_row.to);
-    if(ev.belt) parts.push('BĂNG '+ev.belt.from+'→'+ev.belt.to);
+    if(ev.gate) parts.push(tr('changeGate','ĐỔI CỬA {from} → {to}',{from:ev.gate.from,to:ev.gate.to}));
+    if(ev.checkin_row) parts.push(tr('changeCounter','ĐỔI QUẦY {from} → {to}',{from:ev.checkin_row.from,to:ev.checkin_row.to}));
+    if(ev.belt) parts.push(tr('changeBelt','ĐỔI BĂNG {from} → {to}',{from:ev.belt.from,to:ev.belt.to}));
     return parts.join(' · ');
   }
 
@@ -160,12 +168,12 @@
   }
 
   function serviceLabel(r){
-    return r.direction==='departure' ? 'QUẦY' : 'BĂNG';
+    return r.direction==='departure' ? tr('counter','QUẦY') : tr('belt','BĂNG');
   }
 
   function statusText(events){
-    if(events.length) return events.length+' thay đổi đang hiệu lực';
-    return 'FIDS đang ổn định';
+    if(events.length) return tr('changesActive',events.length+' thay đổi đang hiệu lực',{n:events.length});
+    return tr('stable','FIDS đang ổn định');
   }
 
   function render(){
@@ -192,7 +200,7 @@
 
     if(updated){
       try{
-        updated.textContent='Nguồn '+new Date(state.latest.collected_at_vn).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Ho_Chi_Minh'});
+        updated.textContent=tr('sourceAt','Nguồn {time}',{time:new Date(state.latest.collected_at_vn).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Ho_Chi_Minh'})});
       }catch(_){
         updated.textContent='';
       }
@@ -202,12 +210,12 @@
       ticker.innerHTML=evs.slice(0,5).map(function(e){
         var age=Date.now()-new Date(e.at).getTime();
         var hot=age>=0 && age<=60*60*1000;
-        var label=typeof fidsAlertText==='function' ? fidsAlertText(e) : ('ĐỔI '+String(e.field).toUpperCase()+' '+e.from+' → '+e.to);
+        var label=e.field==='gate'?tr('changeGate','ĐỔI CỬA {from} → {to}',{from:e.from,to:e.to}):e.field==='checkin_row'?tr('changeCounter','ĐỔI QUẦY {from} → {to}',{from:e.from,to:e.to}):e.field==='belt'?tr('changeBelt','ĐỔI BĂNG {from} → {to}',{from:e.from,to:e.to}):(typeof fidsAlertText==='function' ? fidsAlertText(e) : ('ĐỔI '+String(e.field).toUpperCase()+' '+e.from+' → '+e.to));
         return '<div class="fids-tape '+esc(e.field)+' '+(hot?'hot':'')+'" data-flight="'+esc(e.flightNumber)+'" data-direction="'+esc(e.direction)+'">'+
           '<span class="fids-tape-dot"></span><strong>'+esc(e.flightNumber)+'</strong><span>'+esc(label)+'</span></div>';
       }).join('');
     }else{
-      ticker.innerHTML='<div class="fids-steady"><span>●</span> Chưa ghi nhận đổi cửa, đổi quầy hoặc đổi băng chuyền đang hiệu lực.</div>';
+      ticker.innerHTML='<div class="fids-steady"><span>●</span> '+esc(tr('noFidsChanges','Chưa ghi nhận đổi cửa, đổi quầy hoặc đổi băng chuyền đang hiệu lực.'))+'</div>';
     }
 
     if(rs.length){
@@ -218,7 +226,7 @@
         var route=r.direction==='arrival' ? stationLabel(r.station)+' → PQC' : 'PQC → '+stationLabel(r.station);
         var air=typeof airlineFor==='function' ? airlineFor(r) : (r.airline_name||'');
         var stat='';
-        try{stat=typeof displayStatusLabel==='function' ? displayStatusLabel(r) : (r.status||'');}catch(_){stat=r.status||'';}
+        try{stat=typeof displayStatusLabel==='function' ? displayStatusLabel(r) : (r.status||'');}catch(_){stat=r.status||'';} stat=trStatus(stat);
         var tone=statusTone(stat);
         var gate=clean(r.gate)||'—';
         var service=serviceValue(r);
@@ -231,18 +239,18 @@
         });
 
         return '<div class="fids-row '+(changed?'has-change ':'')+(changedHot?'hot-change':'')+'" data-flight="'+esc(r.operating_flight_number)+'" data-direction="'+esc(r.direction)+'">'+
-          '<div class="fids-cell fids-scheduled" data-label="LỊCH"><strong>'+esc(sched)+'</strong><span class="fids-dir '+esc(r.direction)+'">'+(r.direction==='arrival'?'ĐẾN':'ĐI')+'</span></div>'+
-          '<div class="fids-cell fids-live-time '+esc(live.cls)+'" data-label="DỰ KIẾN / THỰC TẾ"><strong>'+esc(live.value)+'</strong><span>'+esc(live.kind)+(live.delta?' · '+esc(live.delta):'')+'</span></div>'+
-          '<div class="fids-cell fids-flight" data-label="CHUYẾN"><strong>'+esc(r.operating_flight_number)+'</strong><span>'+esc(air)+'</span></div>'+
-          '<div class="fids-cell fids-route" data-label="HÀNH TRÌNH"><strong>'+esc(route)+'</strong><span>'+esc(r.market==='international'?'QUỐC TẾ':'NỘI ĐỊA')+'</span></div>'+
-          '<div class="fids-cell fids-status" data-label="TRẠNG THÁI"><span class="fids-status-pill '+esc(tone)+'">'+esc(stat||'CHƯA RÕ')+'</span></div>'+
-          '<div class="fids-cell fids-gate '+(ev.gate?'changed':'')+'" data-label="CỬA"><strong>'+esc(gate)+'</strong>'+(ev.gate?'<span>← '+esc(ev.gate.from)+'</span>':'')+'</div>'+
+          '<div class="fids-cell fids-scheduled" data-label="'+esc(tr('sched','LỊCH'))+'"><strong>'+esc(sched)+'</strong><span class="fids-dir '+esc(r.direction)+'">'+esc(r.direction==='arrival'?tr('arr','ĐẾN'):tr('dep','ĐI'))+'</span></div>'+
+          '<div class="fids-cell fids-live-time '+esc(live.cls)+'" data-label="'+esc(tr('estActual','DỰ KIẾN / THỰC TẾ'))+'"><strong>'+esc(live.value)+'</strong><span>'+esc(live.kind)+(live.delta?' · '+esc(live.delta):'')+'</span></div>'+
+          '<div class="fids-cell fids-flight" data-label="'+esc(tr('flight','CHUYẾN'))+'"><strong>'+esc(r.operating_flight_number)+'</strong><span>'+esc(air)+'</span></div>'+
+          '<div class="fids-cell fids-route" data-label="'+esc(tr('route','HÀNH TRÌNH'))+'"><strong>'+esc(route)+'</strong><span>'+esc(r.market==='international'?tr('intl','QUỐC TẾ'):tr('dom','NỘI ĐỊA'))+'</span></div>'+
+          '<div class="fids-cell fids-status" data-label="'+esc(tr('status','TRẠNG THÁI'))+'"><span class="fids-status-pill '+esc(tone)+'">'+esc(stat||(tr('status','CHƯA RÕ')))+'</span></div>'+
+          '<div class="fids-cell fids-gate '+(ev.gate?'changed':'')+'" data-label="'+esc(tr('gate','CỬA'))+'"><strong>'+esc(gate)+'</strong>'+(ev.gate?'<span>← '+esc(ev.gate.from)+'</span>':'')+'</div>'+
           '<div class="fids-cell fids-service '+((r.direction==='departure'&&ev.checkin_row)||(r.direction==='arrival'&&ev.belt)?'changed':'')+'" data-label="'+esc(serviceLabel(r))+'"><strong>'+esc(service)+'</strong><span>'+(((r.direction==='departure'&&ev.checkin_row)||(r.direction==='arrival'&&ev.belt))?'ĐÃ ĐỔI':'')+'</span></div>'+
-          '<div class="fids-cell fids-change" data-label="THAY ĐỔI">'+(change?'<span class="fids-change-badge">'+esc(change)+'</span>':'<span class="fids-no-change">—</span>')+'</div>'+
+          '<div class="fids-cell fids-change" data-label="'+esc(tr('change','THAY ĐỔI'))+'">'+(change?'<span class="fids-change-badge">'+esc(change)+'</span>':'<span class="fids-no-change">—</span>')+'</div>'+
         '</div>';
       }).join('');
     }else{
-      grid.innerHTML='<div class="empty-state">Chưa có chuyến sắp tới trong dữ liệu FIDS.</div>';
+      grid.innerHTML='<div class="empty-state">'+esc(tr('noFidsFlights','Chưa có chuyến sắp tới trong dữ liệu FIDS.'))+'</div>';
     }
 
     card.querySelectorAll('.fids-row,.fids-tape[data-flight]').forEach(function(el){
@@ -252,6 +260,7 @@
     });
   }
 
+  window.JT_RENDER_FIDS=function(force){if(force)lastSignature='';render();};
   ensureBoard();
   setTimeout(render,300);
   setTimeout(render,1200);
