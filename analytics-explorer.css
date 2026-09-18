@@ -1,0 +1,81 @@
+
+/* JoTrip Airport Analytics Explorer */
+.mode-analytics .layout{grid-template-columns:minmax(0,1fr)}
+.mode-analytics .sidebar{display:none!important}
+.mode-analytics .source-strip,.mode-analytics .board-day-switch{display:none!important}
+#analytics{max-width:none}
+.analytics-head{align-items:flex-start}
+.analytics-head p{margin:4px 0 0;color:var(--muted);font-size:11.5px;line-height:1.45}
+.analytics-toolbar{display:grid;gap:12px;margin-bottom:14px}
+.analytics-periods{display:flex;gap:7px;overflow:auto;scrollbar-width:none;padding-bottom:1px}
+.analytics-periods::-webkit-scrollbar{display:none}
+.analytics-periods button{border:1px solid var(--line);background:#fff;color:#65758a;border-radius:999px;padding:9px 12px;font:inherit;font-size:11px;font-weight:850;white-space:nowrap;cursor:pointer}
+.analytics-periods button.active{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 5px 13px rgba(20,120,180,.18)}
+.analytics-filter-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.analytics-filter-grid label,.analytics-custom-range label{display:flex;flex-direction:column;gap:6px;min-width:0}
+.analytics-filter-grid label>span,.analytics-custom-range label>span{font-size:10px;color:#687b8f;font-weight:850}
+.analytics-filter-grid select,.analytics-custom-range input{width:100%;height:42px;min-width:0;border:1px solid var(--line);border-radius:12px;background:#fbfdfe;padding:0 11px;color:var(--navy);font:inherit;font-size:11.5px;outline:none}
+.analytics-filter-grid select:focus,.analytics-custom-range input:focus{border-color:#9fcce3;box-shadow:0 0 0 4px #eef8fd}
+.analytics-custom-range{display:grid;grid-template-columns:180px 180px auto;gap:9px;align-items:end;padding:10px;border:1px solid #e6eef3;border-radius:14px;background:#f8fbfd}
+.analytics-custom-range button{height:42px;border:0;border-radius:12px;background:var(--navy2);color:#fff;padding:0 16px;font:inherit;font-size:11px;font-weight:850;cursor:pointer}
+.analytics-content{min-height:220px}
+.analytics-summary-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:9px}
+.analytics-summary-grid article{background:#f7fafc;border:1px solid #e7eef3;border-radius:16px;padding:13px}
+.analytics-summary-grid span{display:block;color:var(--muted);font-size:10.5px}
+.analytics-summary-grid strong{display:block;font-size:23px;margin-top:4px}
+.analytics-panel{margin-top:14px;border-top:1px solid #edf2f5;padding-top:14px}
+.analytics-panel h4{margin:0 0 10px;font-size:13px}
+.analytics-panel-note{font-size:10.5px;color:var(--muted);margin:-5px 0 10px}
+.analytics-bar-list{display:grid;gap:9px}
+.analytics-bar-row{display:grid;grid-template-columns:minmax(120px,180px) 1fr 36px;gap:10px;align-items:center;font-size:11.5px}
+.analytics-bar-row>span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.analytics-bar-track{height:9px;background:#edf3f6;border-radius:999px;overflow:hidden}
+.analytics-bar-fill{height:100%;background:linear-gradient(90deg,#1680ba,#5cb3d7);border-radius:999px}
+.analytics-time-grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;align-items:end;height:160px}
+.analytics-time-col{height:100%;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;text-align:center;color:#7b8999;font-size:9.5px}
+.analytics-time-col .analytics-time-bar{width:100%;min-height:5px;background:linear-gradient(#5bb0d7,#187cb6);border-radius:6px 6px 2px 2px}
+.analytics-market-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.analytics-market-grid article{padding:14px;border:1px solid #e7eef3;border-radius:16px;background:#fbfdfe}
+.analytics-market-grid span{display:block;color:var(--muted);font-size:10.5px}
+.analytics-market-grid strong{display:block;font-size:24px;margin:5px 0 2px}
+.analytics-market-grid small{font-size:10px;color:#738397}
+.analytics-otp-stack{display:grid;gap:13px}
+.analytics-otp-card{border:1px solid #e7eef3;border-radius:16px;background:#fbfdfe;padding:13px;min-width:0}
+.analytics-otp-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:10px}
+.analytics-otp-head h4{margin:3px 0 0;font-size:15px}
+.analytics-otp-summary{text-align:right;display:grid;line-height:1.05}
+.analytics-otp-summary b{font-size:22px}
+.analytics-otp-summary span{font-size:9px;font-weight:850;letter-spacing:.05em;color:#708095}
+.analytics-otp-summary small{margin-top:4px;color:#708095;font-size:9.5px}
+.analytics-table-wrap{overflow-x:auto;overscroll-behavior-x:contain}
+.analytics-table{width:100%;border-collapse:collapse;min-width:640px;font-size:10.5px}
+.analytics-table th,.analytics-table td{padding:8px 9px;border-top:1px solid #e9eff3;text-align:right;white-space:nowrap}
+.analytics-table th:first-child,.analytics-table td:first-child{text-align:left;position:sticky;left:0;background:#fbfdfe}
+.analytics-table thead th{border-top:0;color:#687b8f;font-size:9px;letter-spacing:.04em}
+.analytics-rate-good{color:#167c48;font-weight:850}
+.analytics-empty{padding:30px 8px;text-align:center;color:#7b8999;font-size:12px}
+.analytics-error{padding:12px 13px;border-radius:13px;background:#fff1f2;border:1px solid #f2ccd1;color:#9e3442;font-size:11.5px}
+
+@media(max-width:1000px){
+  .analytics-summary-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .analytics-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:680px){
+  #analytics{padding:14px}
+  .analytics-head{display:block}
+  .analytics-head .muted{display:block;margin:6px 0 0}
+  .analytics-periods{margin-right:-2px}
+  .analytics-periods button{font-size:10px;padding:8px 10px}
+  .analytics-filter-grid{grid-template-columns:1fr 1fr}
+  .analytics-custom-range{grid-template-columns:1fr 1fr}
+  .analytics-custom-range button{grid-column:1/-1}
+  .analytics-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .analytics-summary-grid strong{font-size:21px}
+  .analytics-market-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .analytics-bar-row{grid-template-columns:92px 1fr 30px;gap:7px;font-size:10.5px}
+  .analytics-time-grid{gap:5px;height:125px}
+  .analytics-time-col{font-size:8.5px}
+  .analytics-otp-card{padding:11px}
+  .analytics-otp-head{align-items:center}
+  .analytics-otp-summary b{font-size:20px}
+}
