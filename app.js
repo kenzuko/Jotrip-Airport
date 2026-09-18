@@ -1,7 +1,7 @@
 const DATA_BASE='https://raw.githubusercontent.com/kenzuko/Jotrip-Lab/data-sunairport/data/sunairport';
 const LIVE_API_URL=(window.JOTRIP_LIVE_API_URL||'').replace(/\/$/,'');
 const AUTO_REFRESH_MS=60*1000;
-const state={latest:null,health:null,direction:'arrival',filter:'all',query:'',limit:8,mode:'live',lastFetchAt:0,loading:false,dataSource:'snapshot',liveError:null,fidsEvents:[],fidsHistoryLoaded:false,fidsHistoryLoading:false};
+const state={latest:null,health:null,direction:'arrival',filter:'all',query:'',limit:8,mode:'live',lastFetchAt:0,loading:false,dataSource:'snapshot',liveError:null,fidsEvents:[],fidsHistoryLoaded:false,fidsHistoryLoading:false,fidsHistoryDate:null};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 function uiT(key,fallback,vars){try{return typeof window.JT_T==='function'?window.JT_T(key,vars):fallback}catch(_){return fallback}}
 function uiStatus(value){try{return typeof window.JT_STATUS==='function'?window.JT_STATUS(value):value}catch(_){return value}}
@@ -99,10 +99,22 @@ function hasFidsAlert(r){const k=flightKey(r);return activeFidsEvents().some(e=>
 function fidsAlertText(e){const cfg=FIDS_FIELDS[e.field];return `ĐỔI ${cfg?.label||'THÔNG TIN'} ${e.from} → ${e.to}`}
 function todayVn(){const p=vnNowParts();return `${p.year}-${p.month}-${p.day}`}
 async function loadFidsHistory(){
-  if(state.fidsHistoryLoaded||state.fidsHistoryLoading)return;
+  const targetDate=window.JOTRIP_BOARD_DATE||state.latest?.source_date||todayVn();
+  if(state.fidsHistoryLoading)return;
+  if(state.fidsHistoryLoaded&&state.fidsHistoryDate===targetDate)return;
   state.fidsHistoryLoading=true;
   try{
-    const res=await fetch(`${DATA_BASE}/history/${todayVn()}/events.jsonl?t=${Date.now()}`,{cache:'no-store'});
+    if(state.fidsHistoryDate!==targetDate){
+      state.fidsEvents=[];
+      state.fidsHistoryLoaded=false;
+      state.fidsHistoryDate=targetDate;
+    }
+    const res=await fetch(`${DATA_BASE}/history/${targetDate}/events.jsonl?t=${Date.now()}`,{cache:'no-store'});
+    if(res.status===404){
+      state.fidsHistoryLoaded=true;
+      renderAll();
+      return;
+    }
     if(!res.ok)throw new Error(`FIDS history HTTP ${res.status}`);
     const text=await res.text(),records=state.latest?.records||[],byFlight=new Map(records.map(r=>[flightKey(r),r]));
     for(const line of text.split('\n')){
@@ -145,7 +157,10 @@ async function load(){
     if(!payload){payload=await fetchSnapshotPayload();state.dataSource=LIVE_API_URL?'fallback':'snapshot';}
     const previousLatest=state.latest;
     state.latest=payload.latest;state.health=payload.health;state.liveError=liveError;state.lastFetchAt=Date.now();
-    if(previousLatest?.records)captureFidsSnapshotChanges(previousLatest.records,payload.latest?.records||[]);
+    const previousDate=previousLatest?.source_date||null,nextDate=payload.latest?.source_date||null;
+    if(previousLatest?.records&&previousDate&&nextDate&&previousDate===nextDate){
+      captureFidsSnapshotChanges(previousLatest.records,payload.latest?.records||[]);
+    }
     renderAll();
     if(!state.fidsHistoryLoaded&&!state.fidsHistoryLoading)loadFidsHistory();
     if(state.dataSource==='fallback'){$('#errorBox').textContent=uiT('fallbackError','Luồng live tạm gián đoạn - đang dùng bản lưu JoTrip AutoSync gần nhất.');$('#errorBox').classList.remove('hidden');}
