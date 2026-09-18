@@ -115,6 +115,7 @@
     const map={'Đang check-in':'checkinOpen','Check-in đã đóng':'checkinClosed','Cửa khởi hành đã đóng':'gateClosed','Đang lên máy bay':'boarding','Đã hạ cánh':'arrived','Đã cất cánh':'departed','Đã hủy':'cancelled','Trễ / đổi giờ':'delayChange','Đúng giờ / chưa ghi nhận trễ':'unknown','Chưa có trạng thái':'unknown'};
     return map[s]?t(map[s]):s;
   }
+  window.JT_HISTORY_STATUS=translateStatus;
 
   function applyStatic(){
     document.documentElement.lang=lang==='zh'?'zh-CN':lang;
