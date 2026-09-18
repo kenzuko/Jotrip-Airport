@@ -1,6 +1,7 @@
 
 (function(){
   var lastSignature = '';
+  var fidsDirection = 'arrival';
 
   function tr(key,fallback,vars){
     try{return typeof window.JT_T==='function'?window.JT_T(key,vars):fallback}catch(_){return fallback}
@@ -34,6 +35,11 @@
           '<div><span class="section-kicker">FIDS · LIVE TERMINAL INFO</span><h3>'+esc(tr('fidsTitle','Bảng thông tin chuyến bay'))+'</h3><p>'+esc(tr('fidsDesc','Giờ bay, dự kiến - thực tế, trạng thái, cửa, quầy và băng chuyền.'))+'</p></div>'+
           '<div class="fids-head-state"><i></i><span id="fidsBoardStatus">Đang đồng bộ</span></div>'+
         '</div>'+
+        '<div class="segmented fids-direction-tabs" id="fidsDirectionTabs">'+
+          '<button class="active" type="button" data-fids-direction="arrival">'+esc(tr('arrival','Chuyến đến'))+'</button>'+
+          '<button type="button" data-fids-direction="departure">'+esc(tr('departure','Chuyến đi'))+'</button>'+
+          '<button type="button" data-fids-direction="all">'+esc(tr('all','Tất cả'))+'</button>'+
+        '</div>'+
         '<div id="fidsTicker" class="fids-ticker" aria-live="polite"></div>'+
         '<div class="fids-table-wrap">'+
           '<div class="fids-columns" aria-hidden="true">'+
@@ -53,6 +59,12 @@
       if(!desc){
         var holder=card.querySelector('.fids-head>div:first-child');
         if(holder) holder.insertAdjacentHTML('beforeend','<p>'+esc(tr('fidsDesc','Giờ bay, dự kiến - thực tế, trạng thái, cửa, quầy và băng chuyền.'))+'</p>');
+      }
+      if(!card.querySelector('#fidsDirectionTabs')){
+        var tickerHost=card.querySelector('#fidsTicker');
+        if(tickerHost){
+          tickerHost.insertAdjacentHTML('beforebegin','<div class="segmented fids-direction-tabs" id="fidsDirectionTabs"><button class="active" type="button" data-fids-direction="arrival">'+esc(tr('arrival','Chuyến đến'))+'</button><button type="button" data-fids-direction="departure">'+esc(tr('departure','Chuyến đi'))+'</button><button type="button" data-fids-direction="all">'+esc(tr('all','Tất cả'))+'</button></div>');
+        }
       }
       if(!card.querySelector('.fids-columns')){
         var grid=card.querySelector('#fidsGrid');
@@ -104,7 +116,8 @@
     return (state.latest.records||[])
       .filter(function(r){
         var past=typeof isPastRecord==='function' ? isPastRecord(r) : false;
-        return !past;
+        if(past)return false;
+        return fidsDirection==='all' || r.direction===fidsDirection;
       })
       .sort(function(a,b){
         var ta=typeof mins==='function' ? mins(scheduledTime(a)) : 9999;
@@ -186,9 +199,21 @@
     var updated=document.getElementById('fidsUpdated');
     if(!ticker || !grid || !status) return;
 
-    var evs=currentEvents();
+    var tabs=card.querySelectorAll('#fidsDirectionTabs button');
+    tabs.forEach(function(btn){
+      var d=btn.getAttribute('data-fids-direction');
+      btn.classList.toggle('active',d===fidsDirection);
+      btn.textContent=d==='arrival'?tr('arrival','Chuyến đến'):d==='departure'?tr('departure','Chuyến đi'):tr('all','Tất cả');
+      if(!btn.dataset.boundFids){
+        btn.dataset.boundFids='1';
+        btn.onclick=function(){fidsDirection=d;lastSignature='';render();};
+      }
+    });
+
+    var evs=currentEvents().filter(function(e){return fidsDirection==='all'||e.direction===fidsDirection});
     var rs=rows();
     var sig=JSON.stringify({
+      d:fidsDirection,
       e:evs.map(function(e){return [e.flightKey,e.field,e.from,e.to,e.at];}),
       r:rs.map(function(r){return [rowKey(r),scheduledTime(r),r.estimated_time,r.actual_time,r.status_code,r.status,r.gate,r.checkin_row,r.belt];}),
       c:state.latest.collected_at_vn
