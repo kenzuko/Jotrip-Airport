@@ -43,7 +43,7 @@
         '<div id="fidsTicker" class="fids-ticker" aria-live="polite"></div>'+
         '<div class="fids-table-wrap">'+
           '<div class="fids-columns" aria-hidden="true">'+
-            '<span>'+esc(tr('sched','LỊCH'))+'</span><span>'+esc(tr('estActual','DỰ KIẾN / THỰC TẾ'))+'</span><span>'+esc(tr('flight','CHUYẾN'))+'</span><span>'+esc(tr('route','HÀNH TRÌNH'))+'</span><span>'+esc(tr('status','TRẠNG THÁI'))+'</span><span>'+esc(tr('gate','CỬA'))+'</span><span>'+esc(tr('counterBelt','QUẦY / BĂNG'))+'</span><span>'+esc(tr('change','THAY ĐỔI'))+'</span>'+
+            '<span>'+esc(tr('sched','LỊCH'))+'</span><span>'+esc(tr('estActual','DỰ KIẾN / THỰC TẾ'))+'</span><span>'+esc(tr('flight','CHUYẾN'))+'</span><span>'+esc(tr('route','HÀNH TRÌNH'))+'</span><span>'+esc(tr('status','TRẠNG THÁI'))+'</span><span>'+esc(tr('gate','CỬA'))+'</span><span>'+esc(tr('counterBelt','QUẦY CHECK-IN / BĂNG HÀNH LÝ'))+'</span><span>'+esc(tr('change','THAY ĐỔI'))+'</span>'+
           '</div>'+
           '<div id="fidsGrid" class="fids-grid"></div>'+
         '</div>'+
@@ -71,7 +71,7 @@
         if(grid){
           var wrap=document.createElement('div');
           wrap.className='fids-table-wrap';
-          wrap.innerHTML='<div class="fids-columns" aria-hidden="true"><span>'+esc(tr('sched','LỊCH'))+'</span><span>'+esc(tr('estActual','DỰ KIẾN / THỰC TẾ'))+'</span><span>'+esc(tr('flight','CHUYẾN'))+'</span><span>'+esc(tr('route','HÀNH TRÌNH'))+'</span><span>'+esc(tr('status','TRẠNG THÁI'))+'</span><span>'+esc(tr('gate','CỬA'))+'</span><span>'+esc(tr('counterBelt','QUẦY / BĂNG'))+'</span><span>'+esc(tr('change','THAY ĐỔI'))+'</span></div>';
+          wrap.innerHTML='<div class="fids-columns" aria-hidden="true"><span>'+esc(tr('sched','LỊCH'))+'</span><span>'+esc(tr('estActual','DỰ KIẾN / THỰC TẾ'))+'</span><span>'+esc(tr('flight','CHUYẾN'))+'</span><span>'+esc(tr('route','HÀNH TRÌNH'))+'</span><span>'+esc(tr('status','TRẠNG THÁI'))+'</span><span>'+esc(tr('gate','CỬA'))+'</span><span>'+esc(tr('counterBelt','QUẦY CHECK-IN / BĂNG HÀNH LÝ'))+'</span><span>'+esc(tr('change','THAY ĐỔI'))+'</span></div>';
           grid.parentNode.insertBefore(wrap,grid);
           wrap.appendChild(grid);
         }
@@ -177,7 +177,7 @@
   }
 
   function serviceLabel(r){
-    return r.direction==='departure' ? tr('counter','QUẦY') : tr('belt','BĂNG');
+    return r.direction==='departure' ? tr('counter','QUẦY CHECK-IN') : tr('belt','BĂNG HÀNH LÝ');
   }
 
   function statusText(events){
@@ -251,6 +251,7 @@
         var tone=statusTone(stat);
         var gate=clean(r.gate)||'—';
         var service=serviceValue(r);
+        var serviceEvent=r.direction==='departure'?ev.checkin_row:ev.belt;
         var change=changeSummary(ev);
         var changed=!!change;
         var changedHot=false;
@@ -266,7 +267,7 @@
           '<div class="fids-cell fids-route" data-label="'+esc(tr('route','HÀNH TRÌNH'))+'"><strong>'+esc(route)+'</strong><span>'+esc(r.market==='international'?tr('intl','QUỐC TẾ'):tr('dom','NỘI ĐỊA'))+'</span></div>'+
           '<div class="fids-cell fids-status" data-label="'+esc(tr('status','TRẠNG THÁI'))+'"><span class="fids-status-pill '+esc(tone)+'">'+esc(stat||tr('unknown','CHƯA RÕ'))+'</span></div>'+
           '<div class="fids-cell fids-gate '+(ev.gate?'changed':'')+'" data-label="'+esc(tr('gate','CỬA'))+'"><strong>'+esc(gate)+'</strong>'+(ev.gate?'<span>'+esc(tr('changedFrom','Đổi từ {from}',{from:ev.gate.from}))+'</span>':'')+'</div>'+
-          '<div class="fids-cell fids-service '+((r.direction==='departure'&&ev.checkin_row)||(r.direction==='arrival'&&ev.belt)?'changed':'')+'" data-label="'+esc(serviceLabel(r))+'"><strong>'+esc(service)+'</strong><span>'+(((r.direction==='departure'&&ev.checkin_row)||(r.direction==='arrival'&&ev.belt))?esc(tr('changedNow','ĐÃ ĐỔI')):'')+'</span></div>'+
+          '<div class="fids-cell fids-service '+(serviceEvent?'changed':'')+'" data-label="'+esc(serviceLabel(r))+'"><span class="fids-service-kind">'+esc(serviceLabel(r))+'</span><strong>'+esc(service)+'</strong>'+(serviceEvent?'<span class="fids-service-prev">'+esc(tr('previousFrom','Trước: {from}',{from:serviceEvent.from}))+'</span>':'')+'</div>'+
           '<div class="fids-cell fids-change" data-label="'+esc(tr('change','THAY ĐỔI'))+'">'+(change?'<span class="fids-change-badge">'+esc(change)+'</span>':'<span class="fids-no-change">—</span>')+'</div>'+
         '</div>';
       }).join('');
