@@ -190,7 +190,7 @@ function buildOperationWatchItems(){
       if(e.field!=='belt')continue;
       const after=minutesAfter(r.actual_time);if(after==null||after>60)continue;
     }
-    const label=e.field==='gate'?tr('changeGate','ĐỔI CỬA {from} → {to}',{from:e.from,to:e.to}):e.field==='checkin_row'?tr('changeCounter','ĐỔI QUẦY {from} → {to}',{from:e.from,to:e.to}):tr('changeBelt','ĐỔI BĂNG {from} → {to}',{from:e.from,to:e.to});
+    const label=e.field==='gate'?tr('watchChangeGate','Cửa hiện tại {to} · trước {from}',{from:e.from,to:e.to}):e.field==='checkin_row'?tr('watchChangeCounter','Quầy check-in hiện tại {to} · trước {from}',{from:e.from,to:e.to}):tr('watchChangeBelt','Băng hành lý hiện tại {to} · trước {from}',{from:e.from,to:e.to});
     items.push({kind:'fids',priority:1,title:`${r.operating_flight_number} · ${label}`,body:r.direction==='arrival'?`${stationLabel(r.station)} → PQC`:`PQC → ${stationLabel(r.station)}`,icon:'⇄',at:new Date(e.at).getTime(),sort:mins(scheduledTime(r))??9999});
   }
 
