@@ -160,30 +160,49 @@ function renderAll(){renderSummary();renderHealth();renderFlights();renderNextWi
 function buildOperationWatchItems(){
   const tr=(key,fallback,vars)=>{try{return typeof window.JT_T==='function'?window.JT_T(key,vars):fallback}catch(_){return fallback}};
   const now=nowMinutes(),records=[...(state.latest?.records||[])],items=[];
+  const completed=r=>{
+    const code=String(r?.status_code||'').toUpperCase(),raw=foldText(r?.status||r?.raw_status||'');
+    if(r?.direction==='arrival')return !!r?.actual_time||/ARRIVED|ON_BLOCK/.test(code)||/DA HA CANH|BAI DO/.test(raw);
+    return !!r?.actual_time||code==='DEPARTED'||/DA CAT CANH/.test(raw);
+  };
+  const minutesAfter=(hhmm)=>{
+    const t=mins(hhmm);if(t==null)return null;let d=now-t;if(d<0)d+=1440;return d;
+  };
   const age=ageInfo(state.latest?.collected_at_vn);
   if(age.level==='stale'||age.level==='bad'){
     items.push({kind:'data',priority:0,title:tr('quickDataOld','Dữ liệu đang cũ'),body:tr('quickDataOldBody','Luồng live đang chậm. Hãy kiểm tra thời gian cập nhật trước khi dùng thông tin.'),icon:'!'});
   }
 
-  const fids=(typeof activeFidsEvents==='function'?activeFidsEvents():[]).filter(ev=>{
-    const ms=Date.now()-new Date(ev.at).getTime();
-    return ms>=0&&ms<=60*60*1000;
-  });
-  fids.forEach(ev=>{
-    const r=ev.record;if(!r||isPastRecord(r))return;
-    const label=ev.field==='gate'?tr('changeGate','ĐỔI CỬA {from} → {to}',{from:ev.from,to:ev.to}):ev.field==='checkin_row'?tr('changeCounter','ĐỔI QUẦY {from} → {to}',{from:ev.from,to:ev.to}):tr('changeBelt','ĐỔI BĂNG {from} → {to}',{from:ev.from,to:ev.to});
-    items.push({kind:'fids',priority:1,title:`${r.operating_flight_number} · ${label}`,body:r.direction==='arrival'?`${stationLabel(r.station)} → PQC`:`PQC → ${stationLabel(r.station)}`,icon:'⇄',at:new Date(ev.at).getTime()});
-  });
+  // FIDS changes from today remain in Watch while the information is still operationally relevant.
+  const byKey=new Map(records.map(r=>[flightKey(r),r])),latestByField=new Map();
+  for(const e of state.fidsEvents||[]){
+    const eventDay=(()=>{try{return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Ho_Chi_Minh',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(e.at))}catch(_){return''}})();
+    if(eventDay!==todayVn())continue;
+    const r=byKey.get(e.flightKey);if(!r)continue;
+    const cfg=FIDS_FIELDS[e.field];if(!cfg)continue;
+    if(cleanFidsValue(r[cfg.current])!==cleanFidsValue(e.to))continue;
+    const k=e.flightKey+'|'+e.field;if(!latestByField.has(k))latestByField.set(k,{...e,record:r});
+  }
+  for(const e of latestByField.values()){
+    const r=e.record;
+    if(r.direction==='departure'&&completed(r))continue;
+    if(r.direction==='arrival'&&completed(r)){
+      if(e.field!=='belt')continue;
+      const after=minutesAfter(r.actual_time);if(after==null||after>60)continue;
+    }
+    const label=e.field==='gate'?tr('changeGate','ĐỔI CỬA {from} → {to}',{from:e.from,to:e.to}):e.field==='checkin_row'?tr('changeCounter','ĐỔI QUẦY {from} → {to}',{from:e.from,to:e.to}):tr('changeBelt','ĐỔI BĂNG {from} → {to}',{from:e.from,to:e.to});
+    items.push({kind:'fids',priority:1,title:`${r.operating_flight_number} · ${label}`,body:r.direction==='arrival'?`${stationLabel(r.station)} → PQC`:`PQC → ${stationLabel(r.station)}`,icon:'⇄',at:new Date(e.at).getTime(),sort:mins(scheduledTime(r))??9999});
+  }
 
+  // Flight-time changes remain until the flight is completed. Cancellations remain until 60 min after schedule.
   records.forEach(r=>{
-    if(isPastRecord(r))return;
     const sched=mins(scheduledTime(r));if(sched==null)return;
-    let delta=sched-now;if(delta<-720)delta+=1440;if(delta>720)delta-=1440;
-    if(delta<-45||delta>240)return;
     const cancelled=/CANCELLED/.test(r?.status_code||'')||/HỦY|CANCELLED/i.test(r?.status||'');
+    if(completed(r)&&!cancelled)return;
+    if(cancelled){const after=minutesAfter(scheduledTime(r));if(after!=null&&after>60&&after<720)return;}
     const dev=scheduleDeviation(r).delta;
     if(!cancelled&&!isDelayed(r)&&!(dev!=null&&Math.abs(dev)>=10))return;
-    const status=displayStatusLabel(r),route=r.direction==='arrival'?stationLabel(r.station)+' → PQC':'PQC → '+stationLabel(r.station);
+    const rawStatus=displayStatusLabel(r),status=uiStatus(rawStatus),route=r.direction==='arrival'?stationLabel(r.station)+' → PQC':'PQC → '+stationLabel(r.station);
     items.push({kind:'flight',priority:cancelled?0:2,title:`${r.operating_flight_number} · ${status}`,body:`${route} · ${tr('scheduleWord','lịch')} ${scheduledTime(r)||'--:--'}`,icon:cancelled?'×':'!',sort:sched});
   });
 
@@ -198,7 +217,7 @@ function renderFlights(){const list=recordsFiltered(),visible=list.slice(0,state
 function renderNextWindow(){const all=state.latest?.records||[],next=all.filter(isNext3).filter(r=>!isPastRecord(r));$('#nextArrivals').textContent=next.filter(r=>r.direction==='arrival').length;$('#nextDepartures').textContent=next.filter(r=>r.direction==='departure').length;$('#nextInternational').textContent=next.filter(r=>r.direction==='arrival'&&r.market==='international').length;$('#nextWatch').textContent=next.filter(changed).length;const p=vnNowParts();$('#nextWindowText').textContent=`Từ ${p.hour}:${p.minute}`}
 function renderWatch(){
   const tr=(key,fallback)=>{try{return typeof window.JT_T==='function'?window.JT_T(key):fallback}catch(_){return fallback}};
-  const items=buildOperationWatchItems(),visible=items.slice(0,4);
+  const items=buildOperationWatchItems(),visible=items;
   $$('.operation-watch-count').forEach(count=>{count.textContent=items.length;count.classList.toggle('hidden',items.length===0);});
   const html=visible.length?visible.map(x=>`<div class="watch-item"><div class="watch-icon">${escapeHtml(x.icon||'!')}</div><div><strong>${escapeHtml(x.title)}</strong><p>${escapeHtml(x.body||'')}</p></div></div>`).join(''):`<div class="quick-clear">${escapeHtml(tr('quickClear','Chưa có thông báo cần chú ý ngay lúc này.'))}</div>`;
   $$('.operation-watch-list').forEach(list=>{list.innerHTML=html;});
