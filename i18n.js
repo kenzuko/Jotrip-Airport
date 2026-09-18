@@ -21,7 +21,7 @@
       sourceAirport:'Cập nhật theo dữ liệu sân bay',sourceAt:'Nguồn {time}',onTime:'Đúng giờ',checkinOpen:'Đang check-in',checkinClosed:'Check-in đã đóng',checkinSoon:'Sắp mở check-in',
       boarding:'Đang lên máy bay',arrived:'Đã hạ cánh',departed:'Đã cất cánh',cancelled:'Hủy',flyingToPqc:'Đang bay đến Phú Quốc',waitArrival:'Chờ giờ hạ cánh',waitDeparture:'Chờ giờ cất cánh',
       early:'Dự kiến sớm {n} phút',late:'Trễ {n} phút',lateMin:'Trễ ≥ {n} phút',earlyBy:'Sớm {n} phút',lateBy:'Trễ {n} phút',
-      changeGate:'ĐỔI CỬA {from} → {to}',changeCounter:'ĐỔI QUẦY {from} → {to}',changeBelt:'ĐỔI BĂNG {from} → {to}',
+      changeGate:'ĐỔI CỬA {from} → {to}',changedFrom:'Đổi từ {from}',changeCounter:'ĐỔI QUẦY {from} → {to}',changeBelt:'ĐỔI BĂNG {from} → {to}',
       watchDelayed:'Trễ',watchCancelled:'Hủy',watchEarly:'Sớm',watchClear:'Không có chuyến trễ, hủy hoặc sớm đáng kể hôm nay.',estimatedWord:'dự kiến',quickClear:'Chưa có thông báo cần chú ý ngay lúc này.',quickDataOld:'Dữ liệu đang cũ',quickDataOldBody:'Luồng live đang chậm. Hãy kiểm tra thời gian cập nhật trước khi dùng thông tin.',
       market:'Thị trường',scheduleCompare:'So với lịch',checkinCounter:'Quầy làm thủ tục',checkinTime:'Giờ mở check-in',boardingGate:'Cửa ra máy bay',baggageBelt:'Băng chuyền hành lý',parking:'Vị trí đỗ',source:'Nguồn',
       scheduledAt:'Theo lịch · {time}',actualAt:'Thực tế · {time}',estimatedAt:'Dự kiến · {time}',rawStatus:'Trạng thái gốc:',statusSource:'Trạng thái theo dữ liệu sân bay.',actualDesc:'Giờ thực tế đã được ghi nhận trong dữ liệu chuyến bay.',estimateDesc:'Giờ cập nhật theo dữ liệu chuyến bay.',
@@ -47,7 +47,7 @@
       sourceAirport:'Updated from airport data',sourceAt:'Source {time}',onTime:'On time',checkinOpen:'Check-in open',checkinClosed:'Check-in closed',checkinSoon:'Check-in opening soon',
       boarding:'Boarding',arrived:'Arrived',departed:'Departed',cancelled:'Cancelled',flyingToPqc:'En route to Phu Quoc',waitArrival:'Awaiting arrival time',waitDeparture:'Awaiting departure time',
       early:'Estimated {n} min early',late:'Delayed {n} min',lateMin:'Delayed ≥ {n} min',earlyBy:'{n} min early',lateBy:'{n} min late',
-      changeGate:'GATE {from} → {to}',changeCounter:'CHECK-IN {from} → {to}',changeBelt:'BELT {from} → {to}',
+      changeGate:'GATE {from} → {to}',changedFrom:'Changed from {from}',changeCounter:'CHECK-IN {from} → {to}',changeBelt:'BELT {from} → {to}',
       watchDelayed:'Delayed',watchCancelled:'Cancelled',watchEarly:'Early',watchClear:'No significantly delayed, cancelled or early flights today.',estimatedWord:'estimated',quickClear:'No immediate alerts right now.',quickDataOld:'Data is stale',quickDataOldBody:'The live feed is delayed. Check the update time before relying on this information.',
       market:'Market',scheduleCompare:'Vs schedule',checkinCounter:'Check-in counter',checkinTime:'Check-in opens',boardingGate:'Boarding gate',baggageBelt:'Baggage belt',parking:'Parking bay',source:'Source',
       scheduledAt:'Scheduled · {time}',actualAt:'Actual · {time}',estimatedAt:'Estimated · {time}',rawStatus:'Original airport status:',statusSource:'Status from airport data.',actualDesc:'Actual time recorded in flight data.',estimateDesc:'Updated time from flight data.',
@@ -73,7 +73,7 @@
       sourceAirport:'공항 데이터 기준',sourceAt:'데이터 {time}',onTime:'정시',checkinOpen:'체크인 중',checkinClosed:'체크인 마감',checkinSoon:'체크인 곧 시작',
       boarding:'탑승 중',arrived:'도착 완료',departed:'출발 완료',cancelled:'취소',flyingToPqc:'푸꾸옥으로 운항 중',waitArrival:'도착 시간 대기',waitDeparture:'출발 시간 대기',
       early:'예상 {n}분 조기',late:'{n}분 지연',lateMin:'최소 {n}분 지연',earlyBy:'{n}분 조기',lateBy:'{n}분 지연',
-      changeGate:'게이트 {from} → {to}',changeCounter:'체크인 {from} → {to}',changeBelt:'벨트 {from} → {to}',
+      changeGate:'게이트 {from} → {to}',changedFrom:'이전 {from}',changeCounter:'체크인 {from} → {to}',changeBelt:'벨트 {from} → {to}',
       watchDelayed:'지연',watchCancelled:'취소',watchEarly:'조기',watchClear:'오늘 큰 지연, 취소 또는 조기 운항 항공편이 없습니다.',estimatedWord:'예상',quickClear:'현재 즉시 확인할 알림이 없습니다.',quickDataOld:'데이터가 오래되었습니다',quickDataOldBody:'실시간 데이터가 지연되고 있습니다. 정보 사용 전 업데이트 시간을 확인하세요.',
       market:'구분',scheduleCompare:'예정 대비',checkinCounter:'체크인 카운터',checkinTime:'체크인 시작',boardingGate:'탑승 게이트',baggageBelt:'수하물 벨트',parking:'주기장',source:'출처',
       scheduledAt:'예정 · {time}',actualAt:'실제 · {time}',estimatedAt:'예상 · {time}',rawStatus:'공항 원문 상태:',statusSource:'공항 데이터 기준 상태입니다.',actualDesc:'실제 시간이 항공편 데이터에 기록되었습니다.',estimateDesc:'항공편 데이터의 업데이트 시간입니다.',
@@ -99,7 +99,7 @@
       sourceAirport:'По данным аэропорта',sourceAt:'Источник {time}',onTime:'По расписанию',checkinOpen:'Регистрация открыта',checkinClosed:'Регистрация закрыта',checkinSoon:'Регистрация скоро откроется',
       boarding:'Посадка',arrived:'Прибыл',departed:'Вылетел',cancelled:'Отменён',flyingToPqc:'В пути на Фукуок',waitArrival:'Ожидается время прибытия',waitDeparture:'Ожидается время вылета',
       early:'Ожидается на {n} мин раньше',late:'Задержка {n} мин',lateMin:'Задержка ≥ {n} мин',earlyBy:'На {n} мин раньше',lateBy:'На {n} мин позже',
-      changeGate:'ВЫХОД {from} → {to}',changeCounter:'СТОЙКА {from} → {to}',changeBelt:'ЛЕНТА {from} → {to}',
+      changeGate:'ВЫХОД {from} → {to}',changedFrom:'Было {from}',changeCounter:'СТОЙКА {from} → {to}',changeBelt:'ЛЕНТА {from} → {to}',
       watchDelayed:'Задержано',watchCancelled:'Отменено',watchEarly:'Раньше',watchClear:'Сегодня нет значительных задержек, отмен или ранних вылетов.',estimatedWord:'расч.',quickClear:'Сейчас срочных уведомлений нет.',quickDataOld:'Данные устарели',quickDataOldBody:'Live-поток задерживается. Проверьте время обновления перед использованием информации.',
       market:'Тип',scheduleCompare:'К расписанию',checkinCounter:'Стойка регистрации',checkinTime:'Начало регистрации',boardingGate:'Выход на посадку',baggageBelt:'Багажная лента',parking:'Место стоянки',source:'Источник',
       scheduledAt:'По расписанию · {time}',actualAt:'Факт · {time}',estimatedAt:'Расчётное · {time}',rawStatus:'Исходный статус аэропорта:',statusSource:'Статус по данным аэропорта.',actualDesc:'Фактическое время записано в данных рейса.',estimateDesc:'Обновлённое время из данных рейса.',
@@ -125,7 +125,7 @@
       sourceAirport:'依据机场数据更新',sourceAt:'数据 {time}',onTime:'准点',checkinOpen:'正在值机',checkinClosed:'值机已关闭',checkinSoon:'即将开始值机',
       boarding:'正在登机',arrived:'已到达',departed:'已起飞',cancelled:'取消',flyingToPqc:'飞往富国岛途中',waitArrival:'等待到达时间',waitDeparture:'等待起飞时间',
       early:'预计提前 {n} 分钟',late:'延误 {n} 分钟',lateMin:'延误至少 {n} 分钟',earlyBy:'提前 {n} 分钟',lateBy:'延后 {n} 分钟',
-      changeGate:'登机口 {from} → {to}',changeCounter:'值机 {from} → {to}',changeBelt:'行李 {from} → {to}',
+      changeGate:'登机口 {from} → {to}',changedFrom:'原为 {from}',changeCounter:'值机 {from} → {to}',changeBelt:'行李 {from} → {to}',
       watchDelayed:'延误',watchCancelled:'取消',watchEarly:'提前',watchClear:'今天没有明显延误、取消或提前的航班。',estimatedWord:'预计',quickClear:'目前没有需要立即注意的提醒。',quickDataOld:'数据已过期',quickDataOldBody:'实时数据更新延迟。使用信息前请先检查更新时间。',
       market:'类型',scheduleCompare:'相对计划',checkinCounter:'值机柜台',checkinTime:'值机开始',boardingGate:'登机口',baggageBelt:'行李转盘',parking:'停机位',source:'来源',
       scheduledAt:'计划 · {time}',actualAt:'实际 · {time}',estimatedAt:'预计 · {time}',rawStatus:'机场原始状态：',statusSource:'状态来自机场数据。',actualDesc:'实际时间已记录在航班数据中。',estimateDesc:'更新时间来自航班数据。',
@@ -352,6 +352,7 @@
     lang=next;try{localStorage.setItem('jotrip_airport_lang',lang)}catch(_){}
     if(typeof window.renderAll==='function')window.renderAll();
     if(typeof window.JT_RENDER_FIDS==='function')window.JT_RENDER_FIDS(true);
+    if(typeof window.renderWatch==='function')window.renderWatch();
     apply();
   };
 
