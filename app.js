@@ -1,7 +1,7 @@
 const DATA_BASE='https://raw.githubusercontent.com/kenzuko/Jotrip-Lab/data-sunairport/data/sunairport';
 const LIVE_API_URL=(window.JOTRIP_LIVE_API_URL||'').replace(/\/$/,'');
 const AUTO_REFRESH_MS=60*1000;
-const state={latest:null,health:null,direction:'arrival',filter:'all',query:'',limit:8,mode:'live',lastFetchAt:0,loading:false,dataSource:'snapshot',liveError:null};
+const state={latest:null,health:null,direction:'arrival',filter:'all',query:'',limit:8,mode:'live',lastFetchAt:0,loading:false,dataSource:'snapshot',liveError:null,fidsEvents:[],fidsHistoryLoaded:false,fidsHistoryLoading:false};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const typographyLink=document.createElement('link');typographyLink.rel='stylesheet';typographyLink.href='./typography.css?v=20260916a';document.head.appendChild(typographyLink);
 
@@ -55,7 +55,71 @@ function displayStatusLabel(r){
 }
 function isPastRecord(r){const t=mins(scheduledTime(r));if(t==null)return false;const now=nowMinutes();if(r.direction==='arrival'&&(/ARRIVED|ON_BLOCK/.test(r.status_code||'')||/ĐÃ HẠ CÁNH|BÃI ĐỖ/.test(r.status||'')))return true;if(r.direction==='departure'&&(/DEPARTED/.test(r.status_code||'')||/ĐÃ CẤT CÁNH/.test(r.status||'')))return true;return t<now-45}
 function isNext3(r){const t=mins(scheduledTime(r));if(t==null)return false;const d=t-nowMinutes();return d>=-30&&d<=180}
-function changed(r){return isAbnormal(r)||isEarly(r,10)}
+
+const FIDS_FIELDS={
+  gate:{label:'CỬA',current:'gate',history:'gate'},
+  checkin_row:{label:'QUẦY',current:'checkin_row',history:'ckRow'},
+  belt:{label:'BĂNG CHUYỀN',current:'belt',history:'belt'}
+};
+function flightKey(r){return `${r?.direction||''}|${r?.operating_flight_number||r?.flight_number||''}`}
+function cleanFidsValue(v){const s=String(v??'').trim();return s&&s!=='-'&&s.toLowerCase()!=='null'?s:''}
+function fidsEventId(e){return [e.flightKey,e.field,e.from,e.to].join('|')}
+function upsertFidsEvent(e){
+  if(!e?.flightKey||!e?.field||!cleanFidsValue(e.from)||!cleanFidsValue(e.to)||String(e.from)===String(e.to))return;
+  const id=fidsEventId(e),i=state.fidsEvents.findIndex(x=>fidsEventId(x)===id);
+  if(i>=0){if(new Date(e.at).getTime()>new Date(state.fidsEvents[i].at).getTime())state.fidsEvents[i]=e;}
+  else state.fidsEvents.push(e);
+  state.fidsEvents.sort((a,b)=>new Date(b.at)-new Date(a.at));
+  state.fidsEvents=state.fidsEvents.slice(0,40);
+}
+function captureFidsSnapshotChanges(previous,current){
+  const prev=new Map((previous||[]).map(r=>[flightKey(r),r]));
+  for(const r of current||[]){
+    const p=prev.get(flightKey(r));if(!p)continue;
+    for(const [field,cfg] of Object.entries(FIDS_FIELDS)){
+      const from=cleanFidsValue(p[cfg.current]),to=cleanFidsValue(r[cfg.current]);
+      if(from&&to&&from!==to)upsertFidsEvent({at:new Date().toISOString(),flightKey:flightKey(r),flightNumber:r.operating_flight_number,direction:r.direction,field,from,to,source:'live'});
+    }
+  }
+}
+function activeFidsEvents(){
+  const records=state.latest?.records||[],byKey=new Map(records.map(r=>[flightKey(r),r])),latestByField=new Map(),cutoff=Date.now()-12*60*60*1000;
+  for(const e of state.fidsEvents){
+    const r=byKey.get(e.flightKey);if(!r||isPastRecord(r))continue;
+    const ts=new Date(e.at).getTime();if(Number.isFinite(ts)&&ts<cutoff)continue;
+    const cfg=FIDS_FIELDS[e.field];if(!cfg)continue;
+    const current=cleanFidsValue(r[cfg.current]);if(current!==cleanFidsValue(e.to))continue;
+    const k=`${e.flightKey}|${e.field}`;if(!latestByField.has(k))latestByField.set(k,{...e,record:r});
+  }
+  return [...latestByField.values()].sort((a,b)=>new Date(b.at)-new Date(a.at));
+}
+function hasFidsAlert(r){const k=flightKey(r);return activeFidsEvents().some(e=>e.flightKey===k)}
+function fidsAlertText(e){const cfg=FIDS_FIELDS[e.field];return `ĐỔI ${cfg?.label||'THÔNG TIN'} ${e.from} → ${e.to}`}
+function todayVn(){const p=vnNowParts();return `${p.year}-${p.month}-${p.day}`}
+async function loadFidsHistory(){
+  if(state.fidsHistoryLoaded||state.fidsHistoryLoading)return;
+  state.fidsHistoryLoading=true;
+  try{
+    const res=await fetch(`${DATA_BASE}/history/${todayVn()}/events.jsonl?t=${Date.now()}`,{cache:'no-store'});
+    if(!res.ok)throw new Error(`FIDS history HTTP ${res.status}`);
+    const text=await res.text(),records=state.latest?.records||[],byFlight=new Map(records.map(r=>[flightKey(r),r]));
+    for(const line of text.split('\n')){
+      if(!line.trim())continue;
+      let ev;try{ev=JSON.parse(line)}catch(_){continue}
+      if(ev.type!=='CHANGED'||!ev.changes)continue;
+      const k=`${ev.direction||''}|${ev.flight_number||''}`;if(!byFlight.has(k))continue;
+      for(const [field,cfg] of Object.entries(FIDS_FIELDS)){
+        const ch=ev.changes[cfg.history];if(!ch)continue;
+        const from=cleanFidsValue(ch.from),to=cleanFidsValue(ch.to);
+        if(from&&to&&from!==to)upsertFidsEvent({at:ev.at,flightKey:k,flightNumber:ev.flight_number,direction:ev.direction,field,from,to,source:'history'});
+      }
+    }
+    state.fidsHistoryLoaded=true;
+    renderAll();
+  }catch(e){console.warn('FIDS history unavailable:',e)}
+  finally{state.fidsHistoryLoading=false}
+}
+function changed(r){return isAbnormal(r)||isEarly(r,10)||hasFidsAlert(r)}
 
 async function fetchJson(path){const res=await fetch(`${DATA_BASE}/${path}?t=${Date.now()}`,{cache:'no-store'});if(!res.ok)throw new Error(`${path}: HTTP ${res.status}`);return res.json()}
 async function fetchSnapshotPayload(){const [latest,health]=await Promise.all([fetchJson('latest.json'),fetchJson('health.json')]);return{latest,health}}
@@ -77,7 +141,11 @@ async function load(){
       catch(e){liveError=e;console.warn('Live API fallback:',e);}
     }
     if(!payload){payload=await fetchSnapshotPayload();state.dataSource=LIVE_API_URL?'fallback':'snapshot';}
-    state.latest=payload.latest;state.health=payload.health;state.liveError=liveError;state.lastFetchAt=Date.now();renderAll();
+    const previousLatest=state.latest;
+    state.latest=payload.latest;state.health=payload.health;state.liveError=liveError;state.lastFetchAt=Date.now();
+    if(previousLatest?.records)captureFidsSnapshotChanges(previousLatest.records,payload.latest?.records||[]);
+    renderAll();
+    if(!state.fidsHistoryLoaded&&!state.fidsHistoryLoading)loadFidsHistory();
     if(state.dataSource==='fallback'){$('#errorBox').textContent='JoTrip Live API tạm gián đoạn - đang dùng snapshot JoTrip AutoSync gần nhất.';$('#errorBox').classList.remove('hidden');}
     else $('#errorBox').classList.add('hidden');
   }catch(e){
@@ -93,7 +161,16 @@ function recordsFiltered(){let a=[...(state.latest?.records||[])];if(state.direc
 function rowHtml(r){const info=timingInfo(r),t=info.scheduled||'--:--',air=airlineFor(r),to=r.direction==='arrival'?'PQC':stationLabel(r.station),from=r.direction==='arrival'?stationLabel(r.station):'PQC';let timeSub=r.direction==='arrival'?'Đến PQC':'Rời PQC';if((isDelayed(r)||isEarly(r,10))&&info.expected)timeSub=`Dự kiến ${info.expected}`;else if(isDelayed(r))timeSub='Chưa có giờ dự kiến';const status=displayStatusLabel(r);return `<div class="flight-row" data-flight="${escapeHtml(r.operating_flight_number)}" data-direction="${r.direction}"><div class="flight-number">${escapeHtml(r.operating_flight_number||'')}</div><div class="flight-time">${escapeHtml(t)}<small>${escapeHtml(timeSub)}</small></div><div class="route">${escapeHtml(from)} → ${escapeHtml(to)}<small>${escapeHtml(air)}</small></div><div class="market-label">${r.market==='international'?'Quốc tế':'Nội địa'}</div><div class="status-pill ${statusClass(status)}">${escapeHtml(status)}</div><div class="chevron">›</div></div>`}
 function renderFlights(){const list=recordsFiltered(),visible=list.slice(0,state.limit);$('#flightList').innerHTML=visible.length?visible.map(rowHtml).join(''):'<div class="empty-state">Không có chuyến phù hợp bộ lọc hiện tại.</div>';$('#showMore').classList.toggle('hidden',list.length<=state.limit);$$('.flight-row').forEach(el=>el.onclick=()=>openDrawer(el.dataset.flight,el.dataset.direction))}
 function renderNextWindow(){const all=state.latest?.records||[],next=all.filter(isNext3).filter(r=>!isPastRecord(r));$('#nextArrivals').textContent=next.filter(r=>r.direction==='arrival').length;$('#nextDepartures').textContent=next.filter(r=>r.direction==='departure').length;$('#nextInternational').textContent=next.filter(r=>r.direction==='arrival'&&r.market==='international').length;$('#nextWatch').textContent=next.filter(changed).length;const p=vnNowParts();$('#nextWindowText').textContent=`Từ ${p.hour}:${p.minute}`}
-function renderWatch(){const age=ageInfo(state.latest?.collected_at_vn);let items=(state.latest?.records||[]).filter(r=>!isPastRecord(r)&&changed(r)).slice(0,6).map(r=>{const t=timingInfo(r);let detail=displayStatusLabel(r);if(isDelayed(r))detail+=t.expected?` · dự kiến ${t.expected}`:' · chưa có giờ dự kiến';return{title:`${r.operating_flight_number} · ${r.direction==='arrival'?stationLabel(r.station)+' → PQC':'PQC → '+stationLabel(r.station)}`,body:`${t.scheduled||'--:--'} · ${detail}`}});if(age.level==='stale')items.unshift({title:'Dữ liệu đã stale',body:`Dữ liệu cuối cùng cách hiện tại ${age.label}. Không nên dùng để kết luận trạng thái tức thời.`});$('#watchCount').textContent=items.length;$('#watchList').innerHTML=items.length?items.map(x=>`<div class="watch-item"><div class="watch-icon">!</div><div><strong>${escapeHtml(x.title)}</strong><p>${escapeHtml(x.body)}</p></div></div>`).join(''):'<div class="empty-state">Không có bất thường nổi bật trong dữ liệu hiện tại.</div>'}
+function renderWatch(){
+  const age=ageInfo(state.latest?.collected_at_vn),fids=activeFidsEvents();
+  let items=fids.slice(0,5).map(e=>{const r=e.record,t=timingInfo(r);return{icon:'⇄',title:`${r.operating_flight_number} · ${fidsAlertText(e)}`,body:`${r.direction==='arrival'?stationLabel(r.station)+' → PQC':'PQC → '+stationLabel(r.station)} · lịch ${t.scheduled||'--:--'}`}});
+
+  const operational=(state.latest?.records||[]).filter(r=>!isPastRecord(r)&&(isAbnormal(r)||isEarly(r,10))).slice(0,Math.max(0,8-items.length)).map(r=>{const t=timingInfo(r);let detail=displayStatusLabel(r);if(isDelayed(r))detail+=t.expected?` · dự kiến ${t.expected}`:' · chưa có giờ dự kiến';return{icon:'!',title:`${r.operating_flight_number} · ${r.direction==='arrival'?stationLabel(r.station)+' → PQC':'PQC → '+stationLabel(r.station)}`,body:`${t.scheduled||'--:--'} · ${detail}`}});
+  items=items.concat(operational);
+  if(age.level==='stale')items.unshift({icon:'!',title:'Dữ liệu đã stale',body:`Dữ liệu cuối cùng cách hiện tại ${age.label}. Không nên dùng để kết luận trạng thái tức thời.`});
+  $('#watchCount').textContent=items.length;
+  $('#watchList').innerHTML=items.length?items.map(x=>`<div class="watch-item"><div class="watch-icon">${escapeHtml(x.icon||'!')}</div><div><strong>${escapeHtml(x.title)}</strong><p>${escapeHtml(x.body)}</p></div></div>`).join(''):'<div class="empty-state">Không có bất thường nổi bật trong dữ liệu hiện tại.</div>';
+}
 function renderNextArrivals(){const a=(state.latest?.records||[]).filter(r=>r.direction==='arrival'&&!isPastRecord(r)).sort((x,y)=>(mins(scheduledTime(x))??9999)-(mins(scheduledTime(y))??9999)).slice(0,5);$('#nextArrivalsList').innerHTML=a.length?a.map(r=>{const info=timingInfo(r),status=displayStatusLabel(r);return `<div class="arrival-item"><div class="arrival-time">${escapeHtml(info.scheduled||'--:--')}</div><div class="arrival-main"><strong>${escapeHtml(r.operating_flight_number)} · ${escapeHtml(stationLabel(r.station))}</strong><span>${escapeHtml(isDelayed(r)&&info.expected?'Dự kiến '+info.expected:airlineFor(r))}</span></div><span class="status-pill ${statusClass(status)}">${escapeHtml(status)}</span></div>`}).join(''):'<div class="empty-state">Chưa có chuyến đến tiếp theo trong dữ liệu.</div>'}
 function pct(v,total){return total?Math.round(v*1000/total)/10+'%':'0%'}
 function renderAnalytics(){const s=state.latest?.summary||{},am=s.arrivals_market||{},dm=s.departures_market||{};$('#aIntlArr').textContent=am.international??0;$('#aDomArr').textContent=am.domestic??0;$('#aIntlDep').textContent=dm.international??0;$('#aDomDep').textContent=dm.domestic??0;$('#aIntlArrPct').textContent=pct(am.international||0,state.latest?.counts?.arrivals||0)+' chuyến đến';$('#aDomArrPct').textContent=pct(am.domestic||0,state.latest?.counts?.arrivals||0)+' chuyến đến';$('#aIntlDepPct').textContent=pct(dm.international||0,state.latest?.counts?.departures||0)+' chuyến đi';$('#aDomDepPct').textContent=pct(dm.domestic||0,state.latest?.counts?.departures||0)+' chuyến đi';const merged={};for(const [k,v] of Object.entries(s.arrivals_by_station||{}))merged[k]=(merged[k]||0)+v;for(const [k,v] of Object.entries(s.departures_by_station||{}))merged[k]=(merged[k]||0)+v;const routes=Object.entries(merged).sort((a,b)=>b[1]-a[1]).slice(0,7),max=routes[0]?.[1]||1;$('#routeBars').innerHTML=routes.map(([k,v])=>`<div class="route-bar"><span>${escapeHtml(stationLabel(k))}</span><div class="bar-track"><div class="bar-fill" style="width:${v/max*100}%"></div></div><b>${v}</b></div>`).join('');const banks=s.arrivals_by_time_bank||{},ordered=['00:00-05:59','06:00-08:59','09:00-11:59','12:00-14:59','15:00-17:59','18:00-20:59','21:00-23:59'];const mx=Math.max(1,...ordered.map(k=>banks[k]||0));$('#timeBankBars').innerHTML=ordered.map(k=>`<div class="time-col"><div class="bar" style="height:${(banks[k]||0)/mx*100}%" title="${banks[k]||0} chuyến"></div><span>${k.slice(0,2)}h</span></div>`).join('');const statuses={};for(const [k,v] of Object.entries(s.arrivals_by_status||{}))statuses['Đến · '+k]=v;for(const [k,v] of Object.entries(s.departures_by_status||{}))statuses['Đi · '+k]=v;$('#statusSummary').innerHTML=Object.entries(statuses).map(([k,v])=>`<div class="status-line"><span>${escapeHtml(k)}</span><b>${v}</b></div>`).join('')}
