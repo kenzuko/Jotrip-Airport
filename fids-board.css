@@ -78,3 +78,28 @@
   .fids-status{text-align:center}
   .fids-status-pill{margin-left:auto;margin-right:auto}
 }
+
+
+/* Arrival FIDS: gate is operationally irrelevant to public users */
+@media(min-width:681px){
+  .fids-card.fids-mode-arrival .fids-columns,
+  .fids-card.fids-mode-arrival .fids-row{
+    grid-template-columns:56px 86px 76px minmax(120px,1.2fr) minmax(108px,.92fr) minmax(120px,.95fr) minmax(142px,1.08fr);
+  }
+  .fids-card.fids-mode-arrival .fids-columns span:nth-child(6),
+  .fids-card.fids-mode-arrival .fids-gate{display:none}
+}
+@media(max-width:900px) and (min-width:681px){
+  .fids-card.fids-mode-arrival .fids-columns,
+  .fids-card.fids-mode-arrival .fids-row{
+    grid-template-columns:52px 78px 70px minmax(106px,1fr) minmax(98px,.9fr) minmax(100px,.88fr) minmax(126px,1fr);
+  }
+}
+@media(max-width:680px){
+  .fids-card.fids-mode-arrival .fids-gate{display:none}
+  .fids-card.fids-mode-arrival .fids-service{
+    grid-column:1 / span 2;
+    grid-row:3;
+    text-align:left;
+  }
+}
