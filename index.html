@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="./style.css?v=20260918f">
 <link rel="stylesheet" href="./fids-board.css?v=20260918ab">
 <link rel="stylesheet" href="./i18n.css?v=20260918ab">
+<link rel="stylesheet" href="./analytics-explorer.css?v=20260918a">
 <link rel="stylesheet" href="./ui-fixes.css?v=20260916n">
 <link rel="stylesheet" href="./board-days.css?v=20260918ab">
 <link rel="stylesheet" href="./mobile-logo-fix.css?v=20260918n">
@@ -92,11 +93,31 @@
     </section>
 
     <section class="card analytics-only hidden" id="analytics">
-      <div class="card-head"><div><span class="section-kicker">ANALYTICS</span><h3>Cơ cấu chuyến bay</h3></div><span class="muted">Dữ liệu hiện tại</span></div>
-      <div class="metric-grid analytics-metrics"><article><span>Quốc tế đến</span><strong id="aIntlArr">-</strong><small id="aIntlArrPct"></small></article><article><span>Nội địa đến</span><strong id="aDomArr">-</strong><small id="aDomArrPct"></small></article><article><span>Quốc tế đi</span><strong id="aIntlDep">-</strong><small id="aIntlDepPct"></small></article><article><span>Nội địa đi</span><strong id="aDomDep">-</strong><small id="aDomDepPct"></small></article></div>
-      <div class="analytics-block"><h4>Tất cả điểm đi / đến</h4><div id="routeBars" class="route-bars"></div></div>
-      <div class="analytics-block"><h4>Phân bố theo khung giờ</h4><div id="timeBankBars" class="time-bank"></div></div>
-      <div class="airline-performance"></div>
+      <div class="card-head analytics-head"><div><span class="section-kicker">ANALYTICS</span><h3>Phân tích chuyến bay</h3><p>Chọn khoảng thời gian và góc phân tích.</p></div><span class="muted" id="analyticsDataNote">-</span></div>
+      <div class="analytics-toolbar">
+        <div class="analytics-periods" id="analyticsPeriods">
+          <button type="button" data-period="yesterday">Hôm qua</button>
+          <button type="button" class="active" data-period="today">Hôm nay</button>
+          <button type="button" data-period="tomorrow">Ngày mai</button>
+          <button type="button" data-period="last7">7 ngày</button>
+          <button type="button" data-period="last30">30 ngày</button>
+          <button type="button" data-period="custom">Tùy chọn</button>
+        </div>
+        <div class="analytics-custom-range hidden" id="analyticsCustomRange">
+          <label><span>Từ ngày</span><input id="analyticsFrom" type="date"></label>
+          <label><span>Đến ngày</span><input id="analyticsTo" type="date"></label>
+          <button type="button" id="analyticsApplyRange">Áp dụng</button>
+        </div>
+        <div class="analytics-filter-grid">
+          <label><span>Phân tích</span><select id="analyticsView">
+            <option value="overview">Tổng quan</option><option value="routes">Tuyến bay</option><option value="time">Khung giờ</option><option value="market">Thị trường</option><option value="airlines">Hãng bay</option><option value="otp">Đúng giờ OTP15</option>
+          </select></label>
+          <label><span>Chiều bay</span><select id="analyticsDirection"><option value="all">Tất cả</option><option value="arrival">Chuyến đến</option><option value="departure">Chuyến đi</option></select></label>
+          <label><span>Thị trường</span><select id="analyticsMarket"><option value="all">Tất cả</option><option value="domestic">Nội địa</option><option value="international">Quốc tế</option></select></label>
+          <label><span>Hãng bay</span><select id="analyticsAirline"><option value="all">Tất cả hãng</option></select></label>
+        </div>
+      </div>
+      <div id="analyticsContent" class="analytics-content"><div class="empty-state">Đang tải dữ liệu phân tích...</div></div>
     </section>
   </section>
 
@@ -110,8 +131,7 @@
       <div class="health-summary"><div id="healthIcon" class="health-icon">⋯</div><div><strong id="healthTitle">CHECKING</strong><p id="healthDescription">Đang kiểm tra luồng JoTrip Live và độ mới của dữ liệu.</p></div></div>
       <dl class="health-meta"><div><dt>Live</dt><dd>JoTrip Live</dd></div><div><dt>Archive</dt><dd>JoTrip AutoSync</dd></div><div><dt>QA</dt><dd id="qaText">-</dd></div><div><dt>Data age</dt><dd id="dataAge">-</dd></div></dl>
     </section>
-    <section class="side-card analytics-only hidden"><div class="side-head"><h3>Flight Status</h3></div><div id="statusSummary" class="status-summary"></div></section>
-  </aside>
+    </aside>
 </main>
 
 <nav class="mobile-nav"><button class="active" data-mobile-mode="live"><span>⌂</span>Live</button><button id="mobileFlights"><span>✈</span>Flights</button><button onclick="location.href='./history.html'"><span>◷</span>History</button><button data-mobile-mode="analytics"><span>▥</span>Analytics</button><button id="mobileRefresh"><span>↻</span>Refresh</button></nav>
@@ -124,7 +144,7 @@
 <script src="./flight-status-policy.js?v=20260918ab"></script>
 <script src="./board-days.js?v=20260918ab"></script>
 <script src="./app-copy.js?v=20260918b"></script>
-<script src="./analytics-v3.js?v=20260918ab"></script>
+<script src="./analytics-v3.js?v=20260918ac"></script>
 <script src="./i18n.js?v=20260918ab"></script>
 <script src="./fids-board.js?v=20260918ab"></script>
 <script>window.addEventListener('load',()=>{if(location.hash==='#analytics'){document.querySelector('[data-mode="analytics"]')?.click();setTimeout(()=>document.getElementById('analytics')?.scrollIntoView({block:'start'}),50)}else if(location.hash==='#flightBoard'){setTimeout(()=>document.getElementById('flightBoard')?.scrollIntoView({block:'start'}),50)}});</script>
