@@ -209,7 +209,7 @@ function buildOperationWatchItems(){
       const after=minutesAfter(r.actual_time);if(after==null||after>60)continue;
     }
     const label=e.field==='gate'?tr('watchChangeGate','Cửa hiện tại {to} · trước {from}',{from:e.from,to:e.to}):e.field==='checkin_row'?tr('watchChangeCounter','Quầy check-in hiện tại {to} · trước {from}',{from:e.from,to:e.to}):tr('watchChangeBelt','Băng hành lý hiện tại {to} · trước {from}',{from:e.from,to:e.to});
-    items.push({kind:'fids',priority:1,title:`${r.operating_flight_number} · ${label}`,body:r.direction==='arrival'?`${stationLabel(r.station)} → PQC`:`PQC → ${stationLabel(r.station)}`,icon:'⇄',at:new Date(e.at).getTime(),sort:mins(scheduledTime(r))??9999});
+    items.push({kind:'fids',priority:1,title:`${r.operating_flight_number} · ${label}`,body:r.direction==='arrival'?`${stationLabel(r.station)} → PQC`:`PQC → ${stationLabel(r.station)}`,icon:'⇄',at:new Date(e.at).getTime(),sort:mins(scheduledTime(r))??9999,flight:r.operating_flight_number,direction:r.direction});
   }
 
   // Flight-time changes remain until the flight is completed. Cancellations remain until 60 min after schedule.
@@ -221,7 +221,7 @@ function buildOperationWatchItems(){
     const dev=scheduleDeviation(r).delta;
     if(!cancelled&&!isDelayed(r)&&!(dev!=null&&Math.abs(dev)>=10))return;
     const rawStatus=displayStatusLabel(r),status=uiStatus(rawStatus),route=r.direction==='arrival'?stationLabel(r.station)+' → PQC':'PQC → '+stationLabel(r.station);
-    items.push({kind:'flight',priority:cancelled?0:2,title:`${r.operating_flight_number} · ${status}`,body:`${route} · ${tr('scheduleWord','lịch')} ${scheduledTime(r)||'--:--'}`,icon:cancelled?'×':'!',sort:sched});
+    items.push({kind:'flight',priority:cancelled?0:2,title:`${r.operating_flight_number} · ${status}`,body:`${route} · ${tr('scheduleWord','lịch')} ${scheduledTime(r)||'--:--'}`,icon:cancelled?'×':'!',sort:sched,flight:r.operating_flight_number,direction:r.direction});
   });
 
   items.sort((a,b)=>(a.priority??9)-(b.priority??9)||((b.at??0)-(a.at??0))||((a.sort??9999)-(b.sort??9999)));
@@ -237,8 +237,18 @@ function renderWatch(){
   const tr=(key,fallback)=>{try{return typeof window.JT_T==='function'?window.JT_T(key):fallback}catch(_){return fallback}};
   const items=buildOperationWatchItems(),visible=items;
   $$('.operation-watch-count').forEach(count=>{count.textContent=items.length;count.classList.toggle('hidden',items.length===0);});
-  const html=visible.length?visible.map(x=>`<div class="watch-item"><div class="watch-icon">${escapeHtml(x.icon||'!')}</div><div><strong>${escapeHtml(x.title)}</strong><p>${escapeHtml(x.body||'')}</p></div></div>`).join(''):`<div class="quick-clear">${escapeHtml(tr('quickClear','Chưa có thông báo cần chú ý ngay lúc này.'))}</div>`;
-  $$('.operation-watch-list').forEach(list=>{list.innerHTML=html;});
+  const html=visible.length?visible.map(x=>{
+    const actionable=!!(x.flight&&x.direction);
+    return `<div class="watch-item${actionable?' watch-action':''}"${actionable?` role="button" tabindex="0" data-flight="${escapeHtml(x.flight)}" data-direction="${escapeHtml(x.direction)}"`:''}><div class="watch-icon">${escapeHtml(x.icon||'!')}</div><div class="watch-copy"><strong>${escapeHtml(x.title)}</strong><p>${escapeHtml(x.body||'')}</p>${actionable?`<small class="watch-detail-link">${escapeHtml(tr('viewDetail','Xem chi tiết'))} ›</small>`:''}</div></div>`;
+  }).join(''):`<div class="quick-clear">${escapeHtml(tr('quickClear','Chưa có thông báo cần chú ý ngay lúc này.'))}</div>`;
+  $$('.operation-watch-list').forEach(list=>{
+    list.innerHTML=html;
+    list.querySelectorAll('.watch-action').forEach(el=>{
+      const open=()=>openDrawer(el.dataset.flight,el.dataset.direction);
+      el.onclick=open;
+      el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}};
+    });
+  });
 }
 function renderNextArrivals(){const a=(state.latest?.records||[]).filter(r=>r.direction==='arrival'&&!isPastRecord(r)).sort((x,y)=>(mins(scheduledTime(x))??9999)-(mins(scheduledTime(y))??9999)).slice(0,5);$('#nextArrivalsList').innerHTML=a.length?a.map(r=>{const info=timingInfo(r),status=displayStatusLabel(r);return `<div class="arrival-item"><div class="arrival-time">${escapeHtml(info.scheduled||'--:--')}</div><div class="arrival-main"><strong>${escapeHtml(r.operating_flight_number)} · ${escapeHtml(stationLabel(r.station))}</strong><span>${escapeHtml(isDelayed(r)&&info.expected?'Dự kiến '+info.expected:airlineFor(r))}</span></div><span class="status-pill ${statusClass(status)}">${escapeHtml(status)}</span></div>`}).join(''):'<div class="empty-state">Chưa có chuyến đến tiếp theo trong dữ liệu.</div>'}
 function pct(v,total){return total?Math.round(v*1000/total)/10+'%':'0%'}
@@ -256,7 +266,11 @@ function openDrawer(flight,direction){
   const expectedText=info.expected||(isDelayed(r)?uiT('airportNotPublished','Sân bay chưa công bố'):uiT('notApplicable','Không áp dụng'));
   const finalLabel=r.actual_time?uiT('actualAt','Thực tế · {time}',{time:r.actual_time}):uiT('estimatedAt','Dự kiến · {time}',{time:expectedText});
   const finalDesc=r.actual_time?uiT('actualDesc','Giờ thực tế đã được ghi nhận trong dữ liệu chuyến bay.'):isDelayed(r)&&!info.expected?uiT('noEstimateDesc','Nguồn hiện tại chỉ báo trễ, chưa có giờ dự kiến nên JoTrip không tự đoán giờ.'):uiT('estimateDesc','Giờ cập nhật theo dữ liệu chuyến bay.');
-  const meta=[
+  const fr24Flight=String(r.operating_flight_number||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+  const fr24Row=/^[A-Z0-9]{2,3}\d{1,4}[A-Z]?$/.test(fr24Flight)
+    ? `<div class="fr24-detail-row"><span>${escapeHtml(uiT('trackFlight','Theo dõi chuyến bay'))}</span><a href="https://www.flightradar24.com/data/flights/${encodeURIComponent(fr24Flight.toLowerCase())}" target="_blank" rel="noopener noreferrer">${escapeHtml(uiT('openFr24','Mở FR24 ↗'))}</a></div>`
+    : '';
+  const metaRows=[
     [uiT('scheduleCompare','So với lịch'),delayText],
     [uiT('market','Thị trường'),r.market==='international'?uiT('international','Quốc tế'):uiT('domestic','Nội địa')],
     r.checkin_row?[uiT('checkinCounter','Quầy làm thủ tục'),r.checkin_row]:null,
@@ -265,14 +279,11 @@ function openDrawer(flight,direction){
     r.belt?[uiT('baggageBelt','Băng chuyền hành lý'),r.belt]:null,
     r.parking_bay?[uiT('parking','Vị trí đỗ'),r.parking_bay]:null,
     [uiT('source','Nguồn'),state.dataSource==='live'?'JoTrip Live / Sun Airport':'JoTrip AutoSync / Sun Airport']
-  ].filter(Boolean).map(([k,v])=>`<div><span>${escapeHtml(k)}</span><b>${escapeHtml(v)}</b></div>`).join('');
+  ].filter(Boolean);
+  const meta=metaRows.map(([k,v],i)=>`<div><span>${escapeHtml(k)}</span><b>${escapeHtml(v)}</b></div>${i===0?fr24Row:''}`).join('');
   const rawStatus=displayStatusLabel(r),shownStatus=uiStatus(rawStatus);
   const statusDesc=r.raw_status?uiT('rawStatus','Trạng thái gốc:')+' '+r.raw_status:uiT('statusSource','Trạng thái theo dữ liệu sân bay.');
-  const fr24Flight=String(r.operating_flight_number||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
-  const fr24Row=/^[A-Z0-9]{2,3}\d{1,4}[A-Z]?$/.test(fr24Flight)
-    ? `<div class="fr24-detail-row"><span>${escapeHtml(uiT('trackFlight','Theo dõi chuyến bay'))}</span><a href="https://www.flightradar24.com/data/flights/${encodeURIComponent(fr24Flight.toLowerCase())}" target="_blank" rel="noopener noreferrer">${escapeHtml(uiT('openFr24','Mở FR24 ↗'))}</a></div>`
-    : '';
-  $('#drawerContent').innerHTML=`<div class="drawer-title">${escapeHtml(a?uiT('arrival','Chuyến đến'):uiT('departure','Chuyến đi'))}</div><h2 class="drawer-flight">${escapeHtml(r.operating_flight_number)}</h2><div class="drawer-route">${a?escapeHtml(stationLabel(r.station))+' → PQC':'PQC → '+escapeHtml(stationLabel(r.station))}</div><div class="journey"><div class="journey-dot done"></div><div class="journey-copy"><strong>${escapeHtml(uiT('scheduledAt','Theo lịch · {time}',{time:info.scheduled||'--:--'}))}</strong><p>${escapeHtml(air)}</p></div><div class="journey-dot ${landed||departed?'done':''}"></div><div class="journey-copy"><strong>${escapeHtml(shownStatus)}</strong><p>${escapeHtml(statusDesc)}</p></div><div class="journey-dot last"></div><div class="journey-copy"><strong>${escapeHtml(finalLabel)}</strong><p>${escapeHtml(finalDesc)}</p></div></div><div class="drawer-meta">${meta}${fr24Row}</div>`;
+  $('#drawerContent').innerHTML=`<div class="drawer-title">${escapeHtml(a?uiT('arrival','Chuyến đến'):uiT('departure','Chuyến đi'))}</div><h2 class="drawer-flight">${escapeHtml(r.operating_flight_number)}</h2><div class="drawer-route">${a?escapeHtml(stationLabel(r.station))+' → PQC':'PQC → '+escapeHtml(stationLabel(r.station))}</div><div class="journey"><div class="journey-dot done"></div><div class="journey-copy"><strong>${escapeHtml(uiT('scheduledAt','Theo lịch · {time}',{time:info.scheduled||'--:--'}))}</strong><p>${escapeHtml(air)}</p></div><div class="journey-dot ${landed||departed?'done':''}"></div><div class="journey-copy"><strong>${escapeHtml(shownStatus)}</strong><p>${escapeHtml(statusDesc)}</p></div><div class="journey-dot last"></div><div class="journey-copy"><strong>${escapeHtml(finalLabel)}</strong><p>${escapeHtml(finalDesc)}</p></div></div><div class="drawer-meta">${meta}</div>`;
   $('#drawerBackdrop').classList.remove('hidden');$('#flightDrawer').classList.remove('hidden');$('#flightDrawer').setAttribute('aria-hidden','false');
 }
 function closeDrawer(){$('#drawerBackdrop').classList.add('hidden');$('#flightDrawer').classList.add('hidden');$('#flightDrawer').setAttribute('aria-hidden','true')}
@@ -281,7 +292,7 @@ function setMode(mode){state.mode=mode;$('#app').classList.toggle('mode-analytic
 
 // Search is a primary operation, so keep it visible. Matching is accent-insensitive in both directions.
 $('#searchWrap').classList.remove('hidden');$('#searchToggle').classList.add('hidden');$('#flightSearch').placeholder=uiT('searchPh','Tìm số chuyến, hãng hoặc nơi đi/đến: VJ339, Hà Nội, Da Nang...');
-const extraStyle=document.createElement('style');extraStyle.textContent=`.search-wrap{margin:0 0 12px}.search-wrap input{height:48px;padding-left:42px;background:#f9fcfd;border-color:#d8e6ee}.search-wrap{position:relative}.search-wrap:before{content:'⌕';position:absolute;left:15px;top:9px;font-size:24px;color:#72869a;z-index:1}.status-pill.amber{font-weight:950}.drawer-meta .fr24-detail-row{align-items:center}.drawer-meta .fr24-detail-row a{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:0 10px;border:1px solid #d6e4ec;border-radius:10px;background:#f5f9fb;color:#166f9f;text-decoration:none;font-weight:900;white-space:nowrap}.drawer-meta .fr24-detail-row a:active{opacity:.68}@media(max-width:680px){.search-wrap input{font-size:16px;height:48px}.status-pill{max-width:150px;overflow:hidden;text-overflow:ellipsis}.drawer-meta .fr24-detail-row a{min-height:36px;padding:0 11px}}`;document.head.appendChild(extraStyle);
+const extraStyle=document.createElement('style');extraStyle.textContent=`.search-wrap{margin:0 0 12px}.search-wrap input{height:48px;padding-left:42px;background:#f9fcfd;border-color:#d8e6ee}.search-wrap{position:relative}.search-wrap:before{content:'⌕';position:absolute;left:15px;top:9px;font-size:24px;color:#72869a;z-index:1}.status-pill.amber{font-weight:950}.watch-item.watch-action{cursor:pointer;border-radius:12px;transition:background .15s}.watch-item.watch-action:hover{background:#f7fafc}.watch-item.watch-action:focus-visible{outline:2px solid #9fcce3;outline-offset:2px}.watch-copy{min-width:0;flex:1}.watch-detail-link{display:block;margin-top:5px;color:#166f9f;font-size:10px;font-weight:900}.drawer-meta .fr24-detail-row{align-items:center}.drawer-meta .fr24-detail-row a{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:0 10px;border:1px solid #d6e4ec;border-radius:10px;background:#f5f9fb;color:#166f9f;text-decoration:none;font-weight:900;white-space:nowrap}.drawer-meta .fr24-detail-row a:active{opacity:.68}@media(max-width:680px){.search-wrap input{font-size:16px;height:48px}.status-pill{max-width:150px;overflow:hidden;text-overflow:ellipsis}.drawer-meta .fr24-detail-row a{min-height:36px;padding:0 11px}}`;document.head.appendChild(extraStyle);
 
 $$('[data-mode]').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
 $$('[data-mobile-mode]').forEach(b=>b.onclick=()=>setMode(b.dataset.mobileMode));
