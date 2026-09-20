@@ -18,6 +18,43 @@ function ageInfo(iso){if(!iso)return {level:'bad',label:'Không rõ',minutes:nul
 function stationLabel(s){const base=(s||'').replace('HO CHI MINH','TP.HCM').replace('HA NOI','HÀ NỘI').replace('DA NANG','ĐÀ NẴNG').replace('HAI PHONG','HẢI PHÒNG').replace('CAN THO','CẦN THƠ').replace('CAM RANH','CAM RANH').replace('PUDONG- SHANGHAI','SHANGHAI').replace('XIANYANG-XI AN','XI\'AN');try{return typeof window.JT_STATION==='function'?window.JT_STATION(base):base}catch(_){return base}}
 function airlineFromContext(c){const m=(c||'').match(/•\s*([^|]+)/);return m?m[1].trim():''}
 function airlineFor(r){return r?.airline_name||airlineFromContext(r?.context)||r?.airline_code||''}
+
+// FR24 live lookup uses the operator's ICAO designator + flight number.
+// Verified 2026-09-20 against the active PQC carrier set and current aviation/tracker references.
+// Unknown/new carriers intentionally fall back to the published flight number.
+const FR24_ICAO_BY_IATA=Object.freeze({
+  '9G':'SPQ', // Sun PhuQuoc Airways
+  'MU':'CES', // China Eastern
+  'WE':'PTA', // Parata Air
+  'DR':'RLH', // Ruili Airlines
+  'VJ':'VJC', // VietJet Air
+  'VN':'HVN', // Vietnam Airlines
+  'AK':'AXM', // AirAsia Malaysia
+  'VZ':'TVJ', // Thai VietJet
+  'BL':'PIC', // Pacific Airlines
+  'TR':'TGW', // Scoot
+  'FD':'AIQ', // Thai AirAsia
+  'K6':'KHV', // Air Cambodia
+  '0V':'VFC', // VASCO
+  'UO':'HKE', // HK Express
+  'VU':'VAG', // Vietravel Airlines
+  'TV':'TBA', // Tibet / Xizang Airlines
+  '7C':'JJA', // Jeju Air
+  'ZE':'ESR', // Eastar Jet
+  'KE':'KAL', // Korean Air
+  'LJ':'JNA', // Jin Air
+  'TW':'TWB'  // T'way / Trinity Airways
+});
+function fr24LookupIdentifier(r){
+  const flight=String(r?.operating_flight_number||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if(!flight)return '';
+  const iata=String(r?.airline_code||flight.slice(0,2)).toUpperCase().replace(/[^A-Z0-9]/g,'');
+  const icao=FR24_ICAO_BY_IATA[iata];
+  if(!icao)return flight;
+  let suffix=flight.startsWith(iata)?flight.slice(iata.length):flight.slice(2);
+  suffix=suffix.replace(/^0+(?=\d)/,'');
+  return suffix?icao+suffix:flight;
+}
 function isDelayed(r){return /DELAYED|RESCHEDULED|POSTPONED/.test(r?.status_code||'')||/TRỄ|DELAYED|RESCHEDULED|HOÃN/i.test(r?.status||'')}
 function isAbnormal(r){return /DELAYED|RESCHEDULED|POSTPONED|CANCELLED/.test(r?.status_code||'')||/TRỄ|DELAYED|RESCHEDULED|HOÃN|HỦY|CANCELLED/i.test(r?.status||'')}
 function statusClass(s){s=(s||'').toUpperCase();if(/ĐÃ HẠ CÁNH|ĐÃ CẤT CÁNH|BÃI ĐỖ/.test(s))return'green';if(/ĐÚNG GIỜ|LÀM THỦ TỤC|CHECK-IN|BOARDING|LÊN MÁY BAY/.test(s))return'blue';if(/TRỄ|CHẬM|DELAY|HOÃN|RESCHEDULED/.test(s))return'amber';if(/HỦY|CANCEL/.test(s))return'red';return'gray'}
@@ -266,8 +303,7 @@ function openDrawer(flight,direction){
   const expectedText=info.expected||(isDelayed(r)?uiT('airportNotPublished','Sân bay chưa công bố'):uiT('notApplicable','Không áp dụng'));
   const finalLabel=r.actual_time?uiT('actualAt','Thực tế · {time}',{time:r.actual_time}):uiT('estimatedAt','Dự kiến · {time}',{time:expectedText});
   const finalDesc=r.actual_time?uiT('actualDesc','Giờ thực tế đã được ghi nhận trong dữ liệu chuyến bay.'):isDelayed(r)&&!info.expected?uiT('noEstimateDesc','Nguồn hiện tại chỉ báo trễ, chưa có giờ dự kiến nên JoTrip không tự đoán giờ.'):uiT('estimateDesc','Giờ cập nhật theo dữ liệu chuyến bay.');
-  const fr24Flight=String(r.operating_flight_number||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
-  const fr24Lookup=/^9G(\d{1,4}[A-Z]?)$/.test(fr24Flight)?fr24Flight.replace(/^9G/,'SPQ'):fr24Flight;
+  const fr24Lookup=fr24LookupIdentifier(r);
   const fr24Row=/^[A-Z0-9]{2,4}\d{1,4}[A-Z]?$/.test(fr24Lookup)
     ? `<div class="fr24-detail-row"><span>${escapeHtml(uiT('trackFlight','Theo dõi chuyến bay'))}</span><a href="https://www.flightradar24.com/${encodeURIComponent(fr24Lookup)}" target="_blank" rel="noopener noreferrer">${escapeHtml(uiT('openFr24','Tìm LIVE trên FR24 ↗'))}</a></div>`
     : '';
