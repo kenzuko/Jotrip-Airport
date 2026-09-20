@@ -268,7 +268,7 @@ function openDrawer(flight,direction){
   const finalDesc=r.actual_time?uiT('actualDesc','Giờ thực tế đã được ghi nhận trong dữ liệu chuyến bay.'):isDelayed(r)&&!info.expected?uiT('noEstimateDesc','Nguồn hiện tại chỉ báo trễ, chưa có giờ dự kiến nên JoTrip không tự đoán giờ.'):uiT('estimateDesc','Giờ cập nhật theo dữ liệu chuyến bay.');
   const fr24Flight=String(r.operating_flight_number||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
   const fr24Row=/^[A-Z0-9]{2,3}\d{1,4}[A-Z]?$/.test(fr24Flight)
-    ? `<div class="fr24-detail-row"><span>${escapeHtml(uiT('trackFlight','Theo dõi chuyến bay'))}</span><a href="https://www.flightradar24.com/data/flights/${encodeURIComponent(fr24Flight.toLowerCase())}" target="_blank" rel="noopener noreferrer">${escapeHtml(uiT('openFr24','Mở FR24 ↗'))}</a></div>`
+    ? `<div class="fr24-detail-row"><span>${escapeHtml(uiT('trackFlight','Theo dõi chuyến bay'))}</span><a href="https://www.flightradar24.com/${encodeURIComponent(fr24Flight)}" target="_blank" rel="noopener noreferrer">${escapeHtml(uiT('openFr24','Tìm trên FR24 ↗'))}</a></div>`
     : '';
   const metaRows=[
     [uiT('scheduleCompare','So với lịch'),delayText],
