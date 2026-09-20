@@ -1,8 +1,6 @@
 const DATA_BASE='https://raw.githubusercontent.com/kenzuko/Jotrip-Lab/data-sunairport/data/sunairport';
 const LIVE_API_URL=(window.JOTRIP_LIVE_API_URL||'').replace(/\/$/,'');
 const AUTO_REFRESH_MS=60*1000;
-const WARM_CACHE_KEY='jotrip-airport-warm-cache-v1';
-const WARM_CACHE_MAX_AGE_MS=15*60*1000;
 const state={latest:null,health:null,direction:'arrival',filter:'all',query:'',limit:8,mode:'live',lastFetchAt:0,loading:false,dataSource:'snapshot',liveError:null,fidsEvents:[],fidsHistoryLoaded:false,fidsHistoryLoading:false,fidsHistoryDate:null};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 function uiT(key,fallback,vars){try{return typeof window.JT_T==='function'?window.JT_T(key,vars):fallback}catch(_){return fallback}}
@@ -176,28 +174,6 @@ function changed(r){return isAbnormal(r)||isEarly(r,10)||hasFidsAlert(r)}
 
 async function fetchJson(path){const snapshotFetch=window.JOTRIP_NATIVE_FETCH||window.fetch.bind(window);const res=await snapshotFetch(`${DATA_BASE}/${path}?t=${Date.now()}`,{cache:'no-store'});if(!res.ok)throw new Error(`${path}: HTTP ${res.status}`);return res.json()}
 async function fetchSnapshotPayload(){const [latest,health]=await Promise.all([fetchJson('latest.json'),fetchJson('health.json')]);return{latest,health}}
-function saveWarmCache(payload){try{if(!payload?.latest||!payload?.health)return;localStorage.setItem(WARM_CACHE_KEY,JSON.stringify({savedAt:Date.now(),latest:payload.latest,health:payload.health}))}catch(_){}}
-function hydrateWarmCache(){
-  try{
-    const raw=localStorage.getItem(WARM_CACHE_KEY);if(!raw)return false;
-    const cached=JSON.parse(raw),latest=cached?.latest,health=cached?.health;
-    if(!latest||!health||latest.source_date!==todayVn())return false;
-    const ts=latest.collected_at_vn?new Date(latest.collected_at_vn).getTime():Number(cached.savedAt||0);
-    const age=Date.now()-ts;
-    if(!Number.isFinite(age)||age<0||age>WARM_CACHE_MAX_AGE_MS)return false;
-    state.latest=latest;state.health=health;state.dataSource='warm-cache';state.liveError=null;state.lastFetchAt=0;
-    renderAll();
-    return true;
-  }catch(_){return false}
-}
-let fidsHistoryScheduled=false;
-function scheduleFidsHistory(){
-  if(fidsHistoryScheduled||state.fidsHistoryLoaded||state.fidsHistoryLoading)return;
-  fidsHistoryScheduled=true;
-  const run=()=>{fidsHistoryScheduled=false;if(!state.fidsHistoryLoaded&&!state.fidsHistoryLoading)loadFidsHistory()};
-  if('requestIdleCallback' in window)window.requestIdleCallback(run,{timeout:1800});
-  else setTimeout(run,800);
-}
 async function fetchLivePayload(){
   if(!LIVE_API_URL)throw new Error('Live API chưa cấu hình');
   const res=await fetch(`${LIVE_API_URL}?t=${Date.now()}`,{cache:'no-store',headers:{accept:'application/json'}});
@@ -223,8 +199,7 @@ async function load(){
       captureFidsSnapshotChanges(previousLatest.records,payload.latest?.records||[]);
     }
     renderAll();
-    saveWarmCache(payload);
-    scheduleFidsHistory();
+    if(!state.fidsHistoryLoaded&&!state.fidsHistoryLoading)loadFidsHistory();
     if(state.dataSource==='fallback'){$('#errorBox').textContent=uiT('fallbackError','Luồng live tạm gián đoạn - đang dùng bản lưu JoTrip AutoSync gần nhất.');$('#errorBox').classList.remove('hidden');}
     else $('#errorBox').classList.add('hidden');
   }catch(e){
@@ -289,7 +264,7 @@ function buildOperationWatchItems(){
   items.sort((a,b)=>(a.priority??9)-(b.priority??9)||((b.at??0)-(a.at??0))||((a.sort??9999)-(b.sort??9999)));
   return items;
 }
-function renderSummary(){const l=state.latest;$('#totalFlights').textContent=l.counts?.total??'-';$('#arrivalsCount').textContent=l.counts?.arrivals??'-';$('#departuresCount').textContent=l.counts?.departures??'-';$('#internationalCount').textContent=l.summary?.arrivals_market?.international??'-';const age=ageInfo(l.collected_at_vn);const sourceText=state.dataSource==='live'?'JoTrip Live':state.dataSource==='warm-cache'?'JoTrip Live · cache gần nhất':state.dataSource==='fallback'?'AutoSync fallback':'JoTrip AutoSync';const time=new Date(l.collected_at_vn).toLocaleTimeString(typeof window.JT_LOCALE==='function'?window.JT_LOCALE():'vi-VN',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Ho_Chi_Minh'});$('#updatedAt').textContent=uiT('updated','Cập nhật {time} · {age} phút trước · {source} · tự làm mới 1 phút',{time,age:age.minutes??0,source:sourceText});const sl=$('.source-label');if(sl)sl.textContent=uiT('sourceLive','JoTrip Live · Tự động làm mới');const abnormal=buildOperationWatchItems().filter(x=>x.kind!=='data').length;const ops=$('#opsState');ops.className='ops-state';if(age.level==='stale'||age.level==='bad'){ops.textContent=uiT('dataStale','DATA STALE');ops.classList.add('bad')}else if(abnormal>0||age.level==='watch'){ops.textContent=uiT('opsWatchCount','WATCH · {n} CẢNH BÁO',{n:abnormal});ops.classList.add('watch')}else ops.textContent=uiT('opsNormal','OPERATIONS NORMAL')}
+function renderSummary(){const l=state.latest;$('#totalFlights').textContent=l.counts?.total??'-';$('#arrivalsCount').textContent=l.counts?.arrivals??'-';$('#departuresCount').textContent=l.counts?.departures??'-';$('#internationalCount').textContent=l.summary?.arrivals_market?.international??'-';const age=ageInfo(l.collected_at_vn);const sourceText=state.dataSource==='live'?'JoTrip Live':state.dataSource==='fallback'?'AutoSync fallback':'JoTrip AutoSync';const time=new Date(l.collected_at_vn).toLocaleTimeString(typeof window.JT_LOCALE==='function'?window.JT_LOCALE():'vi-VN',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Ho_Chi_Minh'});$('#updatedAt').textContent=uiT('updated','Cập nhật {time} · {age} phút trước · {source} · tự làm mới 1 phút',{time,age:age.minutes??0,source:sourceText});const sl=$('.source-label');if(sl)sl.textContent=uiT('sourceLive','JoTrip Live · Tự động làm mới');const abnormal=buildOperationWatchItems().filter(x=>x.kind!=='data').length;const ops=$('#opsState');ops.className='ops-state';if(age.level==='stale'||age.level==='bad'){ops.textContent=uiT('dataStale','DATA STALE');ops.classList.add('bad')}else if(abnormal>0||age.level==='watch'){ops.textContent=uiT('opsWatchCount','WATCH · {n} CẢNH BÁO',{n:abnormal});ops.classList.add('watch')}else ops.textContent=uiT('opsNormal','OPERATIONS NORMAL')}
 function renderHealth(){const l=state.latest,h=state.health,age=ageInfo(l.collected_at_vn);const qa=!!(h?.collector_completed&&h?.parser_passed&&h?.normalization_passed&&h?.qa_passed&&l?.quality?.usable);$('#qaText').textContent=qa?'PASS':'FAIL';$('#qaBadge').textContent=qa?'QA PASS':'QA FAIL';$('#qaBadge').className='qa-badge '+(qa?'good':'bad');$('#dataAge').textContent=age.minutes==null?uiT('unknown','CHƯA RÕ'):uiT('minutesAgo','{n} phút',{n:age.minutes});let title,desc,level=age.level;if(!qa){level='bad';title=uiT('healthQaFailTitle','QA FAILED');desc=uiT('healthQaFailDesc','Luồng thu thập hoặc chuẩn hóa chưa đạt. Không nên dùng số liệu để điều hành.')}else if(age.level==='good'){title=uiT('healthGoodTitle','GOOD · dữ liệu đang mới');desc=uiT('healthGoodDesc','JoTrip Live đang cập nhật tự động, có cache ngắn để giữ ổn định.')}else if(age.level==='watch'){title=uiT('healthWatchTitle','WATCH · dữ liệu chậm cập nhật');desc=uiT('healthWatchDesc','Dữ liệu đang có độ trễ cao hơn bình thường. Trang sẽ tự kiểm tra lại mỗi phút.')}else{title=uiT('healthStaleTitle','STALE · không còn là dữ liệu live');desc=uiT('healthStaleDesc','Dữ liệu đã quá 15 phút. Không nên xem đây là trạng thái tức thời của sân bay.')}if(state.dataSource==='fallback'&&qa){level=age.level==='stale'?'stale':'watch';title=uiT('healthFallbackTitle','FALLBACK · đang dùng AutoSync');desc=uiT('healthFallbackDesc','Luồng live tạm không phản hồi. Giao diện đã chuyển sang bản lưu gần nhất.')}setHealth(level,title,desc)}
 function recordsFiltered(){let a=[...(state.latest?.records||[])];if(state.direction!=='all')a=a.filter(r=>r.direction===state.direction);if(state.filter==='next3')a=a.filter(isNext3);if(state.filter==='international')a=a.filter(r=>r.market==='international');if(state.filter==='domestic')a=a.filter(r=>r.market==='domestic');if(state.filter==='changed')a=a.filter(changed);if(state.query){const q=foldText(state.query);a=a.filter(r=>foldText([r.operating_flight_number,...(r.marketing_flight_numbers||[]),r.station,stationLabel(r.station),airlineFor(r),r.status,r.raw_status,r.context].join(' ')).includes(q))}a.sort((x,y)=>(mins(scheduledTime(x))??9999)-(mins(scheduledTime(y))??9999));return a}
 function rowHtml(r){const info=timingInfo(r),t=info.scheduled||'--:--',air=airlineFor(r),to=r.direction==='arrival'?'PQC':stationLabel(r.station),from=r.direction==='arrival'?stationLabel(r.station):'PQC';let timeSub=r.direction==='arrival'?uiT('toPqc','Đến PQC'):uiT('fromPqc','Rời PQC');if((isDelayed(r)||isEarly(r,10))&&info.expected)timeSub=uiT('estimatedTime','Dự kiến {time}',{time:info.expected});else if(isDelayed(r))timeSub=uiT('noEstimate','Chưa có giờ dự kiến');const rawStatus=displayStatusLabel(r),status=uiStatus(rawStatus);return `<div class="flight-row" data-flight="${escapeHtml(r.operating_flight_number)}" data-direction="${r.direction}"><div class="flight-number">${escapeHtml(r.operating_flight_number||'')}</div><div class="flight-time">${escapeHtml(t)}<small>${escapeHtml(timeSub)}</small></div><div class="route">${escapeHtml(from)} → ${escapeHtml(to)}<small>${escapeHtml(air)}</small></div><div class="market-label">${escapeHtml(r.market==='international'?uiT('international','Quốc tế'):uiT('domestic','Nội địa'))}</div><div class="status-pill ${statusClass(rawStatus)}">${escapeHtml(status)}</div><div class="chevron">›</div></div>`}
@@ -368,7 +343,6 @@ $('#drawerBackdrop').onclick=closeDrawer;$('#drawerClose').onclick=closeDrawer;
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('#flightDrawer').classList.contains('hidden'))closeDrawer();else if(document.activeElement===$('#flightSearch')){$('#flightSearch').value='';state.query='';renderFlights();}}});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&Date.now()-state.lastFetchAt>60*1000)load()});
 window.addEventListener('online',load);
-hydrateWarmCache();
 load();
 setInterval(()=>load(),AUTO_REFRESH_MS);
 setInterval(()=>{if(state.latest){renderSummary();renderHealth();renderNextWindow();renderWatch()}},60000);
