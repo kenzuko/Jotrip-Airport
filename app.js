@@ -1,7 +1,7 @@
 const DATA_BASE='https://raw.githubusercontent.com/kenzuko/Jotrip-Lab/data-sunairport/data/sunairport';
 const LIVE_API_URL=(window.JOTRIP_LIVE_API_URL||'').replace(/\/$/,'');
 const AUTO_REFRESH_MS=60*1000;
-const state={latest:null,health:null,direction:'arrival',filter:'all',query:'',limit:8,mode:'live',lastFetchAt:0,loading:false,dataSource:'snapshot',liveError:null,fidsEvents:[],fidsHistoryLoaded:false,fidsHistoryLoading:false,fidsHistoryDate:null};
+const state={latest:null,health:null,direction:'arrival',filter:'all',query:'',limit:8,mode:'live',lastFetchAt:0,loading:false,versionChecking:false,liveVersion:null,dataSource:'snapshot',liveError:null,fidsEvents:[],fidsHistoryLoaded:false,fidsHistoryLoading:false,fidsHistoryDate:null};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 function uiT(key,fallback,vars){try{return typeof window.JT_T==='function'?window.JT_T(key,vars):fallback}catch(_){return fallback}}
 function uiStatus(value){try{return typeof window.JT_STATUS==='function'?window.JT_STATUS(value):value}catch(_){return value}}
@@ -182,6 +182,20 @@ async function fetchLivePayload(){
   if(!payload?.latest?.records||!payload?.health)throw new Error('JoTrip Live API trả dữ liệu không hợp lệ');
   return payload;
 }
+function payloadVersion(payload){return payload?.latest?.board_version||payload?.health?.board_version||null}
+async function checkLiveVersion(){
+  if(!LIVE_API_URL||state.loading||state.versionChecking||document.visibilityState==='hidden')return;
+  state.versionChecking=true;
+  try{
+    const res=await fetch(`${LIVE_API_URL}/version?t=${Date.now()}`,{cache:'no-store',headers:{accept:'application/json'}});
+    if(!res.ok)return;
+    const meta=await res.json(),version=meta?.version||null;
+    if(!version)return;
+    if(!state.liveVersion){state.liveVersion=version;return;}
+    if(version!==state.liveVersion)await load();
+  }catch(e){console.warn('Live version check unavailable:',e)}
+  finally{state.versionChecking=false}
+}
 async function load(){
   if(state.loading)return;
   state.loading=true;setLoading(true);
@@ -193,7 +207,7 @@ async function load(){
     }
     if(!payload){payload=await fetchSnapshotPayload();state.dataSource=LIVE_API_URL?'fallback':'snapshot';}
     const previousLatest=state.latest;
-    state.latest=payload.latest;state.health=payload.health;state.liveError=liveError;state.lastFetchAt=Date.now();
+    state.latest=payload.latest;state.health=payload.health;state.liveError=liveError;state.lastFetchAt=Date.now();state.liveVersion=payloadVersion(payload)||state.liveVersion;
     const previousDate=previousLatest?.source_date||null,nextDate=payload.latest?.source_date||null;
     if(previousLatest?.records&&previousDate&&nextDate&&previousDate===nextDate){
       captureFidsSnapshotChanges(previousLatest.records,payload.latest?.records||[]);
@@ -341,8 +355,9 @@ $('#refreshBtn').onclick=load;$('#mobileRefresh').onclick=load;
 $('#mobileFlights').onclick=()=>{setMode('live');document.querySelector('.card.live-only')?.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>$('#flightSearch')?.focus(),350)};
 $('#drawerBackdrop').onclick=closeDrawer;$('#drawerClose').onclick=closeDrawer;
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('#flightDrawer').classList.contains('hidden'))closeDrawer();else if(document.activeElement===$('#flightSearch')){$('#flightSearch').value='';state.query='';renderFlights();}}});
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&Date.now()-state.lastFetchAt>60*1000)load()});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){if(Date.now()-state.lastFetchAt>60*1000)load();else checkLiveVersion()}});
 window.addEventListener('online',load);
 load();
+setInterval(()=>checkLiveVersion(),15*1000);
 setInterval(()=>load(),AUTO_REFRESH_MS);
 setInterval(()=>{if(state.latest){renderSummary();renderHealth();renderNextWindow();renderWatch()}},60000);
