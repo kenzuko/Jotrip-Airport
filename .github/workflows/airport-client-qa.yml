@@ -1,0 +1,28 @@
+name: Airport Live client QA
+
+on:
+  pull_request:
+    paths: ["app.js", "index.html", "scripts/**", ".github/workflows/airport-client-qa.yml"]
+  push:
+    branches: [main]
+    paths: ["app.js", "index.html", "scripts/**", ".github/workflows/airport-client-qa.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate standalone client and deterministic aborted requests
+        run: |
+          node --check app.js
+          node --check live-source.js
+          node --check fids-board.js
+          node scripts/qa-live-timeout.mjs

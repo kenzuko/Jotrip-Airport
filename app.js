@@ -1,6 +1,13 @@
 const DATA_BASE='https://raw.githubusercontent.com/kenzuko/Jotrip-Lab/data-sunairport/data/sunairport';
 const LIVE_API_URL=(window.JOTRIP_LIVE_API_URL||'').replace(/\/$/,'');
 const AUTO_REFRESH_MS=60*1000;
+const LIVE_TIMEOUT_MS=4500, SNAPSHOT_TIMEOUT_MS=6500;
+async function fetchWithTimeout(url,init={},ms=LIVE_TIMEOUT_MS){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),ms);
+  try{return await fetch(url,{...init,signal:controller.signal})}
+  finally{clearTimeout(timer)}
+}
 const state={latest:null,health:null,direction:'arrival',filter:'all',query:'',limit:8,mode:'live',lastFetchAt:0,loading:false,versionChecking:false,versionEndpointDisabled:false,liveVersion:null,dataSource:'snapshot',liveError:null,fidsEvents:[],fidsHistoryLoaded:false,fidsHistoryLoading:false,fidsHistoryDate:null};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 function uiT(key,fallback,vars){try{return typeof window.JT_T==='function'?window.JT_T(key,vars):fallback}catch(_){return fallback}}
@@ -174,11 +181,19 @@ async function loadFidsHistory(){
 }
 function changed(r){return isAbnormal(r)||isEarly(r,10)||hasFidsAlert(r)}
 
-async function fetchJson(path){const snapshotFetch=window.JOTRIP_NATIVE_FETCH||window.fetch.bind(window);const res=await snapshotFetch(`${DATA_BASE}/${path}?t=${Date.now()}`,{cache:'no-store'});if(!res.ok)throw new Error(`${path}: HTTP ${res.status}`);return res.json()}
+async function fetchJson(path){
+  const snapshotFetch=window.JOTRIP_NATIVE_FETCH||window.fetch.bind(window);
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),SNAPSHOT_TIMEOUT_MS);
+  try{
+    const res=await snapshotFetch(`${DATA_BASE}/${path}?t=${Date.now()}`,{cache:'no-store',signal:controller.signal});
+    if(!res.ok)throw new Error(`${path}: HTTP ${res.status}`);
+    return res.json();
+  }finally{clearTimeout(timer)}
+}
 async function fetchSnapshotPayload(){const [latest,health]=await Promise.all([fetchJson('latest.json'),fetchJson('health.json')]);return{latest,health}}
 async function fetchLivePayload(){
   if(!LIVE_API_URL)throw new Error('Live API chưa cấu hình');
-  const res=await fetch(`${LIVE_API_URL}?t=${Date.now()}`,{cache:'no-store',headers:{accept:'application/json'}});
+  const res=await fetchWithTimeout(`${LIVE_API_URL}?t=${Date.now()}`,{cache:'no-store',headers:{accept:'application/json'}},LIVE_TIMEOUT_MS);
   if(!res.ok)throw new Error(`JoTrip Live API HTTP ${res.status}`);
   const payload=await res.json();
   if(!payload?.latest?.records||!payload?.health)throw new Error('JoTrip Live API trả dữ liệu không hợp lệ');
@@ -189,7 +204,7 @@ async function checkLiveVersion(){
   if(!LIVE_API_URL||state.versionEndpointDisabled||state.loading||state.versionChecking||document.visibilityState==='hidden')return;
   state.versionChecking=true;
   try{
-    const res=await fetch(`${LIVE_API_URL}/version?t=${Date.now()}`,{cache:'no-store',headers:{accept:'application/json'}});
+    const res=await fetchWithTimeout(`${LIVE_API_URL}/version?t=${Date.now()}`,{cache:'no-store',headers:{accept:'application/json'}},3000);
     if(res.status===404){state.versionEndpointDisabled=true;return;}
     if(!res.ok)return;
     const meta=await res.json(),version=meta?.version||null;
@@ -225,7 +240,12 @@ async function load(){
     console.error(e);$('#errorBox').textContent=uiT('loadError','Không đọc được dữ liệu chuyến bay lúc này. Trang sẽ không dùng dữ liệu cũ như dữ liệu live.');$('#errorBox').classList.remove('hidden');setHealth('bad',uiT('healthLostTitle','MẤT DỮ LIỆU'),uiT('healthLostDesc','Không thể tải nguồn live hoặc bản lưu dự phòng.'));
   }finally{state.loading=false;setLoading(false)}
 }
-function setLoading(on){$('#refreshBtn').textContent=on?'…':'↻';$('#mobileRefresh').querySelector('span').textContent=on?'…':'↻'}
+function setLoading(on){
+  const refresh=$('#refreshBtn'),mobile=$('#mobileRefresh');
+  if(refresh){refresh.textContent=on?'…':'↻';refresh.disabled=!!on}
+  const icon=mobile?.querySelector('span');if(icon)icon.textContent=on?'…':'↻';
+  if(mobile)mobile.disabled=!!on;
+}
 function setHealth(level,title,desc){const pill=$('#healthPill');pill.className='health-pill '+level;pill.textContent=title;const icon=$('#healthIcon');icon.className='health-icon '+level;icon.textContent=level==='good'?'✓':level==='watch'||level==='stale'?'!':'×';$('#healthTitle').textContent=title;$('#healthDescription').textContent=desc}
 function renderAll(){renderSummary();renderHealth();renderFlights();renderNextWindow();renderWatch();renderAnalytics()}
 function buildOperationWatchItems(){
